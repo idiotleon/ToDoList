@@ -43,6 +43,9 @@ public class ToDoItemDetailsActivity extends Activity
     private Button btnDelete;
 
     private int priority;
+    private String title;
+    private long deadline;
+    private long dateAndTimeCreated;
 
     private ToDoItemModel editedToDoItem;
 
@@ -58,6 +61,9 @@ public class ToDoItemDetailsActivity extends Activity
                 = intent.getExtras().getParcelable(GeneralConstants.TO_DO_ITEM_IDENTIFIER);
         Log.v(LOG_TAG, "onCreate(), intent received, ToDoItemDetailsActivity: " + GeneralHelper.formatToString(toDoItem.getToDoItemDeadline()));
         priority = toDoItem.getPriority();
+        title = toDoItem.getTitle();
+        deadline = toDoItem.getToDoItemDeadline();
+        dateAndTimeCreated = toDoItem.getItemCreatedDateAndTime();
 
         dbHelper = new DatabaseHelper(ToDoItemDetailsActivity.this);
 
@@ -77,13 +83,16 @@ public class ToDoItemDetailsActivity extends Activity
          * Styling the ActionBar
          */
         ActionBar actionBar = getActionBar();
-        actionBar.setTitle("ToDoItem Priority Level: " + toDoItem.getPriority());
+        if (deadline > 0) {
+            actionBar.setTitle("Deadline: " + GeneralHelper.parseDateAndTimeToString(deadline));
+        } else {
+            actionBar.setTitle("Added on: " + GeneralHelper.parseDateAndTimeToString(dateAndTimeCreated));
+        }
         actionBar.setSubtitle("Details");
-
-        String[] hexColorCode = getResources().getStringArray(R.array.priority_level_color);
+//        String[] hexColorCode = getResources().getStringArray(R.array.priority_level_color_hex_code);
         ColorDrawable colorDrawable
-                = new ColorDrawable(Color.parseColor(hexColorCode[priority - 1]));
-        getActionBar().setBackgroundDrawable(colorDrawable);
+                = new ColorDrawable(Color.parseColor(GeneralConstants.PRIORITY_LEVEL_COLOR_HEX_CODE[priority - 1]));
+        actionBar.setBackgroundDrawable(colorDrawable);
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -166,7 +175,14 @@ public class ToDoItemDetailsActivity extends Activity
         descriptionTextView.setText(GeneralHelper.formatToString(toDoItem.getDetailDescription()));
         int priority = toDoItem.getPriority();
         priorityTextView.setText(GeneralHelper.formatToString(priority));
-        priorityTextView.setBackgroundColor(GeneralConstants.PRIORITY_LEVEL_COLOR[priority]);
+//        priorityTextView.setBackgroundColor(GeneralConstants.PRIORITY_LEVEL_COLOR[priority]);
+        priorityTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.v(LOG_TAG, "You touched a TextView");
+            }
+        });
+
         String timeAdded = GeneralHelper.parseDateAndTimeToString(toDoItem.getItemCreatedDateAndTime());
         Log.v(LOG_TAG, "timeAdded, refreshToDoItemDetailsPage(), ToDoItemDetailsActivity: " + timeAdded);
         dateAndTimeCreatedTextView.setText("Time added: " + timeAdded);

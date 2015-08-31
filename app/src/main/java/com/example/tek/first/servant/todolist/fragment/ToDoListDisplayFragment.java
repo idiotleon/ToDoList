@@ -32,7 +32,8 @@ public class ToDoListDisplayFragment extends ListFragment {
         ArrayList<ToDoItemModel> toDoItemsArrayList = dbHelper.getAllToDoItemsAsArrayList();
         Intent intent = new Intent(getActivity(), ToDoItemDetailsActivity.class);
         intent.putExtra(GeneralConstants.TO_DO_ITEM_IDENTIFIER, toDoItemsArrayList.get(position));
-        Log.v(LOG_TAG, "onListItemClick, ToDoListDisplayFragment: " + GeneralHelper.formatToString((toDoItemsArrayList.get(position)).getToDoItemDeadline()));
+        Log.v(LOG_TAG, "onListItemClick, ToDoListDisplayFragment: " +
+                GeneralHelper.formatToString((toDoItemsArrayList.get(position)).getToDoItemDeadline()));
         startActivity(intent);
     }
 }

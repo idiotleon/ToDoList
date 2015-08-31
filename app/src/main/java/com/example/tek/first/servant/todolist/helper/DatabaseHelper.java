@@ -7,12 +7,9 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import android.widget.TableLayout;
 
 import com.example.tek.first.servant.todolist.model.ToDoItemModel;
-import com.example.tek.first.servant.todolist.helper.GeneralHelper.*;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -29,6 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static String TODOLIST_ITEM_DEADLINE = "todolist_time_date_set";
     public static String TODOLIST_ITEM_TIME_DATE_CREATED = "todolist_time_date_created";
     public static String TODOLIST_ITEM_CATEGORY = "todolist_category";
+    // todo: "todolist_complete_status_code"
     public static String TODOLIST_ITEM_COMPLETE_STATUS = "todolist_complete_status";
 
     public static int VERSION = 1;
@@ -47,7 +45,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 TODOLIST_ITEM_DEADLINE + " TEXT, " +
                 TODOLIST_ITEM_TIME_DATE_CREATED + " TEXT, " +
                 TODOLIST_ITEM_CATEGORY + " INTEGER DEFAULT 0, " +
-                TODOLIST_ITEM_COMPLETE_STATUS + " INTEGER DEFAULT 0)";
+                TODOLIST_ITEM_COMPLETE_STATUS + " INTEGER DEFAULT 1)";
         Log.v(LOG_TAG, "createQuery: " + createTableQuery);
 
         db.execSQL(createTableQuery);
@@ -295,6 +293,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
 
+        for (int i = 0; i < toDoItemsArrayListSortByPriority.size(); i++) {
+            Log.v(LOG_TAG, "getAllToDoItemsOrderByPriorityQuery: " + toDoItemsArrayListSortByPriority.get(i).getTitle());
+        }
+
         return toDoItemsArrayListSortByPriority;
     }
 
@@ -304,8 +306,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         String getIncompleteToDoItemsOrderByDeadline = "SELECT * FROM " + TODOLIST_TABLE_NAME +
-                " ORDER BY " + TODOLIST_ITEM_DEADLINE +
-                " WHERE " + TODOLIST_ITEM_COMPLETE_STATUS + " = " + GeneralConstants.TODOLISTITEM_STATUS_INCOMPLETE;
+                " WHERE " + TODOLIST_ITEM_COMPLETE_STATUS + " = " + GeneralConstants.TODOLISTITEM_STATUS_INCOMPLETE +
+                " ORDER BY " + TODOLIST_ITEM_DEADLINE;
         Log.v(LOG_TAG, "getIncompleteToDoItemsOrderByDeadline: " + getIncompleteToDoItemsOrderByDeadline);
         Cursor cursor = db.rawQuery(getIncompleteToDoItemsOrderByDeadline, null);
         cursor.moveToFirst();
@@ -334,9 +336,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         String getCompleteToDoItemsOrderByDeadline = "SELECT * FROM " + TODOLIST_TABLE_NAME +
-                " ORDER BY " + TODOLIST_ITEM_DEADLINE +
-                "WHERE " + TODOLIST_ITEM_COMPLETE_STATUS + " = " + GeneralConstants.TODOLISTITEM_STATUS_COMPLETE;
-        Log.v(LOG_TAG, "getIncompleteToDoItemsOrderByDeadline: " + getCompleteToDoItemsOrderByDeadline);
+                " WHERE " + TODOLIST_ITEM_COMPLETE_STATUS + " = " + GeneralConstants.TODOLISTITEM_STATUS_COMPLETE +
+                " ORDER BY " + TODOLIST_ITEM_DEADLINE;
+        Log.v(LOG_TAG, "getCompleteToDoItemsOrderByDeadline: " + getCompleteToDoItemsOrderByDeadline);
         Cursor cursor = db.rawQuery(getCompleteToDoItemsOrderByDeadline, null);
         cursor.moveToFirst();
 
@@ -364,9 +366,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         SQLiteDatabase db = this.getReadableDatabase();
         String getNotStartedToDoItemsOrderByDeadline = "SELECT * FROM " + TODOLIST_TABLE_NAME +
-                " ORDER BY " + TODOLIST_ITEM_DEADLINE +
-                "WHERE " + TODOLIST_ITEM_COMPLETE_STATUS + " = " + GeneralConstants.TODOLISTITEM_STATUS_NOT_STARTED;
-        Log.v(LOG_TAG, "getIncompleteToDoItemsOrderByDeadline: " + getNotStartedToDoItemsOrderByDeadline);
+                " WHERE " + TODOLIST_ITEM_COMPLETE_STATUS + " = " + GeneralConstants.TODOLISTITEM_STATUS_NOT_STARTED +
+                " ORDER BY " + TODOLIST_ITEM_DEADLINE;
+        Log.v(LOG_TAG, "getNotStartedToDoItemsOrderByDeadline: " + getNotStartedToDoItemsOrderByDeadline);
         Cursor cursor = db.rawQuery(getNotStartedToDoItemsOrderByDeadline, null);
         cursor.moveToFirst();
 
@@ -382,6 +384,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     itemDateAndTimeCreated, deadline, category, completionStatusCode);
             notStartedToDoItemsArrayList.add(toDoListItem);
             cursor.moveToNext();
+        }
+
+        /**
+         * For test purpose
+         */
+        for (int i = 0; i < notStartedToDoItemsArrayList.size(); i++) {
+            Log.v(LOG_TAG, "getNotStartedToDoItemsOrderByDeadline: " + notStartedToDoItemsArrayList.get(i).getTitle());
         }
 
         return notStartedToDoItemsArrayList;

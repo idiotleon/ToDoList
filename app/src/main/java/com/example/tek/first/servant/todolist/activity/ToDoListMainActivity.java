@@ -41,6 +41,7 @@ public class ToDoListMainActivity extends Activity
 
     private ArrayList<ToDoItemModel> toDoItemsArrayList;
     private ToDoListCustomAdapter toDoListCustomAdapter;
+    private ToDoListDisplayFragment toDoListDisplayFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +60,7 @@ public class ToDoListMainActivity extends Activity
         NewItemAddedFragment newItemAddedFragment =
                 (NewItemAddedFragment) fragmentManager.findFragmentById(R.id.todolist_newitem);
 
-        ToDoListDisplayFragment toDoListDisplayFragment
+        toDoListDisplayFragment
                 = (ToDoListDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment);
 
         toDoListCustomAdapter = new ToDoListCustomAdapter(ToDoListMainActivity.this, toDoItemsArrayList);
@@ -77,7 +78,7 @@ public class ToDoListMainActivity extends Activity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.display_menu_activitytodolist:
-                Log.v(LOG_TAG, "Menu Sort Selected");
+                Log.v(LOG_TAG, "Displaying-Menu Selected");
                 AlertDialog.Builder sortBuilder = new AlertDialog.Builder(ToDoListMainActivity.this);
                 sortBuilder.setTitle("Please select what to be displayed: ")
                         .setItems(R.array.menu_display_standard, new DialogInterface.OnClickListener() {
@@ -88,22 +89,22 @@ public class ToDoListMainActivity extends Activity
                                     case 0:     // Display incomplete items
                                         ArrayList<ToDoItemModel> incompleteToDoItemsArrayList = dbHelper.incompleteToDoItemsArrayList();
                                         toDoListCustomAdapter = new ToDoListCustomAdapter(ToDoListMainActivity.this, incompleteToDoItemsArrayList);
-                                        toDoListCustomAdapter.notifyDataSetChanged();
+                                        toDoListDisplayFragment.setListAdapter(toDoListCustomAdapter);
                                         break;
                                     case 1:     // Display completed items
                                         ArrayList<ToDoItemModel> completeToDoItemsArrayList = dbHelper.completeToDoItemsArrayList();
                                         toDoListCustomAdapter = new ToDoListCustomAdapter(ToDoListMainActivity.this, completeToDoItemsArrayList);
-                                        toDoListCustomAdapter.notifyDataSetChanged();
+                                        toDoListDisplayFragment.setListAdapter(toDoListCustomAdapter);
                                         break;
                                     case 2:     // Display not started items
                                         ArrayList<ToDoItemModel> notStartedToDoItemsArrayList = dbHelper.notStartedToDoItemsArrayList();
                                         toDoListCustomAdapter = new ToDoListCustomAdapter(ToDoListMainActivity.this, notStartedToDoItemsArrayList);
-                                        toDoListCustomAdapter.notifyDataSetChanged();
+                                        toDoListDisplayFragment.setListAdapter(toDoListCustomAdapter);
                                         break;
                                     case 3:     // Display all items
                                         ArrayList<ToDoItemModel> allToDoItemsArrayList = dbHelper.getAllToDoItemsAsArrayList();
                                         toDoListCustomAdapter = new ToDoListCustomAdapter(ToDoListMainActivity.this, allToDoItemsArrayList);
-                                        toDoListCustomAdapter.notifyDataSetChanged();
+                                        toDoListDisplayFragment.setListAdapter(toDoListCustomAdapter);
                                         break;
                                 }
                             }
@@ -111,7 +112,7 @@ public class ToDoListMainActivity extends Activity
                 (sortBuilder.create()).show();
                 break;
             case R.id.sortby_menu_activitytodolist:
-                Log.v(LOG_TAG, "Menu Display Selected");
+                Log.v(LOG_TAG, "Sorting-Menu Selected");
                 AlertDialog.Builder displayBuilder = new AlertDialog.Builder(ToDoListMainActivity.this);
                 displayBuilder.setTitle("Please select a sorting standard: ")
                         .setItems(R.array.menu_sort_standard, new DialogInterface.OnClickListener() {
@@ -121,22 +122,22 @@ public class ToDoListMainActivity extends Activity
                                     case 0:     // Sort by priority
                                         ArrayList<ToDoItemModel> toDoItemModelArrayListSortByPriority = dbHelper.toDoItemsArrayListSortByPriority();
                                         toDoListCustomAdapter = new ToDoListCustomAdapter(ToDoListMainActivity.this, toDoItemModelArrayListSortByPriority);
-                                        toDoListCustomAdapter.notifyDataSetChanged();
+                                        toDoListDisplayFragment.setListAdapter(toDoListCustomAdapter);
                                         break;
                                     case 1:     // Sort by deadline
                                         ArrayList<ToDoItemModel> toDoItemModelArrayListSortByDeadline = dbHelper.toDoItemsArrayListSortByDeadline();
                                         toDoListCustomAdapter = new ToDoListCustomAdapter(ToDoListMainActivity.this, toDoItemModelArrayListSortByDeadline);
-                                        toDoListCustomAdapter.notifyDataSetChanged();
+                                        toDoListDisplayFragment.setListAdapter(toDoListCustomAdapter);
                                         break;
                                     case 2:     // Sort by time added
                                         ArrayList<ToDoItemModel> toDoItemModelArrayListSortByTimeAdded = dbHelper.toDoItemsArrayListSortByTimeAdded();
                                         toDoListCustomAdapter = new ToDoListCustomAdapter(ToDoListMainActivity.this, toDoItemModelArrayListSortByTimeAdded);
-                                        toDoListCustomAdapter.notifyDataSetChanged();
+                                        toDoListDisplayFragment.setListAdapter(toDoListCustomAdapter);
                                         break;
                                     case 3:     // Sort by title
                                         ArrayList<ToDoItemModel> toDoItemModelArrayListSortByTitle = dbHelper.toDoItemsArrayListSortByTitle();
                                         toDoListCustomAdapter = new ToDoListCustomAdapter(ToDoListMainActivity.this, toDoItemModelArrayListSortByTitle);
-                                        toDoListCustomAdapter.notifyDataSetChanged();
+                                        toDoListDisplayFragment.setListAdapter(toDoListCustomAdapter);
                                         break;
                                 }
                             }

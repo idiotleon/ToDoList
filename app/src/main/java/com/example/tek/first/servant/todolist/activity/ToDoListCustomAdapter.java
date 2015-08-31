@@ -9,6 +9,8 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.tek.first.servant.R;
+import com.example.tek.first.servant.todolist.helper.GeneralConstants;
+import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.model.ToDoItemModel;
 import com.example.tek.first.servant.todolist.customview.textview.ToDoItemPriorityCustomView;
 
@@ -51,17 +53,18 @@ public class ToDoListCustomAdapter extends BaseAdapter {
         View rootView = inflater.inflate(R.layout.todoitem, null);
 //        TextView textViewPriority = (TextView) rootView.findViewById(R.id.todolist_row_priority);
         // todo: textview with custom color based on different priority level
-        TextView textViewPriority = new ToDoItemPriorityCustomView(context, null, getPriority(position));
-//        textViewPriority =  (TextView) rootView.findViewById(R.id.todolist_row_priority);
+//        TextView textViewPriority = new ToDoItemPriorityCustomView(context, null, getPriority(position));
+        TextView textViewPriority = (TextView) rootView.findViewById(R.id.todolist_row_priority);
         Log.v(LOG_TAG, "getPriority(position): " + Integer.toString(getPriority(position)));
         TextView textViewDeadline = (TextView) rootView.findViewById(R.id.todolist_row_deadline);
         TextView textViewTitle = (TextView) rootView.findViewById(R.id.todolist_row_title);
 
         textViewTitle.setText(toDoListItemsArrayList.get(position).getTitle());
-        textViewPriority.setText(Integer.toString(getPriority(position)));
+        textViewPriority.setText(Integer.toString(position + 1));
+        textViewPriority.setBackgroundColor(GeneralConstants.PRIORITY_LEVEL_COLOR[getPriority(position) - 1]);
         Long deadline = toDoListItemsArrayList.get(position).getToDoItemDeadline();
         if (deadline > 0L) {
-            textViewDeadline.setText(deadline.toString());
+            textViewDeadline.setText(GeneralHelper.parseDateAndTimeToString(deadline));
         }
 
         return rootView;
