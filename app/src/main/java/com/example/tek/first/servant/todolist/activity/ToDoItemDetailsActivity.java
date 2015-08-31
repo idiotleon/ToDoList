@@ -1,10 +1,13 @@
 package com.example.tek.first.servant.todolist.activity;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +42,8 @@ public class ToDoItemDetailsActivity extends Activity
     private Button btnMarkAsComplete;
     private Button btnDelete;
 
+    private int priority;
+
     private ToDoItemModel editedToDoItem;
 
     private DatabaseHelper dbHelper;
@@ -47,6 +52,12 @@ public class ToDoItemDetailsActivity extends Activity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todolist_todoitem_details_activity);
+
+        Intent intent = getIntent();
+        final ToDoItemModel toDoItem
+                = intent.getExtras().getParcelable(GeneralConstants.TO_DO_ITEM_IDENTIFIER);
+        Log.v(LOG_TAG, "onCreate(), intent received, ToDoItemDetailsActivity: " + GeneralHelper.formatToString(toDoItem.getToDoItemDeadline()));
+        priority = toDoItem.getPriority();
 
         dbHelper = new DatabaseHelper(ToDoItemDetailsActivity.this);
 
@@ -60,12 +71,19 @@ public class ToDoItemDetailsActivity extends Activity
         btnMarkAsComplete = (Button) findViewById(R.id.btn_markascomplete_detailactivity);
         btnDelete = (Button) findViewById(R.id.btn_delete_detailactivity);
 
-        Intent intent = getIntent();
-        final ToDoItemModel toDoItem
-                = intent.getExtras().getParcelable(GeneralConstants.TO_DO_ITEM_IDENTIFIER);
-        Log.v(LOG_TAG, "onCreate(), intent received, ToDoItemDetailsActivity: " + GeneralHelper.formatToString(toDoItem.getToDoItemDeadline()));
-
         refreshToDoItemDetailsPage(toDoItem);
+
+        /**
+         * Styling the ActionBar
+         */
+        ActionBar actionBar = getActionBar();
+        actionBar.setTitle("ToDoItem Priority Level: " + toDoItem.getPriority());
+        actionBar.setSubtitle("Details");
+
+        String[] hexColorCode = getResources().getStringArray(R.array.priority_level_color);
+        ColorDrawable colorDrawable
+                = new ColorDrawable(Color.parseColor(hexColorCode[priority - 1]));
+        getActionBar().setBackgroundDrawable(colorDrawable);
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override

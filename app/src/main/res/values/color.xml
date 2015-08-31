@@ -7,15 +7,17 @@
 
     <color name="detail_header">#03A9F4</color>
 
-    <color name="priority_level1">#FBE9E7</color>
-    <color name="priority_level2">#FFCCBC</color>
-    <color name="priority_level3">#FFAB91</color>
-    <color name="priority_level4">#FF7043</color>
-    <color name="priority_level5">#FF5722</color>
-    <color name="priority_level6">#F4511E</color>
-    <color name="priority_level7">#E64A19</color>
-    <color name="priority_level8">#D84315</color>
-    <color name="priority_level9">#BF360C</color>
-    <color name="priority_level10">#DD2C00</color>
+    <array name="priority_level_color">
+        <color name="priority_level1">#FBE9E7</color>
+        <color name="priority_level2">#FFCCBC</color>
+        <color name="priority_level3">#FFAB91</color>
+        <color name="priority_level4">#FF7043</color>
+        <color name="priority_level5">#FF5722</color>
+        <color name="priority_level6">#F4511E</color>
+        <color name="priority_level7">#E64A19</color>
+        <color name="priority_level8">#D84315</color>
+        <color name="priority_level9">#BF360C</color>
+        <color name="priority_level10">#DD2C00</color>
+    </array>
 
 </resources>

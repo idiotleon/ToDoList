@@ -28,4 +28,11 @@ public abstract class GeneralConstants {
             R.color.priority_level4, R.color.priority_level5, R.color.priority_level6,
             R.color.priority_level7, R.color.priority_level8, R.color.priority_level9,
             R.color.priority_level10};
+
+    public static final String[] PRIORITY_LEVEL_COLOR_HEX_CODE
+            = {"#FBE9E7", "#FFCCBC", "#FFAB91", "#FF7043", "#FF5722",
+            "#F4511E", "#E64A19", "#D84315", "#BF360C", "#DD2C00"};
+
 }
+
+

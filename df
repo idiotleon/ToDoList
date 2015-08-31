@@ -1,0 +1,214 @@
+[33mcommit a8176d1c2b0174c2d60ecca2ccd11384a8bf06c8[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Sat Aug 29 02:44:31 2015 -0400
+
+    Date formatted
+    
+    UI improved.
+    Alarm needs to be added.
+
+[33mcommit 3117e2215ca90fe9ccd56328e5b8d744019d791c[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Sat Aug 29 02:15:15 2015 -0400
+
+    Detailed toDoItem listeners added to ToDoListDetailedActivity
+    
+    How to edit a todo item is not started.
+
+[33mcommit 4d53f7a2c018f4a407d1cd5d603c4cc89a117a3d[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Sat Aug 29 01:59:24 2015 -0400
+
+    Delete a toDoItem added
+    
+    Tested and succeeded.
+
+[33mcommit 64be42818f75fe9d3d84805863daade213f984aa[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Sat Aug 29 01:55:05 2015 -0400
+
+    Marked as complete/incomplete/not started added
+    
+    Not tested
+
+[33mcommit 097963680bdd3710dc1b81779d9edb04027c1be6[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Fri Aug 28 16:37:51 2015 -0400
+
+    Menu: Sort/Display functions added
+    
+    But MainActivity was not refreshed.
+
+[33mcommit d9fbb309b1232013eb364229a38b9c3421ecc90a[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Fri Aug 28 15:13:10 2015 -0400
+
+    Tried to set color according to priority
+    
+    Failed.
+    A textview can either be defined through rootView.findViewById() (with
+    TextView tag in the layout), or a constructor (with
+    com.....customtextview in the layout), but not both.
+
+[33mcommit a0a8daef73457d8c18cfad43ab5d89c434c963e5[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Thu Aug 27 19:56:33 2015 -0400
+
+    Errors occur when saving date into database
+    
+    Not fixed yet.
+
+[33mcommit 8ab0d0f670379c98c497170f8f6770b11cb56d02[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Thu Aug 27 15:49:56 2015 -0400
+
+    Menu - display complete/incomplete/not_started to do items added
+    
+    They're better placed as submenu items.
+
+[33mcommit 7637b7f59e2a39d7d6a4d21f15419cf5500f16f6[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Thu Aug 27 15:46:35 2015 -0400
+
+    Activity for Details of ToDoItem added
+    
+    UI needs to be completed and improved.
+
+[33mcommit b0eab2da20ee631766e772b076dd77673dd19975[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Thu Aug 27 14:52:01 2015 -0400
+
+    Display all to do items added
+    
+    UI needs to be improved.
+
+[33mcommit 1d41f6e1368a4b8c8c40f46c991868fee9813ebf[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Thu Aug 27 11:07:40 2015 -0400
+
+    ToDoItemModel completeStatus added
+
+[33mcommit ff8cda7f4682d1f1bfff368a31a75ea46180c977[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 22:53:45 2015 -0400
+
+    Display todo items on MainActivity has yet to be completed
+    
+    Different sorting methods should be implemented as well.
+
+[33mcommit 1c7c8276f8789afbe470fa04135d53c2d88fd712[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 22:11:56 2015 -0400
+
+    Spinner for Priority added
+    
+    It's better associate priority level with colors, not simply numbers.
+
+[33mcommit 4885540434d299330f9d74edd2c501441dcd7f2f[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 21:44:53 2015 -0400
+
+    Database support added
+    
+    One can save info in the database. But fetching data from database
+    remains to be done.
+
+[33mcommit ddbaefb24e56a622b0ee0bdac7f1a07d5b8e6709[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 21:11:19 2015 -0400
+
+    DetailedToDoListItemDialog becomes an inner class
+    
+    DetailedToDoListItemDialog becomes an inner class of
+    ToDoListMainActivity, in order to update button text with time and date
+    selected.
+
+[33mcommit 4b444d1951173940d27fb1db29b91b14b4793990[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 16:50:30 2015 -0400
+
+    Date/Time Picker are almost completed.
+    
+    But how to pass date/time selected remains uncertain.
+
+[33mcommit e4379bf4dad194ef8a0817dd0f3244813eb28806[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 15:22:58 2015 -0400
+
+    Database Support for Time and Date Picker
+    
+    Database management will be added, to pass value set via Time/Date
+    Picker from Picker Dialog to DetailsDialog.
+
+[33mcommit d151c4006df53e03144e70128f71ca11d7a5a32e[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 13:56:55 2015 -0400
+
+    Pickers layout improved
+    
+    DatePicker & TimePicker layout improved.
+
+[33mcommit 6f8191b842502a9e3e8190c035a94426a9bfaf5b[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 13:35:13 2015 -0400
+
+    Dialog box for detailed todolist item improved
+    
+    Spinner added.
+    Two buttons for DatePicker & TimePicker added.
+
+[33mcommit a7393d5eeeeb442108c219b856d0e627ed72f3af[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 12:23:11 2015 -0400
+
+    Menu item added
+    
+    Sort by Priority option added.
+
+[33mcommit db1336d31daf78a7386bf1511f8aab5657255a9d[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 12:22:03 2015 -0400
+
+    A custom TextView added for displaying text of newly added to do item
+
+[33mcommit 344a74303c11c965ad7cf91ccb961a843e3bd818[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 11:57:27 2015 -0400
+
+    Menu item inflated into main layout
+
+[33mcommit 607c2cbbebe504f44b9ff568ed7af786eb7d87a5[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 11:55:39 2015 -0400
+
+    Menu added
+    
+    3 sorting methods:
+    1. Sort by todolist item added,
+    2. Sort by notification time set
+    3. Sort by title alphabetically.
+
+[33mcommit a9690d86217f8983cd2c5fb9e7ae21703effb1f1[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 11:51:37 2015 -0400
+
+    Main layout added
+    
+    The very simple main layout added. With an EditText for input, an
+    ImageButton for confirming input and a ListView for displaying all
+    items.
+
+[33mcommit 9633634e42a73e70ca755412e8ddffafd6af770c[m
+Author: leontheprofessional7 <yanglyu.leon.7@gmail.com>
+Date:   Wed Aug 26 11:43:23 2015 -0400
+
+    ToDoItem Model built
+    
+    The very simple ToDoItem Model, only with fields: title,
+    itemCreatedDate, detailDescription, notificationDate.
+
+[33mcommit fb576d0b39cedf1a80add2ab634427eb6f72bbcd[m
+Author: sanwazi <chu.jing@uwlax.edu>
+Date:   Wed Aug 26 10:14:27 2015 -0400
+
+    Initial commit
