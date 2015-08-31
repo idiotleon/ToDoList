@@ -46,7 +46,7 @@
         android:id="@+id/edittext_description_todolistitem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/todolistitemdescription"
+        android:background="@drawable/new_todoitem_description"
         android:hint="@string/todolistitem_description"
         android:inputType="textMultiLine"
         android:lines="11"

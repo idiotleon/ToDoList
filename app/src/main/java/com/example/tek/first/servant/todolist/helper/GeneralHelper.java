@@ -6,6 +6,9 @@ import android.util.Log;
 
 import com.example.tek.first.servant.todolist.model.DateModel;
 import com.example.tek.first.servant.todolist.model.TimeModel;
+import com.example.tek.first.servant.todolist.model.ToDoItemModel;
+
+import java.util.ArrayList;
 
 public class GeneralHelper {
     private static String LOG_TAG = GeneralHelper.class.getSimpleName();
@@ -129,5 +132,15 @@ public class GeneralHelper {
                 + monthOptions[monthInInt - 1] + day + ", " + year;
         Log.v(LOG_TAG, "dateAndTimeFormatted, GeneralHelper: " + dateAndTimeFormatted);
         return dateAndTimeFormatted;
+    }
+
+    public static void displayTitleOfAllToDoItemsInAnArrayList(ArrayList<ToDoItemModel> toDoItemsArrayList, String hint) {
+        if (toDoItemsArrayList.isEmpty()) {
+            Log.v(LOG_TAG, hint + ": is an empty ArrayList.");
+        } else {
+            for (int i = 0; i < toDoItemsArrayList.size(); i++) {
+                Log.v(LOG_TAG, hint + ": " + toDoItemsArrayList.get(i).getTitle());
+            }
+        }
     }
 }

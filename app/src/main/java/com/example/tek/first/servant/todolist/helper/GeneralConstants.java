@@ -23,6 +23,7 @@ public abstract class GeneralConstants {
     public static final String TO_DO_ITEM_IDENTIFIER = "toDoItemIdentifier";
     public static final String SAVEINSTANCESTATE_TODOITEMS_ARRAYLIST_IDENTIFIER = "toDoItemIdentifier";
 
+    // todo: how to getResources().getStringArray..... instead such self-created int Array
     public static final int[] PRIORITY_LEVEL_COLOR
             = {R.color.priority_level1, R.color.priority_level2, R.color.priority_level3,
             R.color.priority_level4, R.color.priority_level5, R.color.priority_level6,

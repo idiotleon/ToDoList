@@ -38,7 +38,7 @@ public class ToDoItemModel implements Parcelable {
         this.category = 0;
         this.completionStatus = CompletionStatus.NOTSTARTED;
     }
-    
+
     public ToDoItemModel(String title, Long currentTime) {
         this.title = title;
         this.priority = 1;
@@ -99,9 +99,17 @@ public class ToDoItemModel implements Parcelable {
         this.completionStatus = completionStatus;
     }
 
-    public void setCompleteStatusCode(int statusCode) {
-        completionStatus.setStatusCode(statusCode);
+    public CompletionStatus getCompletionStatus() {
+        return this.completionStatus;
     }
+
+    public void setCompletionStatus(CompletionStatus completionStatus) {
+        this.completionStatus = completionStatus;
+    }
+
+//    public void setCompleteStatusCode(int statusCode) {
+//        completionStatus.setStatusCode(statusCode);
+//    }
 
     public void setCategory(int category) {
         this.category = category;
@@ -111,6 +119,11 @@ public class ToDoItemModel implements Parcelable {
         return category;
     }
 
+    /**
+     * Getters only used for interaction with the database
+     *
+     * @return
+     */
     public int getCompleteStatusCode() {
         return completionStatus.getStatusCode();
     }

@@ -106,9 +106,12 @@ public class ToDoItemDetailsActivity extends Activity
         btnMarkAsComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_STATUS_COMPLETE);
+//                toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_STATUS_COMPLETE);
+                toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
                 Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as complete");
                 dbHelper.updateToDoListItem(toDoItem);
+                Intent intent = new Intent(ToDoItemDetailsActivity.this, ToDoListMainActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -122,15 +125,18 @@ public class ToDoItemDetailsActivity extends Activity
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case 1:
-                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_STATUS_INCOMPLETE);
+//                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_STATUS_INCOMPLETE);
+                                        toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.INCOMPLETED);
                                         Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as incomplete");
                                         break;
                                     case 2:
-                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_STATUS_NOT_STARTED);
+//                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_STATUS_NOT_STARTED);
+                                        toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.NOTSTARTED);
                                         Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as not started");
                                         break;
                                     case 3:
-                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_STATUS_COMPLETE);
+//                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_STATUS_COMPLETE);
+                                        toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
                                         Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as complete");
                                         break;
                                 }

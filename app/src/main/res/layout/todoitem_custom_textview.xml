@@ -9,20 +9,24 @@
         android:layout_width="60sp"
         android:layout_height="60sp"
         android:layout_alignParentLeft="true"
+        android:background="@drawable/custom_notepad_textview"
         android:gravity="center" />
 
-    <com.example.tek.first.servant.todolist.customview.textview.ToDoItemDeadlineCustomView
+    <TextView
         android:id="@+id/todolist_row_deadline"
         android:layout_width="100sp"
         android:layout_height="60sp"
-        android:layout_alignParentRight="true" />
+        android:layout_alignParentRight="true"
+        android:gravity="center"
+        android:background="@drawable/custom_notepad_textview" />
 
-    <com.example.tek.first.servant.todolist.customview.textview.ToDoItemTitleCustomView
+    <TextView
         android:id="@+id/todolist_row_title"
         android:layout_width="wrap_content"
         android:layout_height="60sp"
         android:layout_toLeftOf="@+id/todolist_row_deadline"
         android:layout_toRightOf="@+id/todolist_row_priority"
+        android:background="@drawable/custom_notepad_textview"
         android:fadingEdge="vertical"
         android:padding="10dp"
         android:scrollbars="vertical"

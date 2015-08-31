@@ -30,4 +30,6 @@
     <color name="priority_level9">#BF360C</color>
     <color name="priority_level10">#DD2C00</color>
 
+    <color name="todolist_mark_as_complete">#43A047</color>
+
 </resources>

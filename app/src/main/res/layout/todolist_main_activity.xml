@@ -10,10 +10,29 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <!--<fragment-->
+    <!--android:id="@+id/todolist_displayfragment"-->
+    <!--android:name="com.example.tek.first.servant.todolist.fragment.display.GeneralToDoItemsDisplayFragment"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content" />-->
+
     <fragment
-        android:id="@+id/todolist_displayfragment"
-        android:name="com.example.tek.first.servant.todolist.fragment.ToDoListDisplayFragment"
+        android:id="@+id/todolist_displayfragment_incomplete_items"
+        android:name="com.example.tek.first.servant.todolist.fragment.display.IncompleteItemsDisplayFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
+
+    <fragment
+        android:id="@+id/todolist_displayfragment_not_started_items"
+        android:name="com.example.tek.first.servant.todolist.fragment.display.NotStartedItemsDisplayFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <fragment
+        android:id="@+id/todolist_displayfragment_completed_items"
+        android:name="com.example.tek.first.servant.todolist.fragment.display.CompletedItemsDisplayFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
 
 </LinearLayout>
