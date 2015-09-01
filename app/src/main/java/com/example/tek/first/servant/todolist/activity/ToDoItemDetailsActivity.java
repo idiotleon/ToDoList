@@ -22,8 +22,8 @@ import com.example.tek.first.servant.todolist.fragment.dialog.DetailedNewToDoIte
 import com.example.tek.first.servant.todolist.helper.DatabaseHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralConstants;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper;
-import com.example.tek.first.servant.todolist.model.DateModel;
-import com.example.tek.first.servant.todolist.model.ToDoItemModel;
+import com.example.tek.first.servant.todolist.model.Date;
+import com.example.tek.first.servant.todolist.model.ToDoItem;
 
 public class ToDoItemDetailsActivity extends Activity
         implements DetailedNewToDoItemDialogFragment.OnNewItemAddedListener,
@@ -47,7 +47,7 @@ public class ToDoItemDetailsActivity extends Activity
     private long deadline;
     private long dateAndTimeCreated;
 
-    private ToDoItemModel editedToDoItem;
+    private ToDoItem editedToDoItem;
 
     private DatabaseHelper dbHelper;
 
@@ -57,7 +57,7 @@ public class ToDoItemDetailsActivity extends Activity
         setContentView(R.layout.todolist_todoitem_details_activity);
 
         Intent intent = getIntent();
-        final ToDoItemModel toDoItem
+        final ToDoItem toDoItem
                 = intent.getExtras().getParcelable(GeneralConstants.TO_DO_ITEM_IDENTIFIER);
         Log.v(LOG_TAG, "onCreate(), intent received, ToDoItemDetailsActivity: " + GeneralHelper.formatToString(toDoItem.getToDoItemDeadline()));
         priority = toDoItem.getPriority();
@@ -173,7 +173,7 @@ public class ToDoItemDetailsActivity extends Activity
         });
     }
 
-    private void refreshToDoItemDetailsPage(ToDoItemModel toDoItem) {
+    private void refreshToDoItemDetailsPage(ToDoItem toDoItem) {
         // todo: check completionStatus of toDoItem, depending on which to improve UI of details activity
         // todo: simpleToDoItem will generate problems here
         titleTextView.setText(toDoItem.getTitle());
@@ -198,12 +198,12 @@ public class ToDoItemDetailsActivity extends Activity
 
 
     @Override
-    public void onDateSelected(DateModel dateSelected) {
+    public void onDateSelected(Date dateSelected) {
 
     }
 
     @Override
-    public void onNewItemAdded(ToDoItemModel todoItem) {
+    public void onNewItemAdded(ToDoItem todoItem) {
 
     }
 

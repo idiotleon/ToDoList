@@ -3,32 +3,32 @@ package com.example.tek.first.servant.todolist.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class DateModel implements Parcelable {
+public class Date implements Parcelable {
     private int month;
     private int day;
     private int year;
 
-    public DateModel(int month, int day, int year) {
+    public Date(int month, int day, int year) {
         this.month = month + 1;
         this.day = day;
         this.year = year;
     }
 
-    protected DateModel(Parcel in) {
+    protected Date(Parcel in) {
         month = in.readInt();
         day = in.readInt();
         year = in.readInt();
     }
 
-    public static final Creator<DateModel> CREATOR = new Creator<DateModel>() {
+    public static final Creator<Date> CREATOR = new Creator<Date>() {
         @Override
-        public DateModel createFromParcel(Parcel in) {
-            return new DateModel(in);
+        public Date createFromParcel(Parcel in) {
+            return new Date(in);
         }
 
         @Override
-        public DateModel[] newArray(int size) {
-            return new DateModel[size];
+        public Date[] newArray(int size) {
+            return new Date[size];
         }
     };
 

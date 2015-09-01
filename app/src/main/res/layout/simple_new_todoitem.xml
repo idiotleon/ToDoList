@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <TextView
+        android:id="@+id/textview_number_simple_new_todoitem"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
+        android:background="@drawable/custom_notepad_textview" />
+
+    <TextView
+        android:id="@+id/textview_title_simple_new_todoitem"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:background="@drawable/custom_notepad_textview"
+        android:gravity="center" />
+
+</LinearLayout>

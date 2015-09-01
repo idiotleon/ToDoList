@@ -5,24 +5,22 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Message;
 import android.widget.DatePicker;
 
 import com.example.tek.first.servant.todolist.helper.GeneralConstants;
-import com.example.tek.first.servant.todolist.model.DateModel;
+import com.example.tek.first.servant.todolist.model.Date;
 
 import java.util.Calendar;
 
 public class DatePickerDialogFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
 
-    private DateModel dateSelected;
+    private Date dateSelected;
     private int year;
     private int month;
     private int day;
 
     public interface DatePickerDialogListener {
-        void onDateSelected(DateModel dateSelected);
+        void onDateSelected(Date dateSelected);
     }
 
     DatePickerDialogListener datePickerDialogListener;
@@ -56,7 +54,7 @@ public class DatePickerDialogFragment extends DialogFragment implements DatePick
 
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        dateSelected = new DateModel(monthOfYear, dayOfMonth, year);
+        dateSelected = new Date(monthOfYear, dayOfMonth, year);
         datePickerDialogListener.onDateSelected(dateSelected);
     }
 }

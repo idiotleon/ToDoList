@@ -13,7 +13,7 @@ import android.widget.ImageButton;
 
 import com.example.tek.first.servant.R;
 import com.example.tek.first.servant.todolist.fragment.dialog.DetailedNewToDoItemDialogFragment;
-import com.example.tek.first.servant.todolist.model.ToDoItemModel;
+import com.example.tek.first.servant.todolist.model.SimpleToDoItem;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -25,7 +25,7 @@ public class NewItemAddedFragment extends Fragment {
     private OnNewSimpleItemAddedListener onNewSimpleItemAddedListener;
 
     public interface OnNewSimpleItemAddedListener {
-        void onNewSimpleItemAdded(ToDoItemModel newSimpleToDoItem);
+        void onNewSimpleItemAdded(SimpleToDoItem newSimpleToDoItem);
     }
 
     @Override
@@ -61,9 +61,9 @@ public class NewItemAddedFragment extends Fragment {
                     if ((keyCode == KeyEvent.KEYCODE_DPAD_CENTER) ||
                             (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         String newSimpleItemTitle = editTextInput.getText().toString();
-                        Long currentTime = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime()));
-                        ToDoItemModel toDoItem = new ToDoItemModel(newSimpleItemTitle, currentTime);
-                        onNewSimpleItemAddedListener.onNewSimpleItemAdded(toDoItem);
+                        Long currentTime = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmm").format(Calendar.getInstance().getTime()));
+                        SimpleToDoItem newSimpleToDoItem = new SimpleToDoItem(newSimpleItemTitle, currentTime);
+                        onNewSimpleItemAddedListener.onNewSimpleItemAdded(newSimpleToDoItem);
                         editTextInput.setText("");
                         return true;
                     }

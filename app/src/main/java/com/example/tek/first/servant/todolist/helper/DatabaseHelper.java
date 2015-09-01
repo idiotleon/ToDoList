@@ -4,14 +4,14 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.example.tek.first.servant.todolist.model.ToDoItemModel;
+import com.example.tek.first.servant.todolist.model.SimpleToDoItem;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper.CompletionStatus;
+import com.example.tek.first.servant.todolist.model.ToDoItem;
 
 import java.util.ArrayList;
 
@@ -77,7 +77,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(upgradeTableQuery);
     }
 
-    public boolean insertToDoListItem(ToDoItemModel toDoListItem) {
+    public boolean insertToDoListItem(ToDoItem toDoListItem) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TODOLIST_ITEM_TITLE, toDoListItem.getTitle());
@@ -92,12 +92,31 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TODOLIST_ITEM_DEADLINE, deadline);
         Log.v(LOG_TAG, "deadline, inserted by DatabaseHelper: " + deadline);
         contentValues.put(TODOLIST_ITEM_CATEGORY, toDoListItem.getCategory());
-        contentValues.put(TODOLIST_ITEM_COMPLETION_STATUS_CODE, toDoListItem.getCompleteStatusCode());
+        contentValues.put(TODOLIST_ITEM_COMPLETION_STATUS_CODE, toDoListItem.getCompletionStatus().getStatusCode());
         db.insert(TODOLIST_TABLE_NAME, null, contentValues);
         return true;
     }
 
-    public boolean updateToDoListItem(ToDoItemModel toDoItem) {
+    public boolean insertSimpleToDoItem(SimpleToDoItem simpleToDoItem) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TODOLIST_ITEM_TITLE, simpleToDoItem.getTitle());
+        contentValues.put(TODOLIST_ITEM_DESCRIPTION, "");
+        contentValues.put(TODOLIST_ITEM_PRIORITY, 1);
+        Long simpleToDoItemDateAndTimeCreatedLongType = simpleToDoItem.getTimeAndDateCreated();
+        Log.v(LOG_TAG, "simpleToDoItemDateAndTimeCreatedLongType, inserted by DatabaseHelper: " + simpleToDoItemDateAndTimeCreatedLongType);
+        String simpleToDoItemDateAndTimeCreated = Long.toString(simpleToDoItemDateAndTimeCreatedLongType);
+        contentValues.put(TODOLIST_ITEM_TIME_DATE_CREATED, simpleToDoItemDateAndTimeCreated);
+        Log.v(LOG_TAG, "simpleToDoItemDateAndTimeCreated, inserted by DatabaseHelper: " + simpleToDoItemDateAndTimeCreated);
+        contentValues.put(TODOLIST_ITEM_DEADLINE, 0L);
+        contentValues.put(TODOLIST_ITEM_CATEGORY, 0);
+        contentValues.put(TODOLIST_ITEM_COMPLETION_STATUS_CODE, simpleToDoItem.getCompletionStatus().getStatusCode());
+        db.insert(TODOLIST_TABLE_NAME, null, contentValues);
+        return true;
+
+    }
+
+    public boolean updateToDoListItem(ToDoItem toDoItem) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(TODOLIST_ITEM_TITLE, toDoItem.getTitle());
@@ -112,14 +131,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(TODOLIST_ITEM_DEADLINE, deadline);
         Log.v(LOG_TAG, "deadline, updated by DatabaseHelper: " + deadline);
         contentValues.put(TODOLIST_ITEM_CATEGORY, toDoItem.getCategory());
-        contentValues.put(TODOLIST_ITEM_COMPLETION_STATUS_CODE, toDoItem.getCompleteStatusCode());
+        contentValues.put(TODOLIST_ITEM_COMPLETION_STATUS_CODE, toDoItem.getCompletionStatus().getStatusCode());
         db.update(TODOLIST_TABLE_NAME, contentValues,
                 TODOLIST_ITEM_TITLE + " = ? AND " + TODOLIST_ITEM_TIME_DATE_CREATED + " = ? ",
                 new String[]{toDoItem.getTitle(), GeneralHelper.formatToString(toDoItem.getItemCreatedDateAndTime())});
         return true;
     }
 
-    public boolean deleteToDoItem(ToDoItemModel toDoItem) {
+    public boolean deleteToDoItem(ToDoItem toDoItem) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TODOLIST_TABLE_NAME,
                 TODOLIST_ITEM_TIME_DATE_CREATED + " =? AND " +
@@ -128,7 +147,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return true;
     }
 
-    public ArrayList<ToDoItemModel> getToDoItemsSortedAsArrayList() {
+    public ArrayList<ToDoItem> getToDoItemsSortedAsArrayList() {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String sortingWay
@@ -138,7 +157,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 = sharedPreferences.getInt(GeneralConstants.TODOITEMS_SORTING_ASC_OR_DESC_SHAREDPREFERNECE_IDENTIFIER,
                 DatabaseHelper.SORTING_STANDARD_DESC);
 
-        ArrayList<ToDoItemModel> toDoItemsArrayListSorted = new ArrayList<>();
+        ArrayList<ToDoItem> toDoItemsArrayListSorted = new ArrayList<>();
         SQLiteDatabase db = this.getReadableDatabase();
 
         String sortByColumnName = null;
@@ -181,7 +200,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_DESCRIPTION));
             int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_CATEGORY));
             int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COMPLETION_STATUS_CODE));
-            ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, detailDescription,
+            ToDoItem toDoListItem = new ToDoItem(title, priority, detailDescription,
                     itemDateAndTimeCreated, deadline, category, completionStatusCode);
             toDoItemsArrayListSorted.add(toDoListItem);
             cursor.moveToNext();
@@ -193,7 +212,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return toDoItemsArrayListSorted;
     }
 
-    public ArrayList<ToDoItemModel> getSortedToDoItemsInDifferentCompletionStatusAsArrayList(
+    public ArrayList<ToDoItem> getSortedToDoItemsInDifferentCompletionStatusAsArrayList(
             CompletionStatus completionStatus) {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -204,7 +223,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 = sharedPreferences.getInt(GeneralConstants.TODOITEMS_SORTING_ASC_OR_DESC_SHAREDPREFERNECE_IDENTIFIER,
                 DatabaseHelper.SORTING_STANDARD_DESC);
 
-        ArrayList<ToDoItemModel> toDoItemsArrayList = new ArrayList<>();
+        ArrayList<ToDoItem> toDoItemsArrayList = new ArrayList<>();
 
         String sortByColumnName = null;
         switch (sortingWay) {
@@ -250,7 +269,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_DESCRIPTION));
             int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_CATEGORY));
             int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COMPLETION_STATUS_CODE));
-            ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, detailDescription,
+            ToDoItem toDoListItem = new ToDoItem(title, priority, detailDescription,
                     itemDateAndTimeCreated, deadline, category, completionStatusCode);
             toDoItemsArrayList.add(toDoListItem);
             cursor.moveToNext();

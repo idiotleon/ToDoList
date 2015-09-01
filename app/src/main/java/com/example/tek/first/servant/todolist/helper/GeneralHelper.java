@@ -8,16 +8,16 @@ import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
-import com.example.tek.first.servant.todolist.model.DateModel;
-import com.example.tek.first.servant.todolist.model.TimeModel;
-import com.example.tek.first.servant.todolist.model.ToDoItemModel;
+import com.example.tek.first.servant.todolist.model.Date;
+import com.example.tek.first.servant.todolist.model.Time;
+import com.example.tek.first.servant.todolist.model.ToDoItem;
 
 import java.util.ArrayList;
 
 public class GeneralHelper {
     private static String LOG_TAG = GeneralHelper.class.getSimpleName();
 
-    public static Long dateAndTimeFormattedToLong(DateModel date, TimeModel time) {
+    public static Long dateAndTimeFormattedToLong(Date date, Time time) {
         if (date != null && time != null)
             return Long.parseLong(date.formatDateToString() + time.formatTimeToString());
         else {
@@ -136,7 +136,7 @@ public class GeneralHelper {
         return dateAndTimeFormatted;
     }
 
-    public static void displayTitleOfAllToDoItemsInAnArrayList(ArrayList<ToDoItemModel> toDoItemsArrayList, String hint) {
+    public static void displayTitleOfAllToDoItemsInAnArrayList(ArrayList<ToDoItem> toDoItemsArrayList, String hint) {
         if (toDoItemsArrayList.isEmpty()) {
             Log.v(LOG_TAG, hint + ": is an empty ArrayList.");
         } else {

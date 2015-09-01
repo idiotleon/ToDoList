@@ -1,4 +1,4 @@
-package com.example.tek.first.servant.todolist.activity;
+package com.example.tek.first.servant.todolist.adapter;
 
 import android.content.Context;
 import android.util.Log;
@@ -11,8 +11,8 @@ import android.widget.TextView;
 import com.example.tek.first.servant.R;
 import com.example.tek.first.servant.todolist.helper.GeneralConstants;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper;
-import com.example.tek.first.servant.todolist.model.ToDoItemModel;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper.CompletionStatus;
+import com.example.tek.first.servant.todolist.model.ToDoItem;
 
 import java.util.ArrayList;
 
@@ -21,9 +21,9 @@ public class ToDoItemsListViewCustomAdapter extends BaseAdapter {
     private static String LOG_TAG = ToDoItemsListViewCustomAdapter.class.getSimpleName();
 
     private Context context;
-    private ArrayList<ToDoItemModel> toDoListItemsArrayList;
+    private ArrayList<ToDoItem> toDoListItemsArrayList;
 
-    public ToDoItemsListViewCustomAdapter(Context context, ArrayList<ToDoItemModel> toDoListItemsArrayList) {
+    public ToDoItemsListViewCustomAdapter(Context context, ArrayList<ToDoItem> toDoListItemsArrayList) {
         this.context = context;
         this.toDoListItemsArrayList = toDoListItemsArrayList;
     }
@@ -34,7 +34,7 @@ public class ToDoItemsListViewCustomAdapter extends BaseAdapter {
     }
 
     @Override
-    public ToDoItemModel getItem(int position) {
+    public ToDoItem getItem(int position) {
         return toDoListItemsArrayList.get(position);
     }
 

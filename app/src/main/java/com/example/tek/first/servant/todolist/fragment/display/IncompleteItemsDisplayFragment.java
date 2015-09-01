@@ -11,7 +11,7 @@ import com.example.tek.first.servant.todolist.activity.ToDoItemDetailsActivity;
 import com.example.tek.first.servant.todolist.helper.DatabaseHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralConstants;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper;
-import com.example.tek.first.servant.todolist.model.ToDoItemModel;
+import com.example.tek.first.servant.todolist.model.ToDoItem;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ public class IncompleteItemsDisplayFragment extends ListFragment {
     private static final String LOG_TAG = IncompleteItemsDisplayFragment.class.getSimpleName();
 
     private DatabaseHelper dbHelper;
-    private ArrayList<ToDoItemModel> toDoItemsArrayList;
+    private ArrayList<ToDoItem> toDoItemsArrayList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

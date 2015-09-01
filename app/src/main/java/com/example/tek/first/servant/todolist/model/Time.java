@@ -3,30 +3,30 @@ package com.example.tek.first.servant.todolist.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class TimeModel implements Parcelable {
+public class Time implements Parcelable {
 
     private int hour;
     private int minute;
 
-    public TimeModel(int hour, int minute) {
+    public Time(int hour, int minute) {
         this.hour = hour;
         this.minute = minute;
     }
 
-    protected TimeModel(Parcel in) {
+    protected Time(Parcel in) {
         hour = in.readInt();
         minute = in.readInt();
     }
 
-    public static final Creator<TimeModel> CREATOR = new Creator<TimeModel>() {
+    public static final Creator<Time> CREATOR = new Creator<Time>() {
         @Override
-        public TimeModel createFromParcel(Parcel in) {
-            return new TimeModel(in);
+        public Time createFromParcel(Parcel in) {
+            return new Time(in);
         }
 
         @Override
-        public TimeModel[] newArray(int size) {
-            return new TimeModel[size];
+        public Time[] newArray(int size) {
+            return new Time[size];
         }
     };
 

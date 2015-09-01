@@ -7,9 +7,9 @@ import android.util.Log;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper.CompletionStatus;
 
-public class ToDoItemModel implements Parcelable {
+public class ToDoItem implements Parcelable {
 
-    private static final String LOG_TAG = ToDoItemModel.class.getSimpleName();
+    private static final String LOG_TAG = ToDoItem.class.getSimpleName();
 
     private String title;
     private int priority;
@@ -19,7 +19,7 @@ public class ToDoItemModel implements Parcelable {
     private int category;
     private CompletionStatus completionStatus;
 
-    public ToDoItemModel() {
+    public ToDoItem() {
         this.title = null;
         this.priority = 1;
         this.detailDescription = null;
@@ -29,7 +29,7 @@ public class ToDoItemModel implements Parcelable {
         this.completionStatus = CompletionStatus.INCOMPLETED;
     }
 
-    public ToDoItemModel(String title) {
+    public ToDoItem(String title) {
         this.title = title;
         this.priority = 1;
         this.detailDescription = null;
@@ -39,7 +39,7 @@ public class ToDoItemModel implements Parcelable {
         this.completionStatus = CompletionStatus.INCOMPLETED;
     }
 
-    public ToDoItemModel(String title, Long currentTime) {
+    public ToDoItem(String title, Long currentTime) {
         this.title = title;
         this.priority = 1;
         this.detailDescription = null;
@@ -49,13 +49,13 @@ public class ToDoItemModel implements Parcelable {
         this.completionStatus = CompletionStatus.INCOMPLETED;
     }
 
-    public ToDoItemModel(String title, int priority, long toDoItemDeadline) {
+    public ToDoItem(String title, int priority, long toDoItemDeadline) {
         this.title = title;
         this.priority = priority;
         this.toDoItemDeadline = toDoItemDeadline;
     }
 
-    public ToDoItemModel(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category) {
+    public ToDoItem(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category) {
         this.title = title;
         this.priority = priority;
         this.detailDescription = detailDescription;
@@ -66,7 +66,7 @@ public class ToDoItemModel implements Parcelable {
 
     }
 
-    public ToDoItemModel(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category, int statusCode) {
+    public ToDoItem(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category, int statusCode) {
         this.title = title;
         this.priority = priority;
         this.detailDescription = detailDescription;
@@ -86,7 +86,7 @@ public class ToDoItemModel implements Parcelable {
         }
     }
 
-    public ToDoItemModel(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category, CompletionStatus completionStatus) {
+    public ToDoItem(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category, CompletionStatus completionStatus) {
         this.title = title;
         this.priority = priority;
         this.detailDescription = detailDescription;
@@ -106,15 +106,6 @@ public class ToDoItemModel implements Parcelable {
 
     public int getCategory() {
         return category;
-    }
-
-    /**
-     * Getters only used for interaction with the database
-     *
-     * @return
-     */
-    public int getCompleteStatusCode() {
-        return completionStatus.getStatusCode();
     }
 
     public int getPriority() {
@@ -157,31 +148,31 @@ public class ToDoItemModel implements Parcelable {
         dest.writeString(detailDescription);
         dest.writeInt(category);
         dest.writeLong(itemCreatedDateAndTime);
-        Log.v(LOG_TAG, "itemCreatedDateAndTime, writeToParcel(Parcel dest, int flags), ToDoItemModel: " + GeneralHelper.formatToString(itemCreatedDateAndTime));
+        Log.v(LOG_TAG, "itemCreatedDateAndTime, writeToParcel(Parcel dest, int flags), ToDoItem: " + GeneralHelper.formatToString(itemCreatedDateAndTime));
         dest.writeLong(toDoItemDeadline);
         dest.writeValue(completionStatus);
     }
 
-    protected ToDoItemModel(Parcel in) {
+    protected ToDoItem(Parcel in) {
         title = in.readString();
         priority = in.readInt();
         detailDescription = in.readString();
         category = in.readInt();
         itemCreatedDateAndTime = in.readLong();
-        Log.v(LOG_TAG, "itemCreatedDateAndTime, in.readLong(), ToDoItemModel(Parcel in): " + GeneralHelper.formatToString(itemCreatedDateAndTime));
+        Log.v(LOG_TAG, "itemCreatedDateAndTime, in.readLong(), ToDoItem(Parcel in): " + GeneralHelper.formatToString(itemCreatedDateAndTime));
         toDoItemDeadline = in.readLong();
         completionStatus = (CompletionStatus) in.readValue(CompletionStatus.class.getClassLoader());
     }
 
-    public static final Creator<ToDoItemModel> CREATOR = new Creator<ToDoItemModel>() {
+    public static final Creator<ToDoItem> CREATOR = new Creator<ToDoItem>() {
         @Override
-        public ToDoItemModel createFromParcel(Parcel in) {
-            return new ToDoItemModel(in);
+        public ToDoItem createFromParcel(Parcel in) {
+            return new ToDoItem(in);
         }
 
         @Override
-        public ToDoItemModel[] newArray(int size) {
-            return new ToDoItemModel[size];
+        public ToDoItem[] newArray(int size) {
+            return new ToDoItem[size];
         }
     };
 }

@@ -11,7 +11,7 @@ import android.widget.TimePicker;
 
 
 import com.example.tek.first.servant.todolist.helper.GeneralConstants;
-import com.example.tek.first.servant.todolist.model.TimeModel;
+import com.example.tek.first.servant.todolist.model.Time;
 
 import java.util.Calendar;
 
@@ -20,12 +20,12 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
     private static String LOG_TAG = TimePickerDialogFragment.class.getSimpleName();
 
     private Bundle bundle;
-    private TimeModel timeSelected;
+    private Time timeSelected;
     private int hour;
     private int minute;
 
     public interface TimePickerDialogListener {
-        void onTimeSelected(TimeModel timeSelected);
+        void onTimeSelected(Time timeSelected);
     }
 
     TimePickerDialogListener timePickerDialogListener;
@@ -59,7 +59,7 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
-        timeSelected = new TimeModel(hourOfDay, minute);
+        timeSelected = new Time(hourOfDay, minute);
         Log.v(LOG_TAG, "onTimeSet() method executed");
         Log.v(LOG_TAG, "hourOfDay, onTimeSet(): " + hourOfDay);
         Log.v(LOG_TAG, "minute, onTimeSet(): " + minute);

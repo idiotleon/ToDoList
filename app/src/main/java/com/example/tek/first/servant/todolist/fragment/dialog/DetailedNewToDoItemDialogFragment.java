@@ -21,7 +21,7 @@ import android.widget.Toast;
 import com.example.tek.first.servant.R;
 import com.example.tek.first.servant.todolist.helper.DatabaseHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper;
-import com.example.tek.first.servant.todolist.model.ToDoItemModel;
+import com.example.tek.first.servant.todolist.model.ToDoItem;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -50,7 +50,7 @@ public class DetailedNewToDoItemDialogFragment extends DialogFragment {
     private OnNewItemAddedListener onNewItemAddedListener;
 
     public interface OnNewItemAddedListener {
-        void onNewItemAdded(ToDoItemModel todoItem);
+        void onNewItemAdded(ToDoItem todoItem);
     }
 
     @Override
@@ -158,7 +158,7 @@ public class DetailedNewToDoItemDialogFragment extends DialogFragment {
                     Log.v(LOG_TAG, "currentTimeStamp: " + currentTimeStamp);
                     category = 0;
 
-                    ToDoItemModel toDoListItem = new ToDoItemModel(title, priority, descriptionText, currentTimeStamp, itemDateAndTimeSet, category, completionStatus);
+                    ToDoItem toDoListItem = new ToDoItem(title, priority, descriptionText, currentTimeStamp, itemDateAndTimeSet, category, completionStatus);
                     onNewItemAddedListener.onNewItemAdded(toDoListItem);
                     dismiss();
                 } else {
