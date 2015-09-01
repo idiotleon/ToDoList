@@ -26,7 +26,7 @@ public class ToDoItemModel implements Parcelable {
         this.itemCreatedDateAndTime = 0L;
         this.toDoItemDeadline = 0L;
         this.category = 0;
-        this.completionStatus = CompletionStatus.NOTSTARTED;
+        this.completionStatus = CompletionStatus.INCOMPLETED;
     }
 
     public ToDoItemModel(String title) {
@@ -36,7 +36,7 @@ public class ToDoItemModel implements Parcelable {
         this.itemCreatedDateAndTime = 0L;
         this.toDoItemDeadline = 0L;
         this.category = 0;
-        this.completionStatus = CompletionStatus.NOTSTARTED;
+        this.completionStatus = CompletionStatus.INCOMPLETED;
     }
 
     public ToDoItemModel(String title, Long currentTime) {
@@ -46,7 +46,7 @@ public class ToDoItemModel implements Parcelable {
         this.itemCreatedDateAndTime = currentTime;
         this.toDoItemDeadline = 0L;
         this.category = 0;
-        this.completionStatus = CompletionStatus.NOTSTARTED;
+        this.completionStatus = CompletionStatus.INCOMPLETED;
     }
 
     public ToDoItemModel(String title, int priority, long toDoItemDeadline) {
@@ -62,7 +62,7 @@ public class ToDoItemModel implements Parcelable {
         this.itemCreatedDateAndTime = itemCreatedDateAndTime;
         this.toDoItemDeadline = toDoItemDeadline;
         this.category = category;
-        this.completionStatus = completionStatus.NOTSTARTED;
+        this.completionStatus = completionStatus.INCOMPLETED;
 
     }
 
@@ -74,9 +74,6 @@ public class ToDoItemModel implements Parcelable {
         this.toDoItemDeadline = toDoItemDeadline;
         this.category = category;
         switch (statusCode) {
-            case 0:
-                this.completionStatus = completionStatus.NOTSTARTED;
-                break;
             case 1:
                 this.completionStatus = completionStatus.INCOMPLETED;
                 break;
@@ -107,14 +104,6 @@ public class ToDoItemModel implements Parcelable {
         this.completionStatus = completionStatus;
     }
 
-//    public void setCompleteStatusCode(int statusCode) {
-//        completionStatus.setStatusCode(statusCode);
-//    }
-
-    public void setCategory(int category) {
-        this.category = category;
-    }
-
     public int getCategory() {
         return category;
     }
@@ -128,24 +117,12 @@ public class ToDoItemModel implements Parcelable {
         return completionStatus.getStatusCode();
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
-    }
-
     public int getPriority() {
         return priority;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setItemCreatedDateAndTime(Long itemCreatedDateAndTime) {
-        this.itemCreatedDateAndTime = itemCreatedDateAndTime;
-    }
-
-    public void setDetailDescription(String detailDescription) {
-        this.detailDescription = detailDescription;
     }
 
     public void setToDoItemDeadline(Long toDoItemDeadline) {

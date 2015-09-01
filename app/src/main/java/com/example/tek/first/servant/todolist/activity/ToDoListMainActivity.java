@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.tek.first.servant.R;
-//import com.example.tek.first.servant.todolist.fragment.display.GeneralToDoItemsDisplayFragment;
 import com.example.tek.first.servant.todolist.fragment.dialog.DatePickerDialogFragment;
 import com.example.tek.first.servant.todolist.fragment.dialog.DetailedNewToDoItemDialogFragment;
 import com.example.tek.first.servant.todolist.fragment.NewItemAddedFragment;
@@ -84,7 +83,25 @@ public class ToDoListMainActivity extends Activity
         NewItemAddedFragment newItemAddedFragment =
                 (NewItemAddedFragment) fragmentManager.findFragmentById(R.id.todolist_newitem);
 
-        displayCompletedAndIncompleteToDoItemsFragments();
+        incompleteToDoItemDisplayListFragment
+                = (IncompleteItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_incomplete_items);
+        incompleteToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, incompleteToDoItemsArrayList);
+        if (!incompleteToDoItemsArrayList.isEmpty()) {
+            incompleteToDoItemDisplayListFragment.setListAdapter(incompleteToDoItemsCustomAdapter);
+//            showFragment(incompleteToDoItemDisplayListFragment);
+        } else {
+            incompleteToDoItemDisplayListFragment.setListAdapter(null);
+        }
+
+        completedToDoItemDisplayListFragment
+                = (CompletedItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_completed_items);
+        completedToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, completedToDoItemsArrayList);
+        if (!completedToDoItemsArrayList.isEmpty()) {
+            completedToDoItemDisplayListFragment.setListAdapter(completedToDoItemsCustomAdapter);
+//            showFragment(incompleteToDoItemDisplayListFragment);
+        } else {
+            completedToDoItemDisplayListFragment.setListAdapter(null);
+        }
     }
 
     @Override
@@ -121,7 +138,7 @@ public class ToDoListMainActivity extends Activity
                                         showFragment(completedToDoItemDisplayListFragment);
                                         break;
                                     case 2:     // Display all items
-                                        displayCompletedAndIncompleteToDoItemsFragments();
+//                                        displayCompletedAndIncompleteToDoItemsFragment();
                                         break;
                                 }
                             }
@@ -173,29 +190,6 @@ public class ToDoListMainActivity extends Activity
                 .commit();
     }
 
-    private void displayCompletedAndIncompleteToDoItemsFragments() {
-        FragmentManager fragmentManager = getFragmentManager();
-        incompleteToDoItemDisplayListFragment
-                = (IncompleteItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_incomplete_items);
-        incompleteToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, incompleteToDoItemsArrayList);
-        if (!incompleteToDoItemsArrayList.isEmpty()) {
-            incompleteToDoItemDisplayListFragment.setListAdapter(incompleteToDoItemsCustomAdapter);
-            showFragment(incompleteToDoItemDisplayListFragment);
-        } else {
-            incompleteToDoItemDisplayListFragment.setListAdapter(null);
-        }
-
-        completedToDoItemDisplayListFragment
-                = (CompletedItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_completed_items);
-        completedToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, completedToDoItemsArrayList);
-        if (!completedToDoItemsArrayList.isEmpty()) {
-            completedToDoItemDisplayListFragment.setListAdapter(completedToDoItemsCustomAdapter);
-            showFragment(incompleteToDoItemDisplayListFragment);
-        } else {
-            completedToDoItemDisplayListFragment.setListAdapter(null);
-        }
-    }
-
     private void sortToDoItemsArrayList(String sortingPreference, int counter) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(ToDoListMainActivity.this);
@@ -206,8 +200,10 @@ public class ToDoListMainActivity extends Activity
 
         if (counter % 2 == 0) {
             sharedPreferences.edit().putInt(GeneralConstants.TODOITEMS_SORTING_ASC_OR_DESC_SHAREDPREFERNECE_IDENTIFIER, DatabaseHelper.SORTING_STANDARD_DESC).commit();
+            Log.v(LOG_TAG, "Set sorting sharedPreference DESC");
         } else {
             sharedPreferences.edit().putInt(GeneralConstants.TODOITEMS_SORTING_ASC_OR_DESC_SHAREDPREFERNECE_IDENTIFIER, DatabaseHelper.SORTING_STANDARD_ASC).commit();
+            Log.v(LOG_TAG, "Set sorting sharedPreference ASC");
         }
         counter++;
 
@@ -245,17 +241,23 @@ public class ToDoListMainActivity extends Activity
     public void onNewItemAdded(ToDoItemModel toDoItem) {
         Long deadline = GeneralHelper.dateAndTimeFormattedToLong(dateSelected, timeSelected);
         Log.v(LOG_TAG, "deadline, onNewItemAdded, ToDoListMainActivity: " + deadline);
+        Toast.makeText(ToDoListMainActivity.this, "A new ToDoItem added", Toast.LENGTH_SHORT).show();
         toDoItem.setToDoItemDeadline(deadline);
-//        this.toDoItem = toDoItem;
         dbHelper.insertToDoListItem(toDoItem);
         incompleteToDoItemsArrayList.add(0, toDoItem);
-        incompleteToDoItemsCustomAdapter.notifyDataSetChanged();
+//        incompleteToDoItemsCustomAdapter.notifyDataSetChanged();
+        incompleteToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, incompleteToDoItemsArrayList);
+        incompleteToDoItemDisplayListFragment.setListAdapter(incompleteToDoItemsCustomAdapter);
     }
 
     @Override
     public void onNewSimpleItemAdded(ToDoItemModel newSimpleItem) {
         dbHelper.insertToDoListItem(newSimpleItem);
+        Log.v(LOG_TAG, "A new simple ToDoItem added.");
+        Toast.makeText(ToDoListMainActivity.this, "A new simple ToDoItem added", Toast.LENGTH_SHORT).show();
         incompleteToDoItemsArrayList.add(0, newSimpleItem);
-        incompleteToDoItemsCustomAdapter.notifyDataSetChanged();
+//        incompleteToDoItemsCustomAdapter.notifyDataSetChanged();
+        incompleteToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, incompleteToDoItemsArrayList);
+        incompleteToDoItemDisplayListFragment.setListAdapter(incompleteToDoItemsCustomAdapter);
     }
 }

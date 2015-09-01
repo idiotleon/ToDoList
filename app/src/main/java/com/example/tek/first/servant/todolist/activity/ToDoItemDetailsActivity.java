@@ -106,7 +106,7 @@ public class ToDoItemDetailsActivity extends Activity
         btnMarkAsComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_STATUS_COMPLETE);
+//                toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_COMPLETION_STATUS_COMPLETE);
                 toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
                 Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as complete");
                 dbHelper.updateToDoListItem(toDoItem);
@@ -125,7 +125,7 @@ public class ToDoItemDetailsActivity extends Activity
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case 1:
-//                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_STATUS_INCOMPLETE);
+//                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_COMPLETION_STATUS_INCOMPLETE);
                                         toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.INCOMPLETED);
                                         Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as incomplete");
                                         break;
@@ -135,7 +135,7 @@ public class ToDoItemDetailsActivity extends Activity
                                         Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as not started");
                                         break;
                                     case 3:
-//                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_STATUS_COMPLETE);
+//                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_COMPLETION_STATUS_COMPLETE);
                                         toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
                                         Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as complete");
                                         break;
@@ -174,6 +174,8 @@ public class ToDoItemDetailsActivity extends Activity
     }
 
     private void refreshToDoItemDetailsPage(ToDoItemModel toDoItem) {
+        // todo: check completionStatus of toDoItem, depending on which to improve UI of details activity
+        // todo: simpleToDoItem will generate problems here
         titleTextView.setText(toDoItem.getTitle());
         String deadline = GeneralHelper.parseDateAndTimeToString(toDoItem.getToDoItemDeadline());
         deadlineTextView.setText("Deadline: " + deadline);
