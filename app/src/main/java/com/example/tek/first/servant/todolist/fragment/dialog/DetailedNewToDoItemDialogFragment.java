@@ -45,7 +45,7 @@ public class DetailedNewToDoItemDialogFragment extends DialogFragment {
     private Long itemDateAndTimeSet = 0L;
     private int priority = 1;
     private int category = 0;
-    private GeneralHelper.CompletionStatus completionStatus = GeneralHelper.CompletionStatus.NOTSTARTED;
+    private GeneralHelper.CompletionStatus completionStatus = GeneralHelper.CompletionStatus.INCOMPLETED;
 
     private OnNewItemAddedListener onNewItemAddedListener;
 
@@ -78,9 +78,8 @@ public class DetailedNewToDoItemDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                View rootView = inflater.inflate(R.layout.todolistitemdetail_dialog, null);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setView(rootView).setTitle(R.string.clear_confirmation_dialog_text)
+                builder.setTitle(R.string.clear_confirmation_dialog_text)
                         .setPositiveButton(R.string.todolist_clear_text, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -92,7 +91,7 @@ public class DetailedNewToDoItemDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                     }
                 });
-                builder.create();
+                (builder.create()).show();
             }
         });
 

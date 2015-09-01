@@ -14,7 +14,7 @@ import com.example.tek.first.servant.todolist.model.ToDoItem;
 
 import java.util.ArrayList;
 
-public class CompletedItemsDisplayFragment extends ListFragment {
+public class CompletedDetailedItemsDisplayFragment extends ListFragment {
 
     private DatabaseHelper dbHelper;
     private ArrayList<ToDoItem> incompleteToDoItemsArrayList;

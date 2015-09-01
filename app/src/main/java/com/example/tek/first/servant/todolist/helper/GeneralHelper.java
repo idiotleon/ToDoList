@@ -32,7 +32,6 @@ public class GeneralHelper {
      * 2: completed
      */
     public enum CompletionStatus implements Parcelable {
-        NOTSTARTED(0),
         INCOMPLETED(1),
         COMPLETED(2);
 
@@ -78,12 +77,10 @@ public class GeneralHelper {
 
     public static CompletionStatus completionStatusCodeToCompletationStatus(int completionStatusCode) {
         switch (completionStatusCode) {
-            case 1:
-                return CompletionStatus.INCOMPLETED;
             case 2:
                 return CompletionStatus.COMPLETED;
         }
-        return CompletionStatus.NOTSTARTED;
+        return CompletionStatus.INCOMPLETED;
     }
 
     public static String formatToString(String text) {

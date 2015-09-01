@@ -20,8 +20,8 @@ import com.example.tek.first.servant.todolist.fragment.dialog.DatePickerDialogFr
 import com.example.tek.first.servant.todolist.fragment.dialog.DetailedNewToDoItemDialogFragment;
 import com.example.tek.first.servant.todolist.fragment.NewItemAddedFragment;
 import com.example.tek.first.servant.todolist.fragment.dialog.TimePickerDialogFragment;
-import com.example.tek.first.servant.todolist.fragment.display.CompletedItemsDisplayFragment;
-import com.example.tek.first.servant.todolist.fragment.display.IncompleteItemsDisplayFragment;
+import com.example.tek.first.servant.todolist.fragment.display.CompletedDetailedItemsDisplayFragment;
+import com.example.tek.first.servant.todolist.fragment.display.IncompleteDetailedItemsDisplayFragment;
 import com.example.tek.first.servant.todolist.fragment.display.SimpleToDoItemsDisplayFragment;
 import com.example.tek.first.servant.todolist.helper.DatabaseHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralConstants;
@@ -57,8 +57,8 @@ public class ToDoListMainActivity extends Activity
     private ToDoItemsListViewCustomAdapter completedToDoItemsCustomAdapter;
     private SimpleToDoItemsListViewCustomAdapter simpleToDoItemsListViewCustomAdapter;
 
-    private IncompleteItemsDisplayFragment incompleteToDoItemDisplayListFragment;
-    private CompletedItemsDisplayFragment completedToDoItemDisplayListFragment;
+    private IncompleteDetailedItemsDisplayFragment incompleteToDoItemDisplayListFragment;
+    private CompletedDetailedItemsDisplayFragment completedToDoItemDisplayListFragment;
     private SimpleToDoItemsDisplayFragment simpleToDoItemsDisplayFragment;
 
     private int counterOfSortByPrioritySelectedTimes = 0;
@@ -92,7 +92,7 @@ public class ToDoListMainActivity extends Activity
                 (NewItemAddedFragment) fragmentManager.findFragmentById(R.id.todolist_newitem);
 
         incompleteToDoItemDisplayListFragment
-                = (IncompleteItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_incomplete_items);
+                = (IncompleteDetailedItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_incomplete_items);
         incompleteToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, incompleteToDoItemsArrayList);
         if (!incompleteToDoItemsArrayList.isEmpty()) {
             incompleteToDoItemDisplayListFragment.setListAdapter(incompleteToDoItemsCustomAdapter);
@@ -102,7 +102,7 @@ public class ToDoListMainActivity extends Activity
         }
 
         completedToDoItemDisplayListFragment
-                = (CompletedItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_completed_items);
+                = (CompletedDetailedItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_completed_items);
         completedToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, completedToDoItemsArrayList);
         if (!completedToDoItemsArrayList.isEmpty()) {
             completedToDoItemDisplayListFragment.setListAdapter(completedToDoItemsCustomAdapter);

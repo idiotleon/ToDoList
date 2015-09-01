@@ -7,14 +7,15 @@
     <TextView
         android:id="@+id/textview_number_simple_new_todoitem"
         android:layout_width="60sp"
-        android:layout_height="60sp"
-        android:background="@drawable/custom_notepad_textview" />
+        android:layout_height="match_parent"
+        android:background="@drawable/new_simple_todoitem_notepad"
+        android:gravity="center" />
 
     <TextView
         android:id="@+id/textview_title_simple_new_todoitem"
         android:layout_width="match_parent"
         android:layout_height="60sp"
-        android:background="@drawable/custom_notepad_textview"
+        android:background="@drawable/new_simple_todoitem_notepad"
         android:gravity="center" />
 
 </LinearLayout>

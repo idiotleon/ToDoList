@@ -7,6 +7,7 @@ public abstract class GeneralConstants {
     public static final String COMPLETED_TODOLISTITEM_IDENTIFIER = "completedToDoListItemIdentifier";
     public static final String INCOMPLETED_TODOLISTITEM_IDENTIFIER = "incompleteToDoListItemIdentifier";
     public static final String TO_DO_ITEM_IDENTIFIER = "toDoItemIdentifier";
+    public static final String SIMPLE_TO_DO_ITEM_IDENTIFIER = "simpleToDoItemIdentifier";
 
     public static final String HOUR_IDENTIFIER = "hourIdentifier";
     public static final String MINUTE_IDENTIFIER = "minuteIdentifier";
@@ -17,10 +18,10 @@ public abstract class GeneralConstants {
     public static final int TODOLISTITEM_COMPLETION_STATUS_INCOMPLETE = 1;
     public static final int TODOLISTITEM_COMPLETION_STATUS_COMPLETE = 2;
 
-    public static final String SAVEINSTANCESTATE_ALL_TODOITEMS_ARRAYLIST_IDENTIFIER = "allToDoItemIdentifier";
     public static final String SAVEINSTANCESTATE_INCOMPLETE_TODOITEMS_ARRAYLIST_IDENTIFIER = "incompleteToDoItemIdentifier";
     public static final String SAVEINSTANCESTATE_COMPLETED_TODOITEMS_ARRAYLIST_IDENTIFIER = "completeToDoItemIdentifier";
-    public static final String SAVEINSTANCESTATE_NOTSTARTED_TODOITEMS_ARRAYLIST_IDENTIFIER = "notStartedToDoItemIdentifier";
+    public static final String SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER = "simpleToDoItemIdentifier";
+    public static final String SAVEINSTANCESTATE_TODOITEM_IDENTIFIER = "toDoItemIdentifier";
 
     // todo: how to getResources().getStringArray..... instead such self-created int Array
     public static final int[] PRIORITY_LEVEL_COLOR

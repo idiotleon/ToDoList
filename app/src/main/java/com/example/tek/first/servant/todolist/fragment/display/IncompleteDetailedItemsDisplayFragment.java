@@ -15,9 +15,9 @@ import com.example.tek.first.servant.todolist.model.ToDoItem;
 
 import java.util.ArrayList;
 
-public class IncompleteItemsDisplayFragment extends ListFragment {
+public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
 
-    private static final String LOG_TAG = IncompleteItemsDisplayFragment.class.getSimpleName();
+    private static final String LOG_TAG = IncompleteDetailedItemsDisplayFragment.class.getSimpleName();
 
     private DatabaseHelper dbHelper;
     private ArrayList<ToDoItem> toDoItemsArrayList;

@@ -23,6 +23,7 @@ import com.example.tek.first.servant.todolist.helper.DatabaseHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralConstants;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.model.Date;
+import com.example.tek.first.servant.todolist.model.SimpleToDoItem;
 import com.example.tek.first.servant.todolist.model.ToDoItem;
 
 public class ToDoItemDetailsActivity extends Activity
@@ -47,7 +48,10 @@ public class ToDoItemDetailsActivity extends Activity
     private long deadline;
     private long dateAndTimeCreated;
 
+    private ToDoItem toDoItem;
+
     private ToDoItem editedToDoItem;
+    private SimpleToDoItem simpleToDoItem;
 
     private DatabaseHelper dbHelper;
 
@@ -57,13 +61,25 @@ public class ToDoItemDetailsActivity extends Activity
         setContentView(R.layout.todolist_todoitem_details_activity);
 
         Intent intent = getIntent();
-        final ToDoItem toDoItem
-                = intent.getExtras().getParcelable(GeneralConstants.TO_DO_ITEM_IDENTIFIER);
+
+        toDoItem = intent.getExtras().getParcelable(GeneralConstants.TO_DO_ITEM_IDENTIFIER);
         Log.v(LOG_TAG, "onCreate(), intent received, ToDoItemDetailsActivity: " + GeneralHelper.formatToString(toDoItem.getToDoItemDeadline()));
-        priority = toDoItem.getPriority();
-        title = toDoItem.getTitle();
-        deadline = toDoItem.getToDoItemDeadline();
-        dateAndTimeCreated = toDoItem.getItemCreatedDateAndTime();
+        if (toDoItem == null) {
+            toDoItem = savedInstanceState.getParcelable(GeneralConstants.SAVEINSTANCESTATE_TODOITEM_IDENTIFIER);
+        } else {
+            priority = toDoItem.getPriority();
+            title = toDoItem.getTitle();
+            deadline = toDoItem.getToDoItemDeadline();
+            dateAndTimeCreated = toDoItem.getItemCreatedDateAndTime();
+        }
+
+        simpleToDoItem = intent.getExtras().getParcelable(GeneralConstants.SIMPLE_TO_DO_ITEM_IDENTIFIER);
+        if (simpleToDoItem == null) {
+            simpleToDoItem = savedInstanceState.getParcelable(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER);
+        } else {
+            title = simpleToDoItem.getTitle();
+            dateAndTimeCreated = simpleToDoItem.getTimeAndDateCreated();
+        }
 
         dbHelper = new DatabaseHelper(ToDoItemDetailsActivity.this);
 
@@ -130,11 +146,6 @@ public class ToDoItemDetailsActivity extends Activity
                                         Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as incomplete");
                                         break;
                                     case 2:
-//                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_STATUS_NOT_STARTED);
-                                        toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.NOTSTARTED);
-                                        Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as not started");
-                                        break;
-                                    case 3:
 //                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_COMPLETION_STATUS_COMPLETE);
                                         toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
                                         Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as complete");
@@ -196,6 +207,12 @@ public class ToDoItemDetailsActivity extends Activity
         dateAndTimeCreatedTextView.setText("Time added: " + timeAdded);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER, simpleToDoItem);
+        outState.putParcelable(GeneralConstants.SAVEINSTANCESTATE_TODOITEM_IDENTIFIER, toDoItem);
+    }
 
     @Override
     public void onDateSelected(Date dateSelected) {

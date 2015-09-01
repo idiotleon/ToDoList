@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Toast;
 
 import com.example.tek.first.servant.R;
 import com.example.tek.first.servant.todolist.fragment.dialog.DetailedNewToDoItemDialogFragment;
@@ -61,10 +62,14 @@ public class NewItemAddedFragment extends Fragment {
                     if ((keyCode == KeyEvent.KEYCODE_DPAD_CENTER) ||
                             (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         String newSimpleItemTitle = editTextInput.getText().toString();
-                        Long currentTime = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmm").format(Calendar.getInstance().getTime()));
-                        SimpleToDoItem newSimpleToDoItem = new SimpleToDoItem(newSimpleItemTitle, currentTime);
-                        onNewSimpleItemAddedListener.onNewSimpleItemAdded(newSimpleToDoItem);
-                        editTextInput.setText("");
+                        if (newSimpleItemTitle != null && newSimpleItemTitle.length() > 0) {
+                            Long currentTime = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmm").format(Calendar.getInstance().getTime()));
+                            SimpleToDoItem newSimpleToDoItem = new SimpleToDoItem(newSimpleItemTitle, currentTime);
+                            onNewSimpleItemAddedListener.onNewSimpleItemAdded(newSimpleToDoItem);
+                            editTextInput.setText("");
+                        } else {
+                            Toast.makeText(getActivity(), "Please input a title", Toast.LENGTH_SHORT).show();
+                        }
                         return true;
                     }
                 return false;
