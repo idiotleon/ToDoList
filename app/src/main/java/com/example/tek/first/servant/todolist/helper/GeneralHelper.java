@@ -1,7 +1,11 @@
 package com.example.tek.first.servant.todolist.helper;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import com.example.tek.first.servant.todolist.model.DateModel;
@@ -74,8 +78,6 @@ public class GeneralHelper {
 
     public static CompletionStatus completionStatusCodeToCompletationStatus(int completionStatusCode) {
         switch (completionStatusCode) {
-            case 0:
-                return CompletionStatus.NOTSTARTED;
             case 1:
                 return CompletionStatus.INCOMPLETED;
             case 2:
@@ -142,5 +144,23 @@ public class GeneralHelper {
                 Log.v(LOG_TAG, hint + ": " + toDoItemsArrayList.get(i).getTitle());
             }
         }
+    }
+
+    /**
+     * Helper method to decide whether on which the app is runned is a tablet.
+     *
+     * @param context
+     * @return
+     */
+    public static boolean isTablet(Context context) {
+        return (context.getResources().getConfiguration()
+                .screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
+    }
+
+    public static void sortStandard(Context context, String key) {
+        SharedPreferences sharedPreferences = PreferenceManager
+                .getDefaultSharedPreferences(context);
+        sharedPreferences.edit().putInt(key, 1).commit();
     }
 }

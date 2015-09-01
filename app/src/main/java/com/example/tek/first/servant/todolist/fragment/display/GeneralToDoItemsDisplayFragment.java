@@ -1,3 +1,4 @@
+/*
 package com.example.tek.first.servant.todolist.fragment.display;
 
 import android.app.ListFragment;
@@ -30,7 +31,7 @@ public class GeneralToDoItemsDisplayFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         // todo: problems with different layouts
-        ArrayList<ToDoItemModel> toDoItemsArrayList = dbHelper.getAllToDoItemsAsArrayList();
+        ArrayList<ToDoItemModel> toDoItemsArrayList = dbHelper.getToDoItemsSortedArrayList();
         Intent intent = new Intent(getActivity(), ToDoItemDetailsActivity.class);
         intent.putExtra(GeneralConstants.TO_DO_ITEM_IDENTIFIER, toDoItemsArrayList.get(position));
         Log.v(LOG_TAG, "onListItemClick, GeneralToDoItemsDisplayFragment: " +
@@ -38,3 +39,4 @@ public class GeneralToDoItemsDisplayFragment extends ListFragment {
         startActivity(intent);
     }
 }
+*/

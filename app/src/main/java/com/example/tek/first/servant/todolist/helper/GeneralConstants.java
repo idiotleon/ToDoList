@@ -21,7 +21,10 @@ public abstract class GeneralConstants {
     public static final int TODOLISTITEM_STATUS_COMPLETE = 2;
 
     public static final String TO_DO_ITEM_IDENTIFIER = "toDoItemIdentifier";
-    public static final String SAVEINSTANCESTATE_TODOITEMS_ARRAYLIST_IDENTIFIER = "toDoItemIdentifier";
+    public static final String SAVEINSTANCESTATE_ALL_TODOITEMS_ARRAYLIST_IDENTIFIER = "allToDoItemIdentifier";
+    public static final String SAVEINSTANCESTATE_INCOMPLETE_TODOITEMS_ARRAYLIST_IDENTIFIER = "incompleteToDoItemIdentifier";
+    public static final String SAVEINSTANCESTATE_COMPLETED_TODOITEMS_ARRAYLIST_IDENTIFIER = "completeToDoItemIdentifier";
+    public static final String SAVEINSTANCESTATE_NOTSTARTED_TODOITEMS_ARRAYLIST_IDENTIFIER = "notStartedToDoItemIdentifier";
 
     // todo: how to getResources().getStringArray..... instead such self-created int Array
     public static final int[] PRIORITY_LEVEL_COLOR
@@ -33,6 +36,10 @@ public abstract class GeneralConstants {
     public static final String[] PRIORITY_LEVEL_COLOR_HEX_CODE
             = {"#FBE9E7", "#FFCCBC", "#FFAB91", "#FF7043", "#FF5722",
             "#F4511E", "#E64A19", "#D84315", "#BF360C", "#DD2C00"};
+
+
+    public static final String TODOITEMS_SORTING_ASC_OR_DESC_SHAREDPREFERNECE_IDENTIFIER = "sortingTrendASCOrDESC";
+    public static final String TODOITEMS_SORTING_WAY_SHAREDPREFERENCE_IDENTIFIER = "sortingWayPriorityDeadlineTimeAddedOrTitle";
 
 }
 
