@@ -18,6 +18,7 @@ public class ToDoItem implements Parcelable {
     private Long toDoItemDeadline;
     private int category;
     private CompletionStatus completionStatus;
+    private double price;
 
     public ToDoItem() {
         this.title = null;
@@ -26,7 +27,8 @@ public class ToDoItem implements Parcelable {
         this.itemCreatedDateAndTime = 0L;
         this.toDoItemDeadline = 0L;
         this.category = 0;
-        this.completionStatus = CompletionStatus.INCOMPLETED;
+        this.completionStatus = CompletionStatus.INCOMPLETE;
+        this.price = 0;
     }
 
     public ToDoItem(String title) {
@@ -36,7 +38,8 @@ public class ToDoItem implements Parcelable {
         this.itemCreatedDateAndTime = 0L;
         this.toDoItemDeadline = 0L;
         this.category = 0;
-        this.completionStatus = CompletionStatus.INCOMPLETED;
+        this.completionStatus = CompletionStatus.INCOMPLETE;
+        this.price = 0;
     }
 
     public ToDoItem(String title, Long currentTime) {
@@ -46,13 +49,15 @@ public class ToDoItem implements Parcelable {
         this.itemCreatedDateAndTime = currentTime;
         this.toDoItemDeadline = 0L;
         this.category = 0;
-        this.completionStatus = CompletionStatus.INCOMPLETED;
+        this.completionStatus = CompletionStatus.INCOMPLETE;
+        this.price = 0;
     }
 
     public ToDoItem(String title, int priority, long toDoItemDeadline) {
         this.title = title;
         this.priority = priority;
         this.toDoItemDeadline = toDoItemDeadline;
+        this.price = 0;
     }
 
     public ToDoItem(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category) {
@@ -62,8 +67,8 @@ public class ToDoItem implements Parcelable {
         this.itemCreatedDateAndTime = itemCreatedDateAndTime;
         this.toDoItemDeadline = toDoItemDeadline;
         this.category = category;
-        this.completionStatus = completionStatus.INCOMPLETED;
-
+        this.completionStatus = completionStatus.INCOMPLETE;
+        this.price = 0;
     }
 
     public ToDoItem(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category, int statusCode) {
@@ -74,16 +79,14 @@ public class ToDoItem implements Parcelable {
         this.toDoItemDeadline = toDoItemDeadline;
         this.category = category;
         switch (statusCode) {
-            case 1:
-                this.completionStatus = completionStatus.INCOMPLETED;
-                break;
             case 2:
                 this.completionStatus = completionStatus.COMPLETED;
                 break;
             default:
-                Log.v(LOG_TAG, "completeStatusCode is OutOfBound. lol");
+                this.completionStatus = completionStatus.INCOMPLETE;
                 break;
         }
+        this.price = 0;
     }
 
     public ToDoItem(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category, CompletionStatus completionStatus) {
@@ -94,6 +97,11 @@ public class ToDoItem implements Parcelable {
         this.toDoItemDeadline = toDoItemDeadline;
         this.category = category;
         this.completionStatus = completionStatus;
+        this.price = 0;
+    }
+
+    public void setDetailDescription(String detailDescription) {
+        this.detailDescription = detailDescription;
     }
 
     public CompletionStatus getCompletionStatus() {
@@ -151,6 +159,7 @@ public class ToDoItem implements Parcelable {
         Log.v(LOG_TAG, "itemCreatedDateAndTime, writeToParcel(Parcel dest, int flags), ToDoItem: " + GeneralHelper.formatToString(itemCreatedDateAndTime));
         dest.writeLong(toDoItemDeadline);
         dest.writeValue(completionStatus);
+        dest.writeDouble(price);
     }
 
     protected ToDoItem(Parcel in) {
@@ -162,6 +171,7 @@ public class ToDoItem implements Parcelable {
         Log.v(LOG_TAG, "itemCreatedDateAndTime, in.readLong(), ToDoItem(Parcel in): " + GeneralHelper.formatToString(itemCreatedDateAndTime));
         toDoItemDeadline = in.readLong();
         completionStatus = (CompletionStatus) in.readValue(CompletionStatus.class.getClassLoader());
+        price = in.readInt();
     }
 
     public static final Creator<ToDoItem> CREATOR = new Creator<ToDoItem>() {

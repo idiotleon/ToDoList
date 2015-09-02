@@ -1,66 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@drawable/todolist_details_activity">
 
     <TextView
         android:id="@+id/textview_title_todoitem_detailactivity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/detail_header"
+        android:layout_alignParentTop="true"
         android:gravity="center"
         android:text="Title"
-        android:textSize="64sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/textview_deadline_todoitem_detailactivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Deadline"
-            android:textSize="24sp" />
-
-        <TextView
-            android:id="@+id/textview_description_todoitem_detailactivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right"
-            android:text="Priority"
-            android:textSize="24sp" />
-    </LinearLayout>
+        android:textSize="32sp" />
 
     <TextView
-        android:id="@+id/textview_priority_todoitem_detailactivity"
+        android:id="@+id/textview_description_todoitem_detailactivity"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/textview_dateandtimecreated_todoitem_detailactivity"
+        android:layout_below="@+id/textview_title_todoitem_detailactivity"
+        android:layout_gravity="center"
+        android:gravity="left"
         android:text="Description"
         android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/textview_dateandtimecreated_todoitem_detailactivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:text="Date and Time created"
-        android:textSize="14sp" />
-
     <LinearLayout
+        android:id="@+id/linearlayout2_todoitem_details_activity"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:gravity="center|bottom"
         android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/btn_edit_detailactivity"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Edit" />
 
         <Button
             android:id="@+id/btn_markascomplete_detailactivity"
@@ -75,4 +46,13 @@
             android:text="Delete" />
     </LinearLayout>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textview_dateandtimecreated_todoitem_detailactivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/linearlayout2_todoitem_details_activity"
+        android:layout_alignParentEnd="true"
+        android:text="Date and Time created"
+        android:textSize="14sp" />
+
+</RelativeLayout>

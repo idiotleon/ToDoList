@@ -2,7 +2,6 @@ package com.example.tek.first.servant.todolist.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -14,8 +13,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.example.tek.first.servant.R;
-import com.example.tek.first.servant.todolist.adapter.SimpleToDoItemsListViewCustomAdapter;
-import com.example.tek.first.servant.todolist.adapter.ToDoItemsListViewCustomAdapter;
+import com.example.tek.first.servant.todolist.fragment.display.adapter.SimpleToDoItemsListViewCustomAdapter;
+import com.example.tek.first.servant.todolist.fragment.display.adapter.ToDoItemsListViewCustomAdapter;
 import com.example.tek.first.servant.todolist.fragment.dialog.DatePickerDialogFragment;
 import com.example.tek.first.servant.todolist.fragment.dialog.DetailedNewToDoItemDialogFragment;
 import com.example.tek.first.servant.todolist.fragment.NewItemAddedFragment;
@@ -35,12 +34,14 @@ import com.example.tek.first.servant.todolist.model.ToDoItem;
 
 import java.util.ArrayList;
 
-
 public class ToDoListMainActivity extends Activity
         implements DatePickerDialogFragment.DatePickerDialogListener,
         TimePickerDialogFragment.TimePickerDialogListener,
         DetailedNewToDoItemDialogFragment.OnNewItemAddedListener,
-        NewItemAddedFragment.OnNewSimpleItemAddedListener {
+        NewItemAddedFragment.OnNewSimpleItemAddedListener,
+        IncompleteDetailedItemsDisplayFragment.ToDoItemStatusChangeListener,
+        CompletedDetailedItemsDisplayFragment.ToDoItemStatusChangeListener,
+        SimpleToDoItemsDisplayFragment.ToDoItemStatusChangeListener {
 
     public static String LOG_TAG = ToDoListMainActivity.class.getSimpleName();
 
@@ -57,14 +58,15 @@ public class ToDoListMainActivity extends Activity
     private ToDoItemsListViewCustomAdapter completedToDoItemsCustomAdapter;
     private SimpleToDoItemsListViewCustomAdapter simpleToDoItemsListViewCustomAdapter;
 
+    private NewItemAddedFragment newItemAddedFragment;
     private IncompleteDetailedItemsDisplayFragment incompleteToDoItemDisplayListFragment;
     private CompletedDetailedItemsDisplayFragment completedToDoItemDisplayListFragment;
     private SimpleToDoItemsDisplayFragment simpleToDoItemsDisplayFragment;
 
-    private int counterOfSortByPrioritySelectedTimes = 0;
-    private int counterOfSortByDeadlineSelectedTimes = 0;
-    private int counterOfSortByTimeAddedSelectedTimes = 0;
-    private int counterOfSortByTitleSelectedTimes = 0;
+    private static int counterOfSortByPrioritySelectedTimes = 0;
+    private static int counterOfSortByDeadlineSelectedTimes = 0;
+    private static int counterOfSortByTimeAddedSelectedTimes = 0;
+    private static int counterOfSortByTitleSelectedTimes = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,46 +80,22 @@ public class ToDoListMainActivity extends Activity
         if (savedInstanceState != null) {
             incompleteToDoItemsArrayList = savedInstanceState.getParcelableArrayList(GeneralConstants.SAVEINSTANCESTATE_INCOMPLETE_TODOITEMS_ARRAYLIST_IDENTIFIER);
             completedToDoItemsArrayList = savedInstanceState.getParcelableArrayList(GeneralConstants.SAVEINSTANCESTATE_COMPLETED_TODOITEMS_ARRAYLIST_IDENTIFIER);
+            simpleToDoItemsArrayList = savedInstanceState.getParcelableArrayList(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER);
         } else {
             dbHelper = new DatabaseHelper(ToDoListMainActivity.this);
-
-            incompleteToDoItemsArrayList = dbHelper.getSortedToDoItemsInDifferentCompletionStatusAsArrayList(CompletionStatus.INCOMPLETED);
-            GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(incompleteToDoItemsArrayList, "displayIncompleteToDoItemsAsArrayList");
-            completedToDoItemsArrayList = dbHelper.getSortedToDoItemsInDifferentCompletionStatusAsArrayList(CompletionStatus.COMPLETED);
-            GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(completedToDoItemsArrayList, "completedToDoItemsArrayList");
         }
 
         FragmentManager fragmentManager = getFragmentManager();
-        NewItemAddedFragment newItemAddedFragment =
-                (NewItemAddedFragment) fragmentManager.findFragmentById(R.id.todolist_newitem);
-
+        newItemAddedFragment
+                = (NewItemAddedFragment) fragmentManager.findFragmentById(R.id.todolist_newitem);
         incompleteToDoItemDisplayListFragment
                 = (IncompleteDetailedItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_incomplete_items);
-        incompleteToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, incompleteToDoItemsArrayList);
-        if (!incompleteToDoItemsArrayList.isEmpty()) {
-            incompleteToDoItemDisplayListFragment.setListAdapter(incompleteToDoItemsCustomAdapter);
-//            showFragment(incompleteToDoItemDisplayListFragment);
-        } else {
-            incompleteToDoItemDisplayListFragment.setListAdapter(null);
-        }
-
         completedToDoItemDisplayListFragment
                 = (CompletedDetailedItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_completed_items);
-        completedToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, completedToDoItemsArrayList);
-        if (!completedToDoItemsArrayList.isEmpty()) {
-            completedToDoItemDisplayListFragment.setListAdapter(completedToDoItemsCustomAdapter);
-//            showFragment(incompleteToDoItemDisplayListFragment);
-        } else {
-            completedToDoItemDisplayListFragment.setListAdapter(null);
-        }
+        simpleToDoItemsDisplayFragment
+                = (SimpleToDoItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_simple_todoitems);
 
-        simpleToDoItemsDisplayFragment = (SimpleToDoItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_simple_todoitems);
-        simpleToDoItemsListViewCustomAdapter = new SimpleToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, simpleToDoItemsArrayList);
-        if (!simpleToDoItemsArrayList.isEmpty()) {
-            simpleToDoItemsDisplayFragment.setListAdapter(simpleToDoItemsListViewCustomAdapter);
-        } else {
-            simpleToDoItemsDisplayFragment.setListAdapter(null);
-        }
+        refreshPage();
     }
 
     @Override
@@ -138,23 +116,24 @@ public class ToDoListMainActivity extends Activity
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case 0:     // Display only incomplete items, sorted in SharedPreference mode
-                                        ArrayList<ToDoItem> incompleteToDoItemsArrayList
-                                                = dbHelper.getSortedToDoItemsInDifferentCompletionStatusAsArrayList(CompletionStatus.INCOMPLETED);
-                                        incompleteToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, incompleteToDoItemsArrayList);
-                                        incompleteToDoItemDisplayListFragment.setListAdapter(incompleteToDoItemsCustomAdapter);
-                                        hideFragment(completedToDoItemDisplayListFragment);
-                                        showFragment(incompleteToDoItemDisplayListFragment);
+                                        GeneralHelper.showFragment(ToDoListMainActivity.this, incompleteToDoItemDisplayListFragment);
+                                        GeneralHelper.hideFragment(ToDoListMainActivity.this, completedToDoItemDisplayListFragment);
+                                        GeneralHelper.hideFragment(ToDoListMainActivity.this, simpleToDoItemsDisplayFragment);
                                         break;
                                     case 1:     // Display only completed items
-                                        ArrayList<ToDoItem> completeToDoItemsArrayList
-                                                = dbHelper.getSortedToDoItemsInDifferentCompletionStatusAsArrayList(CompletionStatus.COMPLETED);
-                                        completedToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, completeToDoItemsArrayList);
-                                        completedToDoItemDisplayListFragment.setListAdapter(completedToDoItemsCustomAdapter);
-                                        hideFragment(incompleteToDoItemDisplayListFragment);
-                                        showFragment(completedToDoItemDisplayListFragment);
+                                        GeneralHelper.showFragment(ToDoListMainActivity.this, completedToDoItemDisplayListFragment);
+                                        GeneralHelper.hideFragment(ToDoListMainActivity.this, incompleteToDoItemDisplayListFragment);
+                                        GeneralHelper.hideFragment(ToDoListMainActivity.this, simpleToDoItemsDisplayFragment);
                                         break;
-                                    case 2:     // Display all items
-//                                        displayCompletedAndIncompleteToDoItemsFragment();
+                                    case 2: // Display all simple todoitems
+                                        GeneralHelper.showFragment(ToDoListMainActivity.this, simpleToDoItemsDisplayFragment);
+                                        GeneralHelper.hideFragment(ToDoListMainActivity.this, completedToDoItemDisplayListFragment);
+                                        GeneralHelper.hideFragment(ToDoListMainActivity.this, incompleteToDoItemDisplayListFragment);
+                                        break;
+                                    default:     // Display all items
+                                        GeneralHelper.showFragment(ToDoListMainActivity.this, completedToDoItemDisplayListFragment);
+                                        GeneralHelper.showFragment(ToDoListMainActivity.this, incompleteToDoItemDisplayListFragment);
+                                        GeneralHelper.showFragment(ToDoListMainActivity.this, simpleToDoItemsDisplayFragment);
                                         break;
                                 }
                             }
@@ -170,16 +149,24 @@ public class ToDoListMainActivity extends Activity
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case 0:     // Sort by priority
-                                        sortToDoItemsArrayList(DatabaseHelper.SORTING_WAY_BY_PRIORITY, counterOfSortByPrioritySelectedTimes);
+                                        setSortingPreference(DatabaseHelper.SORTING_WAY_BY_PRIORITY, counterOfSortByPrioritySelectedTimes);
+                                        counterOfSortByPrioritySelectedTimes++;
+                                        refreshPage();
                                         break;
                                     case 1:     // Sort by deadline
-                                        sortToDoItemsArrayList(DatabaseHelper.SORTING_WAY_BY_DEADLINE, counterOfSortByDeadlineSelectedTimes);
+                                        setSortingPreference(DatabaseHelper.SORTING_WAY_BY_DEADLINE, counterOfSortByDeadlineSelectedTimes);
+                                        counterOfSortByDeadlineSelectedTimes++;
+                                        refreshPage();
                                         break;
                                     case 2:     // Sort by time added
-                                        sortToDoItemsArrayList(DatabaseHelper.SORTING_WAY_BY_TIME_ADDED, counterOfSortByTimeAddedSelectedTimes);
+                                        setSortingPreference(DatabaseHelper.SORTING_WAY_BY_TIME_ADDED, counterOfSortByTimeAddedSelectedTimes);
+                                        counterOfSortByTimeAddedSelectedTimes++;
+                                        refreshPage();
                                         break;
                                     case 3:     // Sort by title
-                                        sortToDoItemsArrayList(DatabaseHelper.SORTING_WAY_BY_TITLE, counterOfSortByTitleSelectedTimes);
+                                        setSortingPreference(DatabaseHelper.SORTING_WAY_BY_TITLE, counterOfSortByTitleSelectedTimes);
+                                        counterOfSortByTitleSelectedTimes++;
+                                        refreshPage();
                                         break;
                                 }
                             }
@@ -190,28 +177,10 @@ public class ToDoListMainActivity extends Activity
         return super.onOptionsItemSelected(item);
     }
 
-    private void hideFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                .hide(fragment)
-                .commit();
-    }
-
-    private void showFragment(Fragment fragment) {
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction()
-                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
-                .show(fragment)
-                .commit();
-    }
-
-    private void sortToDoItemsArrayList(String sortingPreference, int counter) {
+    private void setSortingPreference(String sortingPreference, int counter) {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(ToDoListMainActivity.this);
 
-        ArrayList<ToDoItem> incompleteToDoItemsAsArrayListSorted = null;
-        ArrayList<ToDoItem> completedToDoItemsAsArrayListSorted = null;
         sharedPreferences.edit().putString(GeneralConstants.TODOITEMS_SORTING_WAY_SHAREDPREFERENCE_IDENTIFIER, sortingPreference).commit();
 
         if (counter % 2 == 0) {
@@ -221,15 +190,6 @@ public class ToDoListMainActivity extends Activity
             sharedPreferences.edit().putInt(GeneralConstants.TODOITEMS_SORTING_ASC_OR_DESC_SHAREDPREFERNECE_IDENTIFIER, DatabaseHelper.SORTING_STANDARD_ASC).commit();
             Log.v(LOG_TAG, "Set sorting sharedPreference ASC");
         }
-        counter++;
-
-        incompleteToDoItemsAsArrayListSorted = dbHelper.getSortedToDoItemsInDifferentCompletionStatusAsArrayList(CompletionStatus.INCOMPLETED);
-        incompleteToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, incompleteToDoItemsAsArrayListSorted);
-        incompleteToDoItemDisplayListFragment.setListAdapter(incompleteToDoItemsCustomAdapter);
-
-        completedToDoItemsAsArrayListSorted = dbHelper.getSortedToDoItemsInDifferentCompletionStatusAsArrayList(CompletionStatus.COMPLETED);
-        completedToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, completedToDoItemsAsArrayListSorted);
-        completedToDoItemDisplayListFragment.setListAdapter(completedToDoItemsCustomAdapter);
     }
 
     @Override
@@ -239,6 +199,8 @@ public class ToDoListMainActivity extends Activity
                 GeneralConstants.SAVEINSTANCESTATE_INCOMPLETE_TODOITEMS_ARRAYLIST_IDENTIFIER, incompleteToDoItemsArrayList);
         outState.putParcelableArrayList(
                 GeneralConstants.SAVEINSTANCESTATE_COMPLETED_TODOITEMS_ARRAYLIST_IDENTIFIER, completedToDoItemsArrayList);
+        outState.putParcelableArrayList(
+                GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER, simpleToDoItemsArrayList);
     }
 
     @Override
@@ -260,10 +222,7 @@ public class ToDoListMainActivity extends Activity
         Toast.makeText(ToDoListMainActivity.this, "A new ToDoItem added", Toast.LENGTH_SHORT).show();
         toDoItem.setToDoItemDeadline(deadline);
         dbHelper.insertToDoListItem(toDoItem);
-        incompleteToDoItemsArrayList.add(0, toDoItem);
-//        incompleteToDoItemsCustomAdapter.notifyDataSetChanged();
-        incompleteToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, incompleteToDoItemsArrayList);
-        incompleteToDoItemDisplayListFragment.setListAdapter(incompleteToDoItemsCustomAdapter);
+        refreshPage();
     }
 
     @Override
@@ -272,8 +231,40 @@ public class ToDoListMainActivity extends Activity
         Log.v(LOG_TAG, "A new simple ToDoItem added.");
         Toast.makeText(ToDoListMainActivity.this, "A new simple ToDoItem added", Toast.LENGTH_SHORT).show();
         simpleToDoItemsArrayList.add(0, newSimpleItem);
-//        incompleteToDoItemsCustomAdapter.notifyDataSetChanged();
-        simpleToDoItemsListViewCustomAdapter = new SimpleToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, simpleToDoItemsArrayList);
-        incompleteToDoItemDisplayListFragment.setListAdapter(simpleToDoItemsListViewCustomAdapter);
+        refreshPage();
     }
+
+    @Override
+    public void onStatusChanged() {
+        Log.v(LOG_TAG, "onStatusChanged(), ToDoListMainActivity executed.");
+        refreshPage();
+    }
+
+    private void refreshPage() {
+        incompleteToDoItemsArrayList = dbHelper.getSortedToDoItemsInDifferentCompletionStatusAsArrayList(CompletionStatus.INCOMPLETE);
+        incompleteToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, incompleteToDoItemsArrayList);
+        if (!incompleteToDoItemsArrayList.isEmpty()) {
+            incompleteToDoItemDisplayListFragment.setListAdapter(incompleteToDoItemsCustomAdapter);
+        } else {
+            incompleteToDoItemDisplayListFragment.setListAdapter(null);
+        }
+
+        completedToDoItemsArrayList = dbHelper.getSortedToDoItemsInDifferentCompletionStatusAsArrayList(CompletionStatus.COMPLETED);
+        completedToDoItemsCustomAdapter = new ToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, completedToDoItemsArrayList);
+        if (!completedToDoItemsArrayList.isEmpty()) {
+            completedToDoItemDisplayListFragment.setListAdapter(completedToDoItemsCustomAdapter);
+        } else {
+            completedToDoItemDisplayListFragment.setListAdapter(null);
+        }
+
+        simpleToDoItemsArrayList = dbHelper.getSortedSimpleToDoItemsAsArrayList();
+        simpleToDoItemsListViewCustomAdapter = new SimpleToDoItemsListViewCustomAdapter(ToDoListMainActivity.this, simpleToDoItemsArrayList);
+        if (!simpleToDoItemsArrayList.isEmpty()) {
+            simpleToDoItemsDisplayFragment.setListAdapter(simpleToDoItemsListViewCustomAdapter);
+        } else {
+            simpleToDoItemsDisplayFragment.setListAdapter(null);
+        }
+    }
+
+
 }

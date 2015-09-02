@@ -1,5 +1,8 @@
 package com.example.tek.first.servant.todolist.helper;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -32,7 +35,7 @@ public class GeneralHelper {
      * 2: completed
      */
     public enum CompletionStatus implements Parcelable {
-        INCOMPLETED(1),
+        INCOMPLETE(1),
         COMPLETED(2);
 
         private int statusCode;
@@ -80,7 +83,7 @@ public class GeneralHelper {
             case 2:
                 return CompletionStatus.COMPLETED;
         }
-        return CompletionStatus.INCOMPLETED;
+        return CompletionStatus.INCOMPLETE;
     }
 
     public static String formatToString(String text) {
@@ -159,5 +162,21 @@ public class GeneralHelper {
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(context);
         sharedPreferences.edit().putInt(key, 1).commit();
+    }
+
+    public static void hideFragment(Activity activity, Fragment fragment) {
+        FragmentManager fragmentManager = activity.getFragmentManager();
+        fragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                .hide(fragment)
+                .commit();
+    }
+
+    public static void showFragment(Activity activity, Fragment fragment) {
+        FragmentManager fragmentManager = activity.getFragmentManager();
+        fragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
+                .show(fragment)
+                .commit();
     }
 }

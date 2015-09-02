@@ -11,22 +11,26 @@ public class SimpleToDoItem implements Parcelable {
 
     private String title;
     private int priority;
-    private Long timeAndDateCreated;
+    private Long itemCreatedDateAndTime;
     private GeneralHelper.CompletionStatus completionStatus;
 
-    public SimpleToDoItem(String title, Long timeAndDateCreated) {
+    public SimpleToDoItem(String title, Long itemCreatedDateAndTime) {
         this.title = title;
         priority = 1;
-        this.timeAndDateCreated = timeAndDateCreated;
-        completionStatus = GeneralHelper.CompletionStatus.INCOMPLETED;
+        this.itemCreatedDateAndTime = itemCreatedDateAndTime;
+        completionStatus = GeneralHelper.CompletionStatus.INCOMPLETE;
+    }
+
+    public void setCompletionStatus(GeneralHelper.CompletionStatus completionStatus) {
+        this.completionStatus = completionStatus;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public Long getTimeAndDateCreated() {
-        return timeAndDateCreated;
+    public Long getItemCreatedDateAndTime() {
+        return itemCreatedDateAndTime;
     }
 
     public GeneralHelper.CompletionStatus getCompletionStatus() {
@@ -36,7 +40,7 @@ public class SimpleToDoItem implements Parcelable {
     protected SimpleToDoItem(Parcel in) {
         title = in.readString();
         priority = in.readInt();
-        timeAndDateCreated = in.readLong();
+        itemCreatedDateAndTime = in.readLong();
         completionStatus = (GeneralHelper.CompletionStatus) in.readValue(GeneralHelper.CompletionStatus.class.getClassLoader());
     }
 
@@ -61,7 +65,7 @@ public class SimpleToDoItem implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(title);
         dest.writeInt(priority);
-        dest.writeLong(timeAndDateCreated);
+        dest.writeLong(itemCreatedDateAndTime);
         dest.writeValue(completionStatus);
     }
 }

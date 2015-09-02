@@ -15,9 +15,6 @@ public abstract class GeneralConstants {
     public static final String YEAR_IDENTIFIER = "yearIdentifier";
     public static final String MONTH_IDENTIFIER = "monthIdentifier";
 
-    public static final int TODOLISTITEM_COMPLETION_STATUS_INCOMPLETE = 1;
-    public static final int TODOLISTITEM_COMPLETION_STATUS_COMPLETE = 2;
-
     public static final String SAVEINSTANCESTATE_INCOMPLETE_TODOITEMS_ARRAYLIST_IDENTIFIER = "incompleteToDoItemIdentifier";
     public static final String SAVEINSTANCESTATE_COMPLETED_TODOITEMS_ARRAYLIST_IDENTIFIER = "completeToDoItemIdentifier";
     public static final String SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER = "simpleToDoItemIdentifier";

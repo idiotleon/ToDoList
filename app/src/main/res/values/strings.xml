@@ -8,6 +8,7 @@
     <string name="todolist_ben_selectdate_text">Pick Date</string>
     <string name="todolistitem_title">Title</string>
     <string name="btn_confirm_detaildialog">Add</string>
+    <string name="delete_confirmation">Are you sure to delete this todo item: </string>
     <string name="btn_clear_detaildialog">Clear</string>
     <string name="todolistitem_description">Description</string>
     <string name="todolist_confirm_text">Confirm</string>
@@ -51,11 +52,22 @@
     <string-array name="menu_display_standard">
         <item>Incomplete</item>
         <item>Complete</item>
+        <item>Simple To Do Items</item>
         <item>All</item>
     </string-array>
 
-    <string-array name="todoitem_complete_status">
+    <string-array name="incomplete_todoitem_operation">
+        <item>Mark as completed</item>
+        <item>Delete</item>
+    </string-array>
+
+    <string-array name="complete_todoitem_operation">
         <item>Mark as incomplete</item>
-        <item>Mark as complete</item>
+        <item>Delete</item>
+    </string-array>
+
+    <string-array name="simple_todoitem_operation">
+        <item>Mark as completed</item>
+        <item>Delete</item>
     </string-array>
 </resources>

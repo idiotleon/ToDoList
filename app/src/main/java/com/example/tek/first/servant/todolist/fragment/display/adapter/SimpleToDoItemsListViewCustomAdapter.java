@@ -1,4 +1,4 @@
-package com.example.tek.first.servant.todolist.adapter;
+package com.example.tek.first.servant.todolist.fragment.display.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;

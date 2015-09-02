@@ -3,7 +3,6 @@ package com.example.tek.first.servant.todolist.fragment.dialog;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -45,7 +44,7 @@ public class DetailedNewToDoItemDialogFragment extends DialogFragment {
     private Long itemDateAndTimeSet = 0L;
     private int priority = 1;
     private int category = 0;
-    private GeneralHelper.CompletionStatus completionStatus = GeneralHelper.CompletionStatus.INCOMPLETED;
+    private GeneralHelper.CompletionStatus completionStatus = GeneralHelper.CompletionStatus.INCOMPLETE;
 
     private OnNewItemAddedListener onNewItemAddedListener;
 
@@ -77,7 +76,6 @@ public class DetailedNewToDoItemDialogFragment extends DialogFragment {
 
             @Override
             public void onClick(View v) {
-                LayoutInflater inflater = (LayoutInflater) getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.clear_confirmation_dialog_text)
                         .setPositiveButton(R.string.todolist_clear_text, new DialogInterface.OnClickListener() {
