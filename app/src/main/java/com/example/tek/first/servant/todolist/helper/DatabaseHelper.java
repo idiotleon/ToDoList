@@ -242,8 +242,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return toDoItemsArrayListSorted;
     }
 
-    public ArrayList<ToDoItem> getSortedToDoItemsInDifferentCompletionStatusAsArrayList(
-            CompletionStatus completionStatus) {
+    public ArrayList<ToDoItem> getSortedIncompleteToDoItemsAsArrayList() {
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         String sortingWay
@@ -284,14 +283,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         String getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery
                 = "SELECT * FROM " + TODOLIST_TABLE_NAME +
-                " WHERE " + TODOLIST_ITEM_COLUMN_COMPLETION_STATUS_CODE + " = " + completionStatus.getStatusCode() +
+                " WHERE " + TODOLIST_ITEM_COLUMN_COMPLETION_STATUS_CODE + " = " + CompletionStatus.INCOMPLETE.getStatusCode() +
                 " AND " + TODOLIST_ITEM_COLUMN_DEADLINE + " > 0" +
                 " ORDER BY " + sortByColumnName + sortingASCorDESC;
         Log.v(LOG_TAG, "getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery: " +
                 getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery);
         Cursor cursor = db.rawQuery(getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery, null);
         if (cursor.getCount() == 0)
-            Log.v(LOG_TAG, "getSortedToDoItemsInDifferentCompletionStatusAsArrayList(), cursor is empty.");
+            Log.v(LOG_TAG, "getSortedIncompleteToDoItemsAsArrayList(), cursor is empty.");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_TITLE));
@@ -307,7 +306,75 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             cursor.moveToNext();
         }
 
-        GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(toDoItemsArrayList, "getSortedToDoItemsInDifferentCompletionStatusAsArrayList(), DatabaseHelper");
+        GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(toDoItemsArrayList, "getSortedIncompleteToDoItemsAsArrayList(), DatabaseHelper");
+
+        return toDoItemsArrayList;
+    }
+
+    public ArrayList<ToDoItem> getSortedCompletedToDoItemsAsArrayList() {
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String sortingWay
+                = sharedPreferences.getString(GeneralConstants.TODOITEMS_SORTING_WAY_SHAREDPREFERENCE_IDENTIFIER,
+                DatabaseHelper.TODOLIST_ITEM_COLUMN_PRIORITY);
+        int sortingAscOrDesc
+                = sharedPreferences.getInt(GeneralConstants.TODOITEMS_SORTING_ASC_OR_DESC_SHAREDPREFERNECE_IDENTIFIER,
+                DatabaseHelper.SORTING_STANDARD_DESC);
+
+        ArrayList<ToDoItem> toDoItemsArrayList = new ArrayList<>();
+
+        String sortByColumnName = null;
+        switch (sortingWay) {
+            case SORTING_WAY_BY_DEADLINE:
+                sortByColumnName = TODOLIST_ITEM_COLUMN_DEADLINE;
+                break;
+            case SORTING_WAY_BY_TIME_ADDED:
+                sortByColumnName = TODOLIST_ITEM_COLUMN_ITEM_TIME_DATE_CREATED;
+                break;
+            case SORTING_WAY_BY_TITLE:
+                sortByColumnName = TODOLIST_ITEM_COLUMN_TITLE;
+                break;
+            default:
+                sortByColumnName = TODOLIST_ITEM_COLUMN_PRIORITY;
+                break;
+        }
+
+        String sortingASCorDESC = null;
+        switch (sortingAscOrDesc) {
+            case SORTING_STANDARD_ASC:
+                sortingASCorDESC = SORTING_ASC;
+                break;
+            default:
+                sortingASCorDESC = SORTING_DESC;
+                break;
+        }
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery
+                = "SELECT * FROM " + TODOLIST_TABLE_NAME +
+                " WHERE " + TODOLIST_ITEM_COLUMN_COMPLETION_STATUS_CODE + " = " + CompletionStatus.COMPLETED.getStatusCode() +
+                " ORDER BY " + sortByColumnName + sortingASCorDESC;
+        Log.v(LOG_TAG, "getSortedCompletedToDoItemsAsArrayList: " +
+                getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery);
+        Cursor cursor = db.rawQuery(getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery, null);
+        if (cursor.getCount() == 0)
+            Log.v(LOG_TAG, "getSortedCompletedToDoItemsAsArrayList(), cursor is empty.");
+        cursor.moveToFirst();
+        while (!cursor.isAfterLast()) {
+            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_TITLE));
+            int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_PRIORITY));
+            long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_DEADLINE));
+            long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_ITEM_TIME_DATE_CREATED));
+            String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_DESCRIPTION));
+            int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_CATEGORY));
+            int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_COMPLETION_STATUS_CODE));
+            ToDoItem toDoListItem = new ToDoItem(title, priority, detailDescription,
+                    itemDateAndTimeCreated, deadline, category, completionStatusCode);
+            toDoItemsArrayList.add(toDoListItem);
+            cursor.moveToNext();
+        }
+
+        GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(toDoItemsArrayList, "getSortedIncompleteToDoItemsAsArrayList(), DatabaseHelper");
 
         return toDoItemsArrayList;
     }
@@ -359,7 +426,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery);
         Cursor cursor = db.rawQuery(getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery, null);
         if (cursor.getCount() == 0)
-            Log.v(LOG_TAG, "getSortedToDoItemsInDifferentCompletionStatusAsArrayList(), cursor is empty.");
+            Log.v(LOG_TAG, "getSortedIncompleteToDoItemsAsArrayList(), cursor is empty.");
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {
             String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_TITLE));

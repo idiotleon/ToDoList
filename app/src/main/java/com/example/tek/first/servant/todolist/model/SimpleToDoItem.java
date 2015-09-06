@@ -21,6 +21,32 @@ public class SimpleToDoItem implements Parcelable {
         completionStatus = GeneralHelper.CompletionStatus.INCOMPLETE;
     }
 
+    public SimpleToDoItem(String title, Long itemCreatedDateAndTime, GeneralHelper.CompletionStatus completionStatus) {
+        this.title = title;
+        priority = 1;
+        this.itemCreatedDateAndTime = itemCreatedDateAndTime;
+        this.completionStatus = completionStatus;
+    }
+
+    public SimpleToDoItem(String title, Long itemCreatedDateAndTime, int completionStatusCode) {
+        this.title = title;
+        priority = 1;
+        this.itemCreatedDateAndTime = itemCreatedDateAndTime;
+        switch (completionStatusCode) {
+            case 2:
+                this.completionStatus = GeneralHelper.CompletionStatus.COMPLETED;
+                break;
+            default:
+                this.completionStatus = GeneralHelper.CompletionStatus.INCOMPLETE;
+                break;
+        }
+    }
+
+
+    public int getPriority() {
+        return priority;
+    }
+
     public void setCompletionStatus(GeneralHelper.CompletionStatus completionStatus) {
         this.completionStatus = completionStatus;
     }

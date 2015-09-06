@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.tek.first.servant.R;
 import com.example.tek.first.servant.todolist.fragment.dialog.DetailedNewToDoItemDialogFragment;
+import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.model.SimpleToDoItem;
 
 import java.text.SimpleDateFormat;
@@ -21,7 +24,7 @@ import java.util.Calendar;
 
 public class NewItemAddedFragment extends Fragment {
 
-    private ImageButton btnDetailedToDoListItem;
+    private ImageButton btnAddDetailedToDoItem;
     private EditText editTextInput;
     private OnNewSimpleItemAddedListener onNewSimpleItemAddedListener;
 
@@ -45,8 +48,8 @@ public class NewItemAddedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.todolist_newitem, null);
 
-        btnDetailedToDoListItem = (ImageButton) rootView.findViewById(R.id.todoitemconfirm_btn_activitytodolist);
-        btnDetailedToDoListItem.setOnClickListener(new View.OnClickListener() {
+        btnAddDetailedToDoItem = (ImageButton) rootView.findViewById(R.id.imagebutton_create_detailed_todoitem);
+        btnAddDetailedToDoItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 DetailedNewToDoItemDialogFragment detailedToDoListItemDialog = new DetailedNewToDoItemDialogFragment();
@@ -67,6 +70,7 @@ public class NewItemAddedFragment extends Fragment {
                             SimpleToDoItem newSimpleToDoItem = new SimpleToDoItem(newSimpleItemTitle, currentTime);
                             onNewSimpleItemAddedListener.onNewSimpleItemAdded(newSimpleToDoItem);
                             editTextInput.setText("");
+                            GeneralHelper.hideSoftKeyBoard(getActivity(), v);
                         } else {
                             Toast.makeText(getActivity(), "Please input a title", Toast.LENGTH_SHORT).show();
                         }
@@ -75,6 +79,23 @@ public class NewItemAddedFragment extends Fragment {
                 return false;
             }
         });
+
+/*        editTextInput.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                GeneralHelper.hideSoftKeyBoard(getActivity(), editTextInput);
+            }
+        });*/
 
         return rootView;
     }

@@ -28,7 +28,7 @@ public class TimePickerDialogFragment extends DialogFragment implements TimePick
         void onTimeSelected(Time timeSelected);
     }
 
-    TimePickerDialogListener timePickerDialogListener;
+    private TimePickerDialogListener timePickerDialogListener;
 
     @Override
     public void onAttach(Activity activity) {

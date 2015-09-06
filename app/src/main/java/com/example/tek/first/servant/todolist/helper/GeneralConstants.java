@@ -20,6 +20,8 @@ public abstract class GeneralConstants {
     public static final String SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER = "simpleToDoItemIdentifier";
     public static final String SAVEINSTANCESTATE_TODOITEM_IDENTIFIER = "toDoItemIdentifier";
 
+    public static final int PRIORITY_LEVEL_OPTIONS = 10;
+
     // todo: how to getResources().getStringArray..... instead such self-created int Array
     public static final int[] PRIORITY_LEVEL_COLOR
             = {R.color.priority_level1, R.color.priority_level2, R.color.priority_level3,
@@ -34,6 +36,16 @@ public abstract class GeneralConstants {
 
     public static final String TODOITEMS_SORTING_ASC_OR_DESC_SHAREDPREFERNECE_IDENTIFIER = "sortingTrendASCOrDESC";
     public static final String TODOITEMS_SORTING_WAY_SHAREDPREFERENCE_IDENTIFIER = "sortingWayPriorityDeadlineTimeAddedOrTitle";
+
+    public static final int YEAR_OPTION = 1;
+    public static final int MONTH_OF_YEAR_OPTION = 2;
+    public static final int DAY_OF_MONTH_OPTION = 3;
+    public static final int HOUR_OF_DAY_OPTION = 4;
+    public static final int MINUTE_OF_HOUR_OPTION = 5;
+    public static final int SECOND_OF_MINUTE_OPTION = 6;
+
+    public static final int SHOW_PREFERENCES = 0;
+    public static final String UPDATE_TIME_PREFERENCE = "minUpdateFrequncy";
 
 }
 

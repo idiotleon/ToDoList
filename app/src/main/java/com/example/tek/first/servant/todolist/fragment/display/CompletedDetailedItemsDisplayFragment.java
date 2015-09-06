@@ -18,6 +18,7 @@ import com.example.tek.first.servant.todolist.helper.DatabaseHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralConstants;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.model.ToDoItem;
+import com.example.tek.first.servant.todolist.helper.GeneralHelper.ToDoItemStatusChangeListener;
 
 import java.util.ArrayList;
 
@@ -28,10 +29,6 @@ public class CompletedDetailedItemsDisplayFragment extends ListFragment {
     private DatabaseHelper dbHelper;
     private ArrayList<ToDoItem> completedToDoItemsArrayList;
     private ToDoItemStatusChangeListener toDoItemStatusChangeListener;
-
-    public interface ToDoItemStatusChangeListener {
-        void onStatusChanged();
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -45,10 +42,10 @@ public class CompletedDetailedItemsDisplayFragment extends ListFragment {
         }
     }
 
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         dbHelper = new DatabaseHelper(getActivity());
         completedToDoItemsArrayList = new ArrayList<>();
     }
@@ -61,7 +58,7 @@ public class CompletedDetailedItemsDisplayFragment extends ListFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 completedToDoItemsArrayList
-                        = dbHelper.getSortedToDoItemsInDifferentCompletionStatusAsArrayList(GeneralHelper.CompletionStatus.COMPLETED);
+                        = dbHelper.getSortedCompletedToDoItemsAsArrayList();
                 Log.v(LOG_TAG, "onItemLongClick(), IncompleteDetailedItemsDisplayFragment executed");
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Do you want to: ")
@@ -105,7 +102,7 @@ public class CompletedDetailedItemsDisplayFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        completedToDoItemsArrayList = dbHelper.getSortedToDoItemsInDifferentCompletionStatusAsArrayList(GeneralHelper.CompletionStatus.COMPLETED);
+        completedToDoItemsArrayList = dbHelper.getSortedCompletedToDoItemsAsArrayList();
 
         Intent intent = new Intent(getActivity(), ToDoItemDetailsActivity.class);
         intent.putExtra(GeneralConstants.TO_DO_ITEM_IDENTIFIER, completedToDoItemsArrayList.get(position));

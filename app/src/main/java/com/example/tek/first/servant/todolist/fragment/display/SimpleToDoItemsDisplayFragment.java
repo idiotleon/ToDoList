@@ -18,6 +18,7 @@ import com.example.tek.first.servant.todolist.helper.DatabaseHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralConstants;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.model.SimpleToDoItem;
+import com.example.tek.first.servant.todolist.helper.GeneralHelper.ToDoItemStatusChangeListener;
 
 import java.util.ArrayList;
 
@@ -29,10 +30,6 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
     private DatabaseHelper dbHelper;
 
     private ToDoItemStatusChangeListener toDoItemStatusChangeListener;
-
-    public interface ToDoItemStatusChangeListener {
-        void onStatusChanged();
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -49,6 +46,7 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         simpleToDoItemArrayList = new ArrayList<>();
         dbHelper = new DatabaseHelper(getActivity());
 

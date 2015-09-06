@@ -12,4 +12,9 @@
         android:orderInCategory="100"
         android:title="@string/todolist_menu_display"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/preference_menu_activitytodolist"
+        android:orderInCategory="100"
+        android:title="@string/todolist_menu_preference"
+        app:showAsAction="never" />
 </menu>

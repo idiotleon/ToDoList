@@ -9,7 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.tek.first.servant.R;
-import com.example.tek.first.servant.todolist.helper.GeneralConstants;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper.CompletionStatus;
 import com.example.tek.first.servant.todolist.model.ToDoItem;
@@ -54,31 +53,16 @@ public class ToDoItemsListViewCustomAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rootView = inflater.inflate(R.layout.todoitem_custom_textview, null);
-        TextView textViewPriority = (TextView) rootView.findViewById(R.id.todolist_row_priority);
+        View toDoItemRootView = inflater.inflate(R.layout.todoitem_custom_textview, null);
+        TextView textViewNumbering = (TextView) toDoItemRootView.findViewById(R.id.todolist_row_numbering);
         Log.v(LOG_TAG, "getPriority(position): " + Integer.toString(getPriority(position)));
-        // todo: textview with custom color based on different priority level
-        TextView textViewDeadline = (TextView) rootView.findViewById(R.id.todolist_row_deadline);
-        TextView textViewTitle = (TextView) rootView.findViewById(R.id.todolist_row_title);
-
-        if (CompletionStatus.COMPLETED == getCompletionStatus(position)) {
-//            rootView.setBackgroundColor(context.getResources().getColor(R.color.todolist_mark_as_complete));
-            textViewPriority.setBackground(context.getResources().getDrawable(R.drawable.completed_todoitem_textview));
-            textViewDeadline.setBackground(context.getResources().getDrawable(R.drawable.completed_todoitem_textview));
-            textViewTitle.setBackground(context.getResources().getDrawable(R.drawable.completed_todoitem_textview));
-            textViewDeadline.setText("Completed");
-        } else {
-            Long deadline = toDoListItemsArrayList.get(position).getToDoItemDeadline();
-            if (deadline > 0L) {
-                textViewDeadline.setText(GeneralHelper.parseDateAndTimeToString(deadline));
-            }
-            textViewPriority.setBackgroundColor(GeneralConstants.PRIORITY_LEVEL_COLOR[getPriority(position) - 1]);
-        }
+        TextView textViewDeadline = (TextView) toDoItemRootView.findViewById(R.id.todolist_row_deadline);
+        TextView textViewTitle = (TextView) toDoItemRootView.findViewById(R.id.todolist_row_title);
 
         textViewTitle.setText(toDoListItemsArrayList.get(position).getTitle());
-        textViewPriority.setText(Integer.toString(position + 1));
+        textViewNumbering.setText(Integer.toString(position + 1));
+        textViewDeadline.setText(GeneralHelper.parseDateAndTimeToString(getItem(position).getToDoItemDeadline()));
 
-        return rootView;
+        return toDoItemRootView;
     }
-
 }

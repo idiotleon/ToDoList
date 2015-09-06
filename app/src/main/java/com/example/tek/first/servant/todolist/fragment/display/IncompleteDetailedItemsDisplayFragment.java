@@ -7,6 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -18,6 +20,7 @@ import com.example.tek.first.servant.todolist.helper.DatabaseHelper;
 import com.example.tek.first.servant.todolist.helper.GeneralConstants;
 import com.example.tek.first.servant.todolist.helper.GeneralHelper;
 import com.example.tek.first.servant.todolist.model.ToDoItem;
+import com.example.tek.first.servant.todolist.helper.GeneralHelper.ToDoItemStatusChangeListener;
 
 import java.util.ArrayList;
 
@@ -29,10 +32,6 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
     private ArrayList<ToDoItem> toDoItemsArrayList;
 
     private ToDoItemStatusChangeListener toDoItemStatusChangeListener;
-
-    public interface ToDoItemStatusChangeListener {
-        void onStatusChanged();
-    }
 
     @Override
     public void onAttach(Activity activity) {
@@ -49,20 +48,26 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         dbHelper = new DatabaseHelper(getActivity());
         toDoItemsArrayList = new ArrayList<>();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(toDoItemsArrayList, "getSortedToDoItemsInDifferentCompletionStatusAsArrayList(INCOMPLETE)");
+        GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(toDoItemsArrayList, "getSortedIncompleteToDoItemsAsArrayList(INCOMPLETE)");
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 toDoItemsArrayList
-                        = dbHelper.getSortedToDoItemsInDifferentCompletionStatusAsArrayList(GeneralHelper.CompletionStatus.INCOMPLETE);
+                        = dbHelper.getSortedIncompleteToDoItemsAsArrayList();
                 Log.v(LOG_TAG, "onItemLongClick(), IncompleteDetailedItemsDisplayFragment executed");
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Do you want to: ")
@@ -106,7 +111,7 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        toDoItemsArrayList = dbHelper.getSortedToDoItemsInDifferentCompletionStatusAsArrayList(GeneralHelper.CompletionStatus.INCOMPLETE);
+        toDoItemsArrayList = dbHelper.getSortedIncompleteToDoItemsAsArrayList();
         Log.v(LOG_TAG, "Position: " + position);
         Intent intent = new Intent(getActivity(), ToDoItemDetailsActivity.class);
         intent.putExtra(GeneralConstants.TO_DO_ITEM_IDENTIFIER, toDoItemsArrayList.get(position));

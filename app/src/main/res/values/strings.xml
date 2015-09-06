@@ -1,9 +1,11 @@
 <resources>
-    <string name="app_name">Servant</string>
+    <string name="app_name">ToDoList</string>
 
     <!-- string for todolist Activity-->
     <string name="todolist_menu_sort">Sort by</string>
     <string name="todolist_menu_display">Display</string>
+    <string name="todolist_menu_preference">Settings</string>
+
     <string name="todolist_ben_selecttime_text">Pick Time</string>
     <string name="todolist_ben_selectdate_text">Pick Date</string>
     <string name="todolistitem_title">Title</string>
@@ -28,6 +30,9 @@
     <string name="sort_menu_radiobutton_displayincompleteditems">Display Incompleted Items</string>
     <string name="sort_menu_radiobutton_displaynotstarteditems">Display Not Started Items</string>
     <string name="sort_menu_radiobutton_displaycompleteditems">Display Completed Items</string>
+
+    <!-- Menu in ToDoItemDetailsActivity-->
+    <string name="todolist_share">Share</string>
 
     <string-array name="priority_level">
         <item>1</item>

@@ -8,11 +8,12 @@
         android:id="@+id/todoiteminput_edittext_activitytodolist"
         android:layout_width="match_parent"
         android:layout_height="60sp"
-        android:layout_toLeftOf="@+id/todoitemconfirm_btn_activitytodolist"
-        android:hint="@string/todoiteminput_edittext_activitytodolist_text" />
+        android:layout_toLeftOf="@+id/imagebutton_create_detailed_todoitem"
+        android:hint="@string/todoiteminput_edittext_activitytodolist_text"
+        android:imeOptions="actionDone"/>
 
     <ImageButton
-        android:id="@+id/todoitemconfirm_btn_activitytodolist"
+        android:id="@+id/imagebutton_create_detailed_todoitem"
         android:layout_width="60sp"
         android:layout_height="60sp"
         android:layout_alignParentEnd="true"

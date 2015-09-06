@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_share"
+        android:actionProviderClass="android.widget.ShareActionProvider"
+        android:title="@string/todolist_share"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menu_for_test_purpose"
+        android:title="Submenu_Test">
+        <menu>
+            <item android:title="Submenu1"></item>
+        </menu>
+    </item>
+</menu>

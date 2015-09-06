@@ -23,7 +23,7 @@ public class ToDoItem implements Parcelable {
     public ToDoItem() {
         this.title = null;
         this.priority = 1;
-        this.detailDescription = null;
+        this.detailDescription = "";
         this.itemCreatedDateAndTime = 0L;
         this.toDoItemDeadline = 0L;
         this.category = 0;
@@ -31,10 +31,21 @@ public class ToDoItem implements Parcelable {
         this.price = 0;
     }
 
+    public ToDoItem(SimpleToDoItem simpleToDoItem) {
+        this.title = simpleToDoItem.getTitle();
+        this.completionStatus = simpleToDoItem.getCompletionStatus();
+        this.itemCreatedDateAndTime = simpleToDoItem.getItemCreatedDateAndTime();
+        this.priority = 1;
+        this.toDoItemDeadline = 0L;
+        this.detailDescription = "";
+        this.category = 0;
+        this.price = 0.0;
+    }
+
     public ToDoItem(String title) {
         this.title = title;
         this.priority = 1;
-        this.detailDescription = null;
+        this.detailDescription = "";
         this.itemCreatedDateAndTime = 0L;
         this.toDoItemDeadline = 0L;
         this.category = 0;
@@ -45,7 +56,7 @@ public class ToDoItem implements Parcelable {
     public ToDoItem(String title, Long currentTime) {
         this.title = title;
         this.priority = 1;
-        this.detailDescription = null;
+        this.detailDescription = "";
         this.itemCreatedDateAndTime = currentTime;
         this.toDoItemDeadline = 0L;
         this.category = 0;
@@ -171,7 +182,7 @@ public class ToDoItem implements Parcelable {
         Log.v(LOG_TAG, "itemCreatedDateAndTime, in.readLong(), ToDoItem(Parcel in): " + GeneralHelper.formatToString(itemCreatedDateAndTime));
         toDoItemDeadline = in.readLong();
         completionStatus = (CompletionStatus) in.readValue(CompletionStatus.class.getClassLoader());
-        price = in.readInt();
+        price = in.readDouble();
     }
 
     public static final Creator<ToDoItem> CREATOR = new Creator<ToDoItem>() {

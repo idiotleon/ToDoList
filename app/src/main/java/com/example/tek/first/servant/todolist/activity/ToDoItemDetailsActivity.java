@@ -1,7 +1,5 @@
 package com.example.tek.first.servant.todolist.activity;
 
-import android.app.ActionBar;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
@@ -9,8 +7,12 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -28,7 +30,7 @@ import com.example.tek.first.servant.todolist.model.Date;
 import com.example.tek.first.servant.todolist.model.SimpleToDoItem;
 import com.example.tek.first.servant.todolist.model.ToDoItem;
 
-public class ToDoItemDetailsActivity extends Activity
+public class ToDoItemDetailsActivity extends AppCompatActivity
         implements DetailedNewToDoItemDialogFragment.OnNewItemAddedListener,
         TimePickerDialog.OnTimeSetListener,
         DatePickerDialogFragment.DatePickerDialogListener {
@@ -65,7 +67,7 @@ public class ToDoItemDetailsActivity extends Activity
         } else {
             toDoItem = savedInstanceState.getParcelable(GeneralConstants.SAVEINSTANCESTATE_TODOITEM_IDENTIFIER);
         }
-        Log.v(LOG_TAG, "onCreate(), intent received, ToDoItemDetailsActivity: " + GeneralHelper.formatToString(toDoItem.getToDoItemDeadline()));
+//        Log.v(LOG_TAG, "onCreate(), intent received, ToDoItemDetailsActivity: " + GeneralHelper.formatToString(toDoItem.getToDoItemDeadline()));
         if (toDoItem != null) {
             priority = toDoItem.getPriority();
             title = toDoItem.getTitle();
@@ -129,7 +131,7 @@ public class ToDoItemDetailsActivity extends Activity
         /**
          * Styling the ActionBar
          */
-        ActionBar actionBar = getActionBar();
+        ActionBar actionBar = getSupportActionBar();
         if (deadline > 0) {
             actionBar.setTitle("Deadline: " + GeneralHelper.parseDateAndTimeToString(deadline));
         } else {
@@ -138,8 +140,10 @@ public class ToDoItemDetailsActivity extends Activity
         actionBar.setSubtitle("Details");
 //        String[] hexColorCode = getResources().getStringArray(R.array.priority_level_color_hex_code);
         ColorDrawable colorDrawable
-                = new ColorDrawable(Color.parseColor(GeneralConstants.PRIORITY_LEVEL_COLOR_HEX_CODE[priority - 1]));
+                = new ColorDrawable(Color.parseColor(GeneralConstants.PRIORITY_LEVEL_COLOR_HEX_CODE[priority]));
         actionBar.setBackgroundDrawable(colorDrawable);
+        actionBar.setDisplayUseLogoEnabled(false);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         btnMarkAsComplete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -154,7 +158,7 @@ public class ToDoItemDetailsActivity extends Activity
                     dbHelper.updateToDoListItem(simpleToDoItem);
                     Log.v(LOG_TAG, "SimpleToDoItem: " + simpleToDoItem.getTitle() + " is marked as complete");
                 }
-                Intent intent = new Intent(ToDoItemDetailsActivity.this, ToDoListMainActivity.class);
+                Intent intent = new Intent(ToDoItemDetailsActivity.this, ToDoListDisplayActivity.class);
                 startActivity(intent);
             }
         });
@@ -203,7 +207,7 @@ public class ToDoItemDetailsActivity extends Activity
                             dbHelper.deleteToDoItem(simpleToDoItem);
                             Toast.makeText(ToDoItemDetailsActivity.this, "SimpleToDoItem: " + simpleToDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
                         }
-                        Intent intent = new Intent(ToDoItemDetailsActivity.this, ToDoListMainActivity.class);
+                        Intent intent = new Intent(ToDoItemDetailsActivity.this, ToDoListDisplayActivity.class);
                         startActivity(intent);
                     }
                 }).setNegativeButton(R.string.todolist_cancel_text, new DialogInterface.OnClickListener() {
@@ -216,6 +220,34 @@ public class ToDoItemDetailsActivity extends Activity
                 alertDialog.show();
             }
         });
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+
+        MenuItem menuItem = menu.findItem(R.menu.menu_todolist_detail_activity);
+
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_todolist_detail_activity, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case (android.R.id.home):
+                Intent intent = new Intent(this, ToDoListDisplayActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void refreshToDoItemDetailsPage(ToDoItem toDoItem) {
@@ -265,4 +297,5 @@ public class ToDoItemDetailsActivity extends Activity
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
 
     }
+
 }

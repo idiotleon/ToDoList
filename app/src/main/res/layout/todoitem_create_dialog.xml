@@ -1,31 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
-    android:minHeight="480sp"
-    android:minWidth="300sp"
-    android:orientation="vertical">
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@mipmap/todolistitem_header" />
-
-    <EditText
-        android:id="@+id/edittext_title_todolistitem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/todolistitem_title" />
-
-    <Spinner
-        android:id="@+id/spinner_priority_todolistitem"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"></Spinner>
+    android:layout_marginBottom="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginRight="16dp"
+    android:layout_marginTop="16dp"
+    android:minHeight="260sp"
+    android:minWidth="160sp">
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:id="@+id/linearlayout_todoitem_create_dialog"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edittext_title_todolistitem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/todolistitem_title"
+            android:imeOptions="actionDone"/>
+
+        <Spinner
+            android:id="@+id/spinner_priority_todolistitem"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"></Spinner>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearlayout_todolistitemdetail_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearlayout_todoitem_create_dialog"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
@@ -33,12 +44,14 @@
             android:id="@+id/todolist_btn_selecttime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/todolist_ben_selecttime_text" />
 
         <Button
             android:id="@+id/todolist_btn_selectdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/todolist_ben_selectdate_text" />
     </LinearLayout>
 
@@ -46,7 +59,9 @@
         android:id="@+id/edittext_description_todolistitem"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/linearlayout_todolistitemdetail_dialog"
         android:background="@drawable/new_todoitem_description"
+        android:gravity="left|top"
         android:hint="@string/todolistitem_description"
         android:inputType="textMultiLine"
         android:lines="11"
@@ -56,22 +71,25 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/edittext_description_todolistitem"
         android:layout_gravity="center"
         android:gravity="center"
         android:orientation="horizontal">
 
         <Button
             android:id="@+id/btn_confirm_dialog"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="@string/btn_confirm_detaildialog" />
 
         <Button
             android:id="@+id/btn_clear_dialog"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_weight="1"
             android:text="@string/btn_clear_detaildialog" />
     </LinearLayout>
 
-</LinearLayout>
+</RelativeLayout>

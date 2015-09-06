@@ -45,7 +45,7 @@ public class SimpleToDoItemsListViewCustomAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View rootView = inflater.inflate(R.layout.simple_new_todoitem, null);
+        View rootView = inflater.inflate(R.layout.simple_new_simple_todoitem, null);
         TextView textViewNumbering = (TextView) rootView.findViewById(R.id.textview_number_simple_new_todoitem);
         TextView textViewTitle = (TextView) rootView.findViewById(R.id.textview_title_simple_new_todoitem);
         textViewNumbering.setText(Integer.toString(position + 1));

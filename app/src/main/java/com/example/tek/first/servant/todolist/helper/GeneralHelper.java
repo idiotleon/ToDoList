@@ -10,12 +10,16 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.example.tek.first.servant.todolist.model.Date;
 import com.example.tek.first.servant.todolist.model.Time;
 import com.example.tek.first.servant.todolist.model.ToDoItem;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class GeneralHelper {
     private static String LOG_TAG = GeneralHelper.class.getSimpleName();
@@ -78,6 +82,35 @@ public class GeneralHelper {
         };
     }
 
+    public static int getCurrentTimeAndDate(int component) {
+
+        String currentTimeAndDate = new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime());
+
+        int year = Integer.parseInt(currentTimeAndDate.substring(0, 4));
+        int monthOfYear = Integer.parseInt(currentTimeAndDate.substring(4, 6));
+        int dayOfMonth = Integer.parseInt(currentTimeAndDate.substring(6, 8));
+        int hourOfDay = Integer.parseInt(currentTimeAndDate.substring(8, 10));
+        int minute = Integer.parseInt(currentTimeAndDate.substring(10, 12));
+        int second = Integer.parseInt(currentTimeAndDate.substring(12, 14));
+
+        switch (component) {
+            case 1:
+                return year;
+            case 2:
+                return monthOfYear;
+            case 3:
+                return dayOfMonth;
+            case 4:
+                return hourOfDay;
+            case 5:
+                return minute;
+            case 6:
+                return second;
+            default:
+                return 0;
+        }
+    }
+
     public static CompletionStatus completionStatusCodeToCompletationStatus(int completionStatusCode) {
         switch (completionStatusCode) {
             case 2:
@@ -102,21 +135,53 @@ public class GeneralHelper {
     }
 
     public static String parseDateAndTimeToString(Long dateAndTime) {
-        String dateAndTimeString = formatToString(dateAndTime);
-        String year = dateAndTimeString.substring(0, 4);
-        String monthInString = dateAndTimeString.substring(4, 6);
-        String day = dateAndTimeString.substring(6, 8);
-        String hourOfDay = dateAndTimeString.substring(8, 10);
-        String minuteOfHour = dateAndTimeString.substring(10, 12);
-        int monthInInt = Integer.parseInt(monthInString);
-        String[] monthOptions = {
-                "Jan ", "Feb ", "Mar ", "Apr ",
-                "May ", "Jun ", "Jul ", "Aug ",
-                "Sep ", "Oct ", "Nov ", "Dec "};
-        String dateAndTimeFormatted = hourOfDay + ":" + minuteOfHour + ", "
-                + monthOptions[monthInInt - 1] + day + ", " + year;
-        Log.v(LOG_TAG, "dateAndTimeFormatted, GeneralHelper: " + dateAndTimeFormatted);
-        return dateAndTimeFormatted;
+        if (dateAndTime != 0L && dateAndTime != 1L) {
+            String dateAndTimeString = formatToString(dateAndTime);
+            String year = dateAndTimeString.substring(0, 4);
+            String monthInString = dateAndTimeString.substring(4, 6);
+            String day = dateAndTimeString.substring(6, 8);
+            String hourOfDay = dateAndTimeString.substring(8, 10);
+            String minuteOfHour = dateAndTimeString.substring(10, 12);
+            int monthInInt = Integer.parseInt(monthInString);
+            String[] monthOptions = {
+                    "Jan ", "Feb ", "Mar ", "Apr ",
+                    "May ", "Jun ", "Jul ", "Aug ",
+                    "Sep ", "Oct ", "Nov ", "Dec "};
+            String dateAndTimeFormatted = hourOfDay + ":" + minuteOfHour + ", "
+                    + monthOptions[monthInInt - 1] + day + ", " + year;
+            Log.v(LOG_TAG, "dateAndTimeFormatted, GeneralHelper: " + dateAndTimeFormatted);
+            return dateAndTimeFormatted;
+        } else if (dateAndTime == 1L) {
+            return "";
+        } else {
+            return "0";
+        }
+    }
+
+    public static Long parseDateAndTimeModelToLong(Date date, Time time) {
+        if (time == null) {
+            /**
+             * For purpose of differentiate
+             * a simple new todoItem (deadline = 0L)
+             * and a detailed todoItem without a deadline (deadline = 1L)
+             */
+            return 1L;
+        } else {
+            String dateInStringType;
+            String timeInStringType;
+            String dateAndTimeInStringType;
+            if (date == null) {
+                int year = getCurrentTimeAndDate(GeneralConstants.YEAR_OPTION);
+                int monthOfYear = getCurrentTimeAndDate(GeneralConstants.MONTH_OF_YEAR_OPTION);
+                int dayOfMonth = getCurrentTimeAndDate(GeneralConstants.DAY_OF_MONTH_OPTION);
+                dateInStringType = Integer.toString(year) + String.format("%02d", monthOfYear) + String.format("%02d", dayOfMonth);
+            } else {
+                dateInStringType = date.formatDateToString();
+            }
+            timeInStringType = time.formatTimeToString();
+            dateAndTimeInStringType = dateInStringType + timeInStringType;
+            return Long.parseLong(dateAndTimeInStringType);
+        }
     }
 
     public static String parseDateAndTimeToString(String dateAndTimeString) {
@@ -178,5 +243,14 @@ public class GeneralHelper {
                 .setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out)
                 .show(fragment)
                 .commit();
+    }
+
+    public interface ToDoItemStatusChangeListener {
+        void onStatusChanged();
+    }
+
+    public static void hideSoftKeyBoard(Context context, View view){
+        InputMethodManager inputMethodManager = (InputMethodManager) context.getSystemService(Activity.INPUT_METHOD_SERVICE);
+        inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 }
