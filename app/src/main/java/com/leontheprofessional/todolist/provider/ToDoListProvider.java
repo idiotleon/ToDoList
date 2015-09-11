@@ -10,7 +10,10 @@ import android.database.sqlite.SQLiteException;
 import android.database.sqlite.SQLiteQuery;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
+
+import org.w3c.dom.Text;
 
 
 public class ToDoListProvider extends ContentProvider {
@@ -130,7 +133,30 @@ public class ToDoListProvider extends ContentProvider {
 
     @Override
     public int delete(Uri uri, String selection, String[] selectionArgs) {
-        return 0;
+        openDatabase();
+
+        String rowId;
+        int deleteCount = 0;
+        switch (uriMatcher.match(uri)) {
+
+            case SIMPLE_TODO_ITEM:
+                rowId = uri.getPathSegments().get(1);
+                selection = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_ID = " = " + rowId +
+                        (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : "");
+                if (selection == null) selection = "1";
+                deleteCount = database.delete(ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME, selection, selectionArgs);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            case DETAILED_TODO_ITEM:
+                rowId = uri.getPathSegments().get(1);
+                selection = ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_ID = " = " + rowId +
+                        (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : "");
+                if (selection == null) selection = "1";
+                deleteCount = database.delete(ToDoListProviderContract.DetailedToDoItemEntry.TABLE_NAME, selection, selectionArgs);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+        }
+        return deleteCount;
     }
 
     @Override
