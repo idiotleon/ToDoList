@@ -6,10 +6,15 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
+import android.database.sqlite.SQLiteQuery;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
+import android.util.Log;
 
 
 public class ToDoListProvider extends ContentProvider {
+
+    private static final String LOG_TAG = ToDoListProvider.class.getSimpleName();
 
     private DatabaseHelper dbHelper;
     private SQLiteDatabase database;
@@ -37,8 +42,43 @@ public class ToDoListProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
-        
-        return null;
+        openDatabase();
+
+        String groupBy = null;
+        String having = null;
+
+        SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+        String rowId = "0";
+
+        switch (uriMatcher.match(uri)) {
+            case SIMPLE_TODO_LIST:
+                queryBuilder.setTables(ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME);
+                break;
+            case SIMPLE_TODO_ITEM:
+                rowId = uri.getPathSegments().get(1);
+                queryBuilder.setTables(ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME);
+                queryBuilder.appendWhere(ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_ID + " = " + rowId);
+                break;
+            case DETAILED_TODO_LIST:
+                queryBuilder.setTables(ToDoListProviderContract.DetailedToDoItemEntry.TABLE_NAME);
+                break;
+            case DETAILED_TODO_ITEM:
+                rowId = uri.getPathSegments().get(1);
+                queryBuilder.setTables(ToDoListProviderContract.DetailedToDoItemEntry.TABLE_NAME);
+                queryBuilder.appendWhere(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_ID + " = " + rowId);
+                break;
+        }
+
+        Log.v(LOG_TAG, "queryBuilder.toString(), ToDoListProvider: " + queryBuilder.toString());
+
+        // Apply the query to the underlying database
+        Cursor cursor = queryBuilder.query(database, projection, selection, selectionArgs, groupBy, having, sortOrder);
+
+        // Register the contexts ContentResolver to be notified if the cursor result set changes
+        cursor.setNotificationUri(getContext().getContentResolver(), uri);
+
+        // Return a cursor as the queried result
+        return cursor;
     }
 
     @Override
