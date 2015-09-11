@@ -161,7 +161,28 @@ public class ToDoListProvider extends ContentProvider {
 
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-        return 0;
+        openDatabase();
+
+        String rowId;
+        int updateRowsCount = 0;
+        switch (uriMatcher.match(uri)) {
+            case SIMPLE_TODO_ITEM:
+                rowId = uri.getPathSegments().get(1);
+                selection = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_ID +
+                        " = " + rowId + (!TextUtils.isEmpty(selection) ? " AND (" + ')' : "");
+                updateRowsCount = database.update(ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case DETAILED_TODO_ITEM:
+                rowId = uri.getPathSegments().get(1);
+                selection = ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_ID +
+                        " = " + rowId + (!TextUtils.isEmpty(selection) ? " AND (" + ')' : "");
+                updateRowsCount = database.update(ToDoListProviderContract.DetailedToDoItemEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+        }
+
+        getContext().getContentResolver().notifyChange(uri, null);
+
+        return updateRowsCount;
     }
 
     private void openDatabase() throws SQLiteException {
