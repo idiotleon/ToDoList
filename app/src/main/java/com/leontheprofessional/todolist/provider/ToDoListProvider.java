@@ -1,6 +1,7 @@
 package com.leontheprofessional.todolist.provider;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -101,6 +102,29 @@ public class ToDoListProvider extends ContentProvider {
 
     @Override
     public Uri insert(Uri uri, ContentValues values) {
+        Log.v(LOG_TAG, "insert(Uri uri, ContentValues values), ToDoListProvider executed");
+        openDatabase();
+
+        String nullColumnHack = null;
+
+        long id;
+        Uri insertedId;
+        switch (uriMatcher.match(uri)) {
+            case SIMPLE_TODO_ITEM:
+                id = database.insert(ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME, nullColumnHack, values);
+                if (id > -1) {
+                    insertedId = ContentUris.withAppendedId(ToDoListProviderContract.SimpleToDoItemEntry.CONTENT_URI, id);
+                    getContext().getContentResolver().notifyChange(insertedId, null);
+                    return insertedId;
+                }
+            case DETAILED_TODO_ITEM:
+                id = database.insert(ToDoListProviderContract.DetailedToDoItemEntry.TABLE_NAME, nullColumnHack, values);
+                if (id > -1) {
+                    insertedId = ContentUris.withAppendedId(ToDoListProviderContract.DetailedToDoItemEntry.CONTENT_URI, id);
+                    getContext().getContentResolver().notifyChange(insertedId, null);
+                    return insertedId;
+                }
+        }
         return null;
     }
 
