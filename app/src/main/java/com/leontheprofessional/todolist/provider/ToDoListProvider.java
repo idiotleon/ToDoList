@@ -83,7 +83,20 @@ public class ToDoListProvider extends ContentProvider {
 
     @Override
     public String getType(Uri uri) {
-        return null;
+        Log.v(LOG_TAG, "getType(Uri uri), ToDoListProvider executed");
+
+        switch (uriMatcher.match(uri)) {
+            case SIMPLE_TODO_LIST:
+                return ToDoListProviderContract.SimpleToDoItemEntry.CONTENT_TYPE;
+            case SIMPLE_TODO_ITEM:
+                return ToDoListProviderContract.SimpleToDoItemEntry.CONTNET_ITEM_TYPE;
+            case DETAILED_TODO_LIST:
+                return ToDoListProviderContract.DetailedToDoItemEntry.CONTENT_TYPE;
+            case DETAILED_TODO_ITEM:
+                return ToDoListProviderContract.DetailedToDoItemEntry.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalArgumentException("Unsupported URI: " + uri);
+        }
     }
 
     @Override
