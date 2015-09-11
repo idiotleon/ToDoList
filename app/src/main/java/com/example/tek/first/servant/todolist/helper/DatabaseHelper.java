@@ -289,23 +289,26 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.v(LOG_TAG, "getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery: " +
                 getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery);
         Cursor cursor = db.rawQuery(getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery, null);
-        if (cursor.getCount() == 0)
-            Log.v(LOG_TAG, "getSortedIncompleteToDoItemsAsArrayList(), cursor is empty.");
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_TITLE));
-            int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_PRIORITY));
-            long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_DEADLINE));
-            long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_ITEM_TIME_DATE_CREATED));
-            String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_DESCRIPTION));
-            int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_CATEGORY));
-            int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_COMPLETION_STATUS_CODE));
-            ToDoItem toDoListItem = new ToDoItem(title, priority, detailDescription,
-                    itemDateAndTimeCreated, deadline, category, completionStatusCode);
-            toDoItemsArrayList.add(toDoListItem);
-            cursor.moveToNext();
+        try {
+            if (cursor.getCount() == 0)
+                Log.v(LOG_TAG, "getSortedIncompleteToDoItemsAsArrayList(), cursor is empty.");
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_TITLE));
+                int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_PRIORITY));
+                long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_DEADLINE));
+                long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_ITEM_TIME_DATE_CREATED));
+                String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_DESCRIPTION));
+                int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_CATEGORY));
+                int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_COMPLETION_STATUS_CODE));
+                ToDoItem toDoListItem = new ToDoItem(title, priority, detailDescription,
+                        itemDateAndTimeCreated, deadline, category, completionStatusCode);
+                toDoItemsArrayList.add(toDoListItem);
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
         }
-
         GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(toDoItemsArrayList, "getSortedIncompleteToDoItemsAsArrayList(), DatabaseHelper");
 
         return toDoItemsArrayList;
@@ -357,21 +360,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.v(LOG_TAG, "getSortedCompletedToDoItemsAsArrayList: " +
                 getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery);
         Cursor cursor = db.rawQuery(getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery, null);
-        if (cursor.getCount() == 0)
-            Log.v(LOG_TAG, "getSortedCompletedToDoItemsAsArrayList(), cursor is empty.");
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_TITLE));
-            int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_PRIORITY));
-            long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_DEADLINE));
-            long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_ITEM_TIME_DATE_CREATED));
-            String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_DESCRIPTION));
-            int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_CATEGORY));
-            int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_COMPLETION_STATUS_CODE));
-            ToDoItem toDoListItem = new ToDoItem(title, priority, detailDescription,
-                    itemDateAndTimeCreated, deadline, category, completionStatusCode);
-            toDoItemsArrayList.add(toDoListItem);
-            cursor.moveToNext();
+        try {
+            if (cursor.getCount() == 0)
+                Log.v(LOG_TAG, "getSortedCompletedToDoItemsAsArrayList(), cursor is empty.");
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_TITLE));
+                int priority = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_PRIORITY));
+                long deadline = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_DEADLINE));
+                long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_ITEM_TIME_DATE_CREATED));
+                String detailDescription = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_DESCRIPTION));
+                int category = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_CATEGORY));
+                int completionStatusCode = cursor.getInt(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_COMPLETION_STATUS_CODE));
+                ToDoItem toDoListItem = new ToDoItem(title, priority, detailDescription,
+                        itemDateAndTimeCreated, deadline, category, completionStatusCode);
+                toDoItemsArrayList.add(toDoListItem);
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
         }
 
         GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(toDoItemsArrayList, "getSortedIncompleteToDoItemsAsArrayList(), DatabaseHelper");
@@ -425,15 +432,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.v(LOG_TAG, "getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery: " +
                 getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery);
         Cursor cursor = db.rawQuery(getSortedToDoItemsInDifferentCompletionStatusAsArrayListQuery, null);
-        if (cursor.getCount() == 0)
-            Log.v(LOG_TAG, "getSortedIncompleteToDoItemsAsArrayList(), cursor is empty.");
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_TITLE));
-            long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_ITEM_TIME_DATE_CREATED));
-            SimpleToDoItem simpleToDoListItem = new SimpleToDoItem(title, itemDateAndTimeCreated);
-            simpleToDoItemsArrayList.add(simpleToDoListItem);
-            cursor.moveToNext();
+        try {
+            if (cursor.getCount() == 0)
+                Log.v(LOG_TAG, "getSortedIncompleteToDoItemsAsArrayList(), cursor is empty.");
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()) {
+                String title = cursor.getString(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_TITLE));
+                long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(TODOLIST_ITEM_COLUMN_ITEM_TIME_DATE_CREATED));
+                SimpleToDoItem simpleToDoListItem = new SimpleToDoItem(title, itemDateAndTimeCreated);
+                simpleToDoItemsArrayList.add(simpleToDoListItem);
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
         }
 
         return simpleToDoItemsArrayList;
