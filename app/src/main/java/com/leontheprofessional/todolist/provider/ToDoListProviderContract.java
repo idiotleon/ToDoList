@@ -19,6 +19,7 @@ public class ToDoListProviderContract {
     public static final class SimpleToDoItemEntry implements BaseColumns {
         public static String TABLE_NAME = "simple_todolist_table";
         public static String SIMPLE_TODO_ITEM_COLUMN_ID = "simple_todolist_id";
+        public static String SIMPLE_TODO_ITEM_COLUMN_TITLE = "simple_todolist_title";
         public static String SIMPLE_TODO_ITEM_COLUMN_PRIORITY = "simple_todo_item_priority";
         public static String SIMPLE_TODO_ITEM_COLUMN_ITEM_TIME_DATE_CREATED = "simple_todo_item_created_time_and_date";
         public static String SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE = "simple_todo_item_completion_status_code";
