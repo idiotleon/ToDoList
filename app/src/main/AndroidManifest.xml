@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.tek.first.servant">
+    package="com.leontheprofessional.todolist">
 
     <application
         android:allowBackup="true"
@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".todolist.activity.ToDoListDisplayActivity"
+            android:name=".activity.ToDoListDisplayActivity"
             android:label="@string/app_name"
             android:uiOptions="splitActionBarWhenNarrow"
             android:windowSoftInputMode="stateHidden">
@@ -18,14 +18,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".todolist.activity.ToDoItemDetailsActivity" />
+        <activity android:name=".activity.ToDoItemDetailsActivity" />
         <activity
-            android:name=".todolist.activity.ToDoListPreferenceActivity"
+            android:name=".activity.ToDoListPreferenceActivity"
             android:label="ToDoList User Preference">
             <intent-filter>
-                <action android:name="com.example.tek.first.servant.ACTION_USER_PREFERENCE" />
+                <action android:name="com.leontheprofessional.todolist.ACTION_USER_PREFERENCE" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".provider.ToDoListProvider"
+            android:authorities="com.leontheprofessional.todolist.ToDoListProvider" />
     </application>
 
 </manifest>
