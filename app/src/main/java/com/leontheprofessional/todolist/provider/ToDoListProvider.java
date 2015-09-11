@@ -2,15 +2,29 @@ package com.leontheprofessional.todolist.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
-import android.database.DatabaseUtils;
 import android.net.Uri;
 
-import com.leontheprofessional.todolist.helper.DatabaseHelper;
 
 public class ToDoListProvider extends ContentProvider {
 
     private DatabaseHelper dbHelper;
+
+    private static final int SIMPLE_TODO_LIST = 100;
+    private static final int SIMPLE_TODO_ITEM = 101;
+    private static final int DETAILED_TODO_LIST = 200;
+    private static final int DETAILED_TODO_ITEM = 201;
+
+    private static final UriMatcher uriMatcher;
+
+    static {
+        uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+        uriMatcher.addURI(ToDoListProviderContract.CONTENT_AUTHORITY, ToDoListProviderContract.PATH_SIMPLE_TODOITEM, SIMPLE_TODO_LIST);
+        uriMatcher.addURI(ToDoListProviderContract.CONTENT_AUTHORITY, ToDoListProviderContract.PATH_SIMPLE_TODOITEM + "/#", SIMPLE_TODO_ITEM);
+        uriMatcher.addURI(ToDoListProviderContract.CONTENT_AUTHORITY, ToDoListProviderContract.PATH_DETAILED_TODOITEM, DETAILED_TODO_LIST);
+        uriMatcher.addURI(ToDoListProviderContract.CONTENT_AUTHORITY, ToDoListProviderContract.PATH_DETAILED_TODOITEM + "/#", DETAILED_TODO_ITEM);
+    }
 
     @Override
     public boolean onCreate() {
