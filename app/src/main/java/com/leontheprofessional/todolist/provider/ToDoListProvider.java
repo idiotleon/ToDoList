@@ -4,12 +4,15 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.net.Uri;
 
 
 public class ToDoListProvider extends ContentProvider {
 
     private DatabaseHelper dbHelper;
+    private SQLiteDatabase database;
 
     private static final int SIMPLE_TODO_LIST = 100;
     private static final int SIMPLE_TODO_ITEM = 101;
@@ -34,6 +37,7 @@ public class ToDoListProvider extends ContentProvider {
 
     @Override
     public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
+        
         return null;
     }
 
@@ -55,5 +59,13 @@ public class ToDoListProvider extends ContentProvider {
     @Override
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         return 0;
+    }
+
+    private void openDatabase() throws SQLiteException {
+        try {
+            database = dbHelper.getWritableDatabase();
+        } catch (SQLiteException ex) {
+            database = dbHelper.getReadableDatabase();
+        }
     }
 }
