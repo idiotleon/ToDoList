@@ -262,7 +262,7 @@ public class GeneralHelper {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    public Uri insertToDoListItem(Context context, DetailedToDoItem toDoListItem) {
+    public static Uri insertToDoListItem(Context context, DetailedToDoItem toDoListItem) {
         ContentResolver contentResolver = context.getContentResolver();
 
         ContentValues contentValues = new ContentValues();
@@ -285,7 +285,7 @@ public class GeneralHelper {
         return insertedId;
     }
 
-    public Uri insertToDoListItem(Context context, SimpleToDoItem simpleToDoItemModel) {
+    public static Uri insertToDoListItem(Context context, SimpleToDoItem simpleToDoItemModel) {
         ContentResolver contentResolver = context.getContentResolver();
 
         ContentValues contentValues = new ContentValues();
@@ -301,7 +301,7 @@ public class GeneralHelper {
         return insertedId;
     }
 
-    public int updateToDoListItem(Context context, DetailedToDoItem detailedToDoItem) {
+    public static int updateToDoListItem(Context context, DetailedToDoItem detailedToDoItem) {
         ContentResolver contentResolver = context.getContentResolver();
 
         ContentValues contentValues = new ContentValues();
@@ -319,7 +319,7 @@ public class GeneralHelper {
         contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_CATEGORY, detailedToDoItem.getCategory());
         contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_COMPLETION_STATUS_CODE, detailedToDoItem.getCompletionStatus().getStatusCode());
 
-        String selection = ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE + " =?";
+        String selection = ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE + " = ?";
         String[] selectionArgs = new String[]{Long.toString(detailedToDoItem.getItemCreatedDateAndTime())};
 
         int updateRowsCount = contentResolver.update(ToDoListProviderContract.DetailedToDoItemEntry.CONTENT_URI,
@@ -328,7 +328,7 @@ public class GeneralHelper {
         return updateRowsCount;
     }
 
-    public int updateToDoListItem(Context context, SimpleToDoItem simpleToDoItemModel) {
+    public static int updateToDoListItem(Context context, SimpleToDoItem simpleToDoItemModel) {
         ContentResolver contentResolver = context.getContentResolver();
 
         ContentValues contentValues = new ContentValues();
@@ -350,7 +350,7 @@ public class GeneralHelper {
         return updateRowsCount;
     }
 
-    public boolean deleteToDoItem(Context context, DetailedToDoItem detailedToDoItem) {
+    public static boolean deleteToDoItem(Context context, DetailedToDoItem detailedToDoItem) {
         Log.v(LOG_TAG, "deleteToDoItem(Context context, DetailedToDoItem detailedToDoItem), GeneralHelper executed.");
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -361,7 +361,7 @@ public class GeneralHelper {
         return true;
     }
 
-    public int deleteToDoItem(Context context, SimpleToDoItem simpleToDoItemModel) {
+    public static int deleteToDoItem(Context context, SimpleToDoItem simpleToDoItemModel) {
         Log.v(LOG_TAG, "deleteToDoItem(Context context, SimpleToDoItem simpleToDoItemModel), GeneralHelper executed.");
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -372,7 +372,7 @@ public class GeneralHelper {
         return deleteRowsCount;
     }
 
-    public ArrayList<DetailedToDoItem> getSortedDetailedToDoItemsAsArrayList(Context context) {
+    public static ArrayList<DetailedToDoItem> getSortedDetailedToDoItemsAsArrayList(Context context) {
 
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -455,7 +455,7 @@ public class GeneralHelper {
         return toDoItemsArrayListSorted;
     }
 
-    public ArrayList<DetailedToDoItem> getSortedIncompleteDetailedToDoItemsAsArrayList(Context context) {
+    public static ArrayList<DetailedToDoItem> getSortedIncompleteDetailedToDoItemsAsArrayList(Context context) {
 
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -534,7 +534,7 @@ public class GeneralHelper {
         return incompleteDetailedToDoItemsArrayList;
     }
 
-    public ArrayList<DetailedToDoItem> getSortedCompletedDetailedToDoItemsAsArrayList(Context context) {
+    public static ArrayList<DetailedToDoItem> getSortedCompletedToDoItemsAsArrayList(Context context) {
 
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -553,14 +553,7 @@ public class GeneralHelper {
         String orderBy;
 
         String projection[] = new String[]{
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_TITLE,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_PRIORITY,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_DESCRIPTION,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_DEADLINE,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_CATEGORY,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_COMPLETION_STATUS_CODE,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_PRICE
+                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_TITLE
         };
 
         switch (sortingByColumnNameOption) {
@@ -608,12 +601,12 @@ public class GeneralHelper {
         } finally {
             cursor.close();
         }
-        GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(completedDetailedToDoItemsArrayList, "getSortedCompletedDetailedToDoItemsAsArrayList(), GeneralHelper");
+        GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(completedDetailedToDoItemsArrayList, "getSortedCompletedToDoItemsAsArrayList(), GeneralHelper");
 
         return completedDetailedToDoItemsArrayList;
     }
 
-    public ArrayList<SimpleToDoItem> getSortedSimpleToDoItemsAsArrayList(Context context) {
+    public static ArrayList<SimpleToDoItem> getSortedSimpleToDoItemsAsArrayList(Context context) {
 
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -679,7 +672,7 @@ public class GeneralHelper {
         return simpleToDoItemsArrayListModel;
     }
 
-    public ArrayList<SimpleToDoItem> getIncompleteSortedSimpleToDoItemsAsArrayList(Context context) {
+    public static ArrayList<SimpleToDoItem> getIncompleteSortedSimpleToDoItemsAsArrayList(Context context) {
 
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -745,7 +738,7 @@ public class GeneralHelper {
         return incompleteSimpleToDoItemsArrayListModel;
     }
 
-    public ArrayList<SimpleToDoItem> getCompletedSortedSimpleToDoItemsAsArrayList(Context context) {
+    public static ArrayList<SimpleToDoItem> getCompletedSortedSimpleToDoItemsAsArrayList(Context context) {
 
         ContentResolver contentResolver = context.getContentResolver();
 

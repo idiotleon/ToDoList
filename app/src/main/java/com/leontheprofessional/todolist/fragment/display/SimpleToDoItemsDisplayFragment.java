@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import com.leontheprofessional.todolist.R;
 import com.leontheprofessional.todolist.activity.ToDoItemDetailsActivity;
-import com.leontheprofessional.todolist.helper.DatabaseHelper;
 import com.leontheprofessional.todolist.helper.GeneralConstants;
 import com.leontheprofessional.todolist.helper.GeneralHelper;
 import com.leontheprofessional.todolist.model.SimpleToDoItem;
@@ -27,7 +26,6 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
     private static final String LOG_TAG = SimpleToDoItemsDisplayFragment.class.getSimpleName();
 
     private ArrayList<SimpleToDoItem> simpleToDoItemModelArrayList;
-    private DatabaseHelper dbHelper;
 
     private ToDoItemStatusChangeListener toDoItemStatusChangeListener;
 
@@ -48,8 +46,6 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
         simpleToDoItemModelArrayList = new ArrayList<>();
-        dbHelper = new DatabaseHelper(getActivity());
-
     }
 
     @Override
@@ -59,7 +55,7 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 simpleToDoItemModelArrayList
-                        = dbHelper.getSortedSimpleToDoItemsAsArrayList();
+                        = GeneralHelper.getSortedSimpleToDoItemsAsArrayList(getActivity());
                 Log.v(LOG_TAG, "onItemLongClick(), IncompleteDetailedItemsDisplayFragment executed");
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Do you want to: ")
@@ -70,7 +66,7 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
                                 switch (which) {
                                     case 0:
                                         simpleToDoItemModel.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
-                                        dbHelper.updateToDoListItem(simpleToDoItemModel);
+                                        GeneralHelper.updateToDoListItem(getActivity(), simpleToDoItemModel);
                                         Toast.makeText(getActivity(), "DetailedToDoItem: " + simpleToDoItemModel.getTitle() + " is marked as complete.", Toast.LENGTH_SHORT).show();
                                         toDoItemStatusChangeListener.onStatusChanged();
                                         break;
@@ -79,7 +75,7 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
                                         builder.setTitle(R.string.delete_confirmation).setPositiveButton(R.string.todolist_confirm_text, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                dbHelper.deleteToDoItem(simpleToDoItemModel);
+                                                GeneralHelper.deleteToDoItem(getActivity(), simpleToDoItemModel);
                                                 toDoItemStatusChangeListener.onStatusChanged();
                                             }
                                         }).setNegativeButton(R.string.todolist_cancel_text, new DialogInterface.OnClickListener() {
@@ -103,7 +99,7 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        simpleToDoItemModelArrayList = dbHelper.getSortedSimpleToDoItemsAsArrayList();
+        simpleToDoItemModelArrayList = GeneralHelper.getSortedSimpleToDoItemsAsArrayList(getActivity());
 
         Intent simpleToDoItemIntent = new Intent(getActivity(), ToDoItemDetailsActivity.class);
         simpleToDoItemIntent.putExtra(GeneralConstants.SIMPLE_TO_DO_ITEM_IDENTIFIER, simpleToDoItemModelArrayList);

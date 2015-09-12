@@ -6,7 +6,7 @@ public abstract class GeneralConstants {
 
     public static final String COMPLETED_TODOLISTITEM_IDENTIFIER = "completedToDoListItemIdentifier";
     public static final String INCOMPLETED_TODOLISTITEM_IDENTIFIER = "incompleteToDoListItemIdentifier";
-    public static final String TO_DO_ITEM_IDENTIFIER = "toDoItemIdentifier";
+    public static final String DETAILED_TO_DO_ITEM_IDENTIFIER = "toDoItemIdentifier";
     public static final String SIMPLE_TO_DO_ITEM_IDENTIFIER = "simpleToDoItemIdentifier";
 
     public static final String HOUR_IDENTIFIER = "hourIdentifier";
