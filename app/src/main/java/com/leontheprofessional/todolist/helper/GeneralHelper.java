@@ -620,15 +620,13 @@ public class GeneralHelper {
 
         ArrayList<SimpleToDoItem> simpleToDoItemsArrayListModel = new ArrayList<>();
 
-        String selection = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_DEADLINE + " = ? AND " +
-                ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE + " = ?";
-        String[] selectionArgs = new String[]{"1", "1"};
+        String selection = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE + " = ?";
+        String[] selectionArgs = new String[]{"1"};
 
         String[] projection = {
                 ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE,
                 ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_TITLE,
                 ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_PRIORITY,
-                ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE
         };
 
         String orderBy;
