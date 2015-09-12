@@ -606,7 +606,7 @@ public class GeneralHelper {
         return completedDetailedToDoItemsArrayList;
     }
 
-    public static ArrayList<SimpleToDoItem> getSortedSimpleToDoItemsAsArrayList(Context context) {
+    public static ArrayList<SimpleToDoItem> getSortedIncompleteSimpleToDoItemsAsArrayList(Context context) {
 
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -620,8 +620,9 @@ public class GeneralHelper {
 
         ArrayList<SimpleToDoItem> simpleToDoItemsArrayListModel = new ArrayList<>();
 
-        String selection = null;
-        String[] selectionArgs = null;
+        String selection = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_DEADLINE + " = ? AND " +
+                ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE + " = ?";
+        String[] selectionArgs = new String[]{"1", "1"};
 
         String[] projection = {
                 ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE,
@@ -672,7 +673,7 @@ public class GeneralHelper {
         return simpleToDoItemsArrayListModel;
     }
 
-    public static ArrayList<SimpleToDoItem> getIncompleteSortedSimpleToDoItemsAsArrayList(Context context) {
+    /*public static ArrayList<SimpleToDoItem> getIncompleteSortedSimpleToDoItemsAsArrayList(Context context) {
 
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -736,7 +737,7 @@ public class GeneralHelper {
         }
 
         return incompleteSimpleToDoItemsArrayListModel;
-    }
+    }*/
 
     public static ArrayList<SimpleToDoItem> getCompletedSortedSimpleToDoItemsAsArrayList(Context context) {
 

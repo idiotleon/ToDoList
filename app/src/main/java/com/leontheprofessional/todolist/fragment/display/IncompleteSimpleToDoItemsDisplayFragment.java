@@ -21,9 +21,9 @@ import com.leontheprofessional.todolist.helper.GeneralHelper.ToDoItemStatusChang
 
 import java.util.ArrayList;
 
-public class SimpleToDoItemsDisplayFragment extends ListFragment {
+public class IncompleteSimpleToDoItemsDisplayFragment extends ListFragment {
 
-    private static final String LOG_TAG = SimpleToDoItemsDisplayFragment.class.getSimpleName();
+    private static final String LOG_TAG = IncompleteSimpleToDoItemsDisplayFragment.class.getSimpleName();
 
     private ArrayList<SimpleToDoItem> simpleToDoItemModelArrayList;
 
@@ -55,7 +55,7 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 simpleToDoItemModelArrayList
-                        = GeneralHelper.getSortedSimpleToDoItemsAsArrayList(getActivity());
+                        = GeneralHelper.getSortedIncompleteSimpleToDoItemsAsArrayList(getActivity());
                 Log.v(LOG_TAG, "onItemLongClick(), IncompleteDetailedItemsDisplayFragment executed");
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle("Do you want to: ")
@@ -99,7 +99,7 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        simpleToDoItemModelArrayList = GeneralHelper.getSortedSimpleToDoItemsAsArrayList(getActivity());
+        simpleToDoItemModelArrayList = GeneralHelper.getSortedIncompleteSimpleToDoItemsAsArrayList(getActivity());
 
         Intent simpleToDoItemIntent = new Intent(getActivity(), ToDoItemDetailsActivity.class);
         simpleToDoItemIntent.putExtra(GeneralConstants.SIMPLE_TO_DO_ITEM_IDENTIFIER, simpleToDoItemModelArrayList);

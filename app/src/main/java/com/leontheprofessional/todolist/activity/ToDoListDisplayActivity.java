@@ -22,7 +22,7 @@ import com.leontheprofessional.todolist.fragment.dialog.DetailedNewToDoItemDialo
 import com.leontheprofessional.todolist.fragment.NewItemAddedFragment;
 import com.leontheprofessional.todolist.fragment.display.CompletedDetailedItemsDisplayFragment;
 import com.leontheprofessional.todolist.fragment.display.IncompleteDetailedItemsDisplayFragment;
-import com.leontheprofessional.todolist.fragment.display.SimpleToDoItemsDisplayFragment;
+import com.leontheprofessional.todolist.fragment.display.IncompleteSimpleToDoItemsDisplayFragment;
 import com.leontheprofessional.todolist.helper.GeneralConstants;
 import com.leontheprofessional.todolist.helper.GeneralHelper;
 import com.leontheprofessional.todolist.model.Date;
@@ -55,7 +55,7 @@ public class ToDoListDisplayActivity extends AppCompatActivity
     private NewItemAddedFragment newItemAddedFragment;
     private IncompleteDetailedItemsDisplayFragment incompleteToDoItemDisplayListFragment;
     private CompletedDetailedItemsDisplayFragment completedToDoItemDisplayListFragment;
-    private SimpleToDoItemsDisplayFragment simpleToDoItemsDisplayFragment;
+    private IncompleteSimpleToDoItemsDisplayFragment simpleToDoItemsDisplayFragment;
 
     private static int counterOfSortByPrioritySelectedTimes = 0;
     private static int counterOfSortByDeadlineSelectedTimes = 0;
@@ -83,7 +83,7 @@ public class ToDoListDisplayActivity extends AppCompatActivity
         completedToDoItemDisplayListFragment
                 = (CompletedDetailedItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_completed_items);
         simpleToDoItemsDisplayFragment
-                = (SimpleToDoItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_simple_todoitems);
+                = (IncompleteSimpleToDoItemsDisplayFragment) fragmentManager.findFragmentById(R.id.todolist_displayfragment_simple_todoitems);
 
         if (savedInstanceState != null) {
             incompleteDetailedToDoItemsArrayList = savedInstanceState.getParcelableArrayList(GeneralConstants.SAVEINSTANCESTATE_INCOMPLETE_TODOITEMS_ARRAYLIST_IDENTIFIER);
@@ -322,7 +322,7 @@ public class ToDoListDisplayActivity extends AppCompatActivity
             completedToDoItemDisplayListFragment.setListAdapter(null);
         }
 
-        incompleteSimpleToDoItemsArrayList = GeneralHelper.getIncompleteSortedSimpleToDoItemsAsArrayList(ToDoListDisplayActivity.this);
+        incompleteSimpleToDoItemsArrayList = GeneralHelper.getSortedIncompleteSimpleToDoItemsAsArrayList(ToDoListDisplayActivity.this);
         simpleToDoItemsListViewCustomAdapter = new SimpleToDoItemsListViewCustomAdapter(ToDoListDisplayActivity.this, incompleteSimpleToDoItemsArrayList);
         if (!incompleteSimpleToDoItemsArrayList.isEmpty()) {
             simpleToDoItemsDisplayFragment.setListAdapter(simpleToDoItemsListViewCustomAdapter);
