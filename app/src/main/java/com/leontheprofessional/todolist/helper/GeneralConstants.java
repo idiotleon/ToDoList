@@ -35,7 +35,7 @@ public abstract class GeneralConstants {
 
 
     public static final String TODOITEMS_SORTING_ASC_OR_DESC_SHAREDPREFERNECE_IDENTIFIER = "sortingTrendASCOrDESC";
-    public static final String TODOITEMS_SORTING_WAY_SHAREDPREFERENCE_IDENTIFIER = "sortingWayPriorityDeadlineTimeAddedOrTitle";
+    public static final String TODOITEMS_SORTING_STANDARD_SHAREDPREFERENCE_IDENTIFIER = "sortingWayPriorityDeadlineTimeAddedOrTitle";
 
     public static final int YEAR_OPTION = 1;
     public static final int MONTH_OF_YEAR_OPTION = 2;

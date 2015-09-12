@@ -15,21 +15,21 @@ import java.util.ArrayList;
 public class SimpleToDoItemsListViewCustomAdapter extends BaseAdapter {
 
     private Context context;
-    private ArrayList<SimpleToDoItem> simpleToDoItemsArrayList;
+    private ArrayList<SimpleToDoItem> simpleToDoItemsArrayListModel;
 
-    public SimpleToDoItemsListViewCustomAdapter(Context context, ArrayList<SimpleToDoItem> simpleToDoItemsArrayList) {
+    public SimpleToDoItemsListViewCustomAdapter(Context context, ArrayList<SimpleToDoItem> simpleToDoItemsArrayListModel) {
         this.context = context;
-        this.simpleToDoItemsArrayList = simpleToDoItemsArrayList;
+        this.simpleToDoItemsArrayListModel = simpleToDoItemsArrayListModel;
     }
 
     @Override
     public int getCount() {
-        return simpleToDoItemsArrayList.size();
+        return simpleToDoItemsArrayListModel.size();
     }
 
     @Override
     public SimpleToDoItem getItem(int position) {
-        return simpleToDoItemsArrayList.get(position);
+        return simpleToDoItemsArrayListModel.get(position);
     }
 
     public String getTitle(int position) {

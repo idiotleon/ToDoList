@@ -26,7 +26,7 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
 
     private static final String LOG_TAG = SimpleToDoItemsDisplayFragment.class.getSimpleName();
 
-    private ArrayList<SimpleToDoItem> simpleToDoItemArrayList;
+    private ArrayList<SimpleToDoItem> simpleToDoItemModelArrayList;
     private DatabaseHelper dbHelper;
 
     private ToDoItemStatusChangeListener toDoItemStatusChangeListener;
@@ -47,7 +47,7 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        simpleToDoItemArrayList = new ArrayList<>();
+        simpleToDoItemModelArrayList = new ArrayList<>();
         dbHelper = new DatabaseHelper(getActivity());
 
     }
@@ -58,7 +58,7 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                simpleToDoItemArrayList
+                simpleToDoItemModelArrayList
                         = dbHelper.getSortedSimpleToDoItemsAsArrayList();
                 Log.v(LOG_TAG, "onItemLongClick(), IncompleteDetailedItemsDisplayFragment executed");
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -66,12 +66,12 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
                         .setItems(R.array.simple_todoitem_operation, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                final SimpleToDoItem simpleToDoItem = simpleToDoItemArrayList.get(position);
+                                final SimpleToDoItem simpleToDoItemModel = simpleToDoItemModelArrayList.get(position);
                                 switch (which) {
                                     case 0:
-                                        simpleToDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
-                                        dbHelper.updateToDoListItem(simpleToDoItem);
-                                        Toast.makeText(getActivity(), "ToDoItem: " + simpleToDoItem.getTitle() + " is marked as complete.", Toast.LENGTH_SHORT).show();
+                                        simpleToDoItemModel.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
+                                        dbHelper.updateToDoListItem(simpleToDoItemModel);
+                                        Toast.makeText(getActivity(), "DetailedToDoItem: " + simpleToDoItemModel.getTitle() + " is marked as complete.", Toast.LENGTH_SHORT).show();
                                         toDoItemStatusChangeListener.onStatusChanged();
                                         break;
                                     case 1:
@@ -79,7 +79,7 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
                                         builder.setTitle(R.string.delete_confirmation).setPositiveButton(R.string.todolist_confirm_text, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                dbHelper.deleteToDoItem(simpleToDoItem);
+                                                dbHelper.deleteToDoItem(simpleToDoItemModel);
                                                 toDoItemStatusChangeListener.onStatusChanged();
                                             }
                                         }).setNegativeButton(R.string.todolist_cancel_text, new DialogInterface.OnClickListener() {
@@ -89,7 +89,7 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
                                             }
                                         });
                                         (builder.create()).show();
-                                        Toast.makeText(getActivity(), "ToDoItem: " + simpleToDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), "DetailedToDoItem: " + simpleToDoItemModel.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
                                         break;
                                 }
                             }
@@ -103,10 +103,10 @@ public class SimpleToDoItemsDisplayFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        simpleToDoItemArrayList = dbHelper.getSortedSimpleToDoItemsAsArrayList();
+        simpleToDoItemModelArrayList = dbHelper.getSortedSimpleToDoItemsAsArrayList();
 
         Intent simpleToDoItemIntent = new Intent(getActivity(), ToDoItemDetailsActivity.class);
-        simpleToDoItemIntent.putExtra(GeneralConstants.SIMPLE_TO_DO_ITEM_IDENTIFIER, simpleToDoItemArrayList);
+        simpleToDoItemIntent.putExtra(GeneralConstants.SIMPLE_TO_DO_ITEM_IDENTIFIER, simpleToDoItemModelArrayList);
         startActivity(simpleToDoItemIntent);
     }
 }

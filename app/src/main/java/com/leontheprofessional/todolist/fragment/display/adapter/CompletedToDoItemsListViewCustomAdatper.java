@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.leontheprofessional.todolist.R;
 import com.leontheprofessional.todolist.helper.GeneralHelper;
-import com.leontheprofessional.todolist.model.ToDoItem;
+import com.leontheprofessional.todolist.model.DetailedToDoItem;
 
 import java.util.ArrayList;
 
@@ -19,9 +19,9 @@ public class CompletedToDoItemsListViewCustomAdatper extends BaseAdapter {
     private static String LOG_TAG = CompletedToDoItemsListViewCustomAdatper.class.getSimpleName();
 
     private Context context;
-    private ArrayList<ToDoItem> completedToDoListItemsArrayList;
+    private ArrayList<DetailedToDoItem> completedToDoListItemsArrayList;
 
-    public CompletedToDoItemsListViewCustomAdatper(Context context, ArrayList<ToDoItem> completedToDoListItemsArrayList) {
+    public CompletedToDoItemsListViewCustomAdatper(Context context, ArrayList<DetailedToDoItem> completedToDoListItemsArrayList) {
         this.context = context;
         this.completedToDoListItemsArrayList = completedToDoListItemsArrayList;
     }
@@ -32,7 +32,7 @@ public class CompletedToDoItemsListViewCustomAdatper extends BaseAdapter {
     }
 
     @Override
-    public ToDoItem getItem(int position) {
+    public DetailedToDoItem getItem(int position) {
         return completedToDoListItemsArrayList.get(position);
     }
 

@@ -4,8 +4,6 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,7 +27,7 @@ public class NewItemAddedFragment extends Fragment {
     private OnNewSimpleItemAddedListener onNewSimpleItemAddedListener;
 
     public interface OnNewSimpleItemAddedListener {
-        void onNewSimpleItemAdded(SimpleToDoItem newSimpleToDoItem);
+        void onNewSimpleItemAdded(SimpleToDoItem newSimpleToDoItemModel);
     }
 
     @Override
@@ -67,8 +65,8 @@ public class NewItemAddedFragment extends Fragment {
                         String newSimpleItemTitle = editTextInput.getText().toString();
                         if (newSimpleItemTitle != null && newSimpleItemTitle.length() > 0) {
                             Long currentTime = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmm").format(Calendar.getInstance().getTime()));
-                            SimpleToDoItem newSimpleToDoItem = new SimpleToDoItem(newSimpleItemTitle, currentTime);
-                            onNewSimpleItemAddedListener.onNewSimpleItemAdded(newSimpleToDoItem);
+                            SimpleToDoItem newSimpleToDoItemModel = new SimpleToDoItem(newSimpleItemTitle, currentTime);
+                            onNewSimpleItemAddedListener.onNewSimpleItemAdded(newSimpleToDoItemModel);
                             editTextInput.setText("");
                             GeneralHelper.hideSoftKeyBoard(getActivity(), v);
                         } else {

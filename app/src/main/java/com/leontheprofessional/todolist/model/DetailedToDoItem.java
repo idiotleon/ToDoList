@@ -7,9 +7,9 @@ import android.util.Log;
 import com.leontheprofessional.todolist.helper.GeneralHelper;
 import com.leontheprofessional.todolist.helper.GeneralHelper.CompletionStatus;
 
-public class ToDoItem implements Parcelable {
+public class DetailedToDoItem implements Parcelable {
 
-    private static final String LOG_TAG = ToDoItem.class.getSimpleName();
+    private static final String LOG_TAG = DetailedToDoItem.class.getSimpleName();
 
     private String title;
     private int priority;
@@ -20,7 +20,7 @@ public class ToDoItem implements Parcelable {
     private CompletionStatus completionStatus;
     private double price;
 
-    public ToDoItem() {
+    public DetailedToDoItem() {
         this.title = null;
         this.priority = 1;
         this.detailDescription = "";
@@ -31,10 +31,10 @@ public class ToDoItem implements Parcelable {
         this.price = 0;
     }
 
-    public ToDoItem(SimpleToDoItem simpleToDoItem) {
-        this.title = simpleToDoItem.getTitle();
-        this.completionStatus = simpleToDoItem.getCompletionStatus();
-        this.itemCreatedDateAndTime = simpleToDoItem.getItemCreatedDateAndTime();
+    public DetailedToDoItem(SimpleToDoItem simpleToDoItemModel) {
+        this.title = simpleToDoItemModel.getTitle();
+        this.completionStatus = simpleToDoItemModel.getCompletionStatus();
+        this.itemCreatedDateAndTime = simpleToDoItemModel.getItemCreatedDateAndTime();
         this.priority = 1;
         this.toDoItemDeadline = 0L;
         this.detailDescription = "";
@@ -42,7 +42,7 @@ public class ToDoItem implements Parcelable {
         this.price = 0.0;
     }
 
-    public ToDoItem(String title) {
+    public DetailedToDoItem(String title) {
         this.title = title;
         this.priority = 1;
         this.detailDescription = "";
@@ -53,7 +53,7 @@ public class ToDoItem implements Parcelable {
         this.price = 0;
     }
 
-    public ToDoItem(String title, Long currentTime) {
+    public DetailedToDoItem(String title, Long currentTime) {
         this.title = title;
         this.priority = 1;
         this.detailDescription = "";
@@ -64,14 +64,14 @@ public class ToDoItem implements Parcelable {
         this.price = 0;
     }
 
-    public ToDoItem(String title, int priority, long toDoItemDeadline) {
+    public DetailedToDoItem(String title, int priority, long toDoItemDeadline) {
         this.title = title;
         this.priority = priority;
         this.toDoItemDeadline = toDoItemDeadline;
         this.price = 0;
     }
 
-    public ToDoItem(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category) {
+    public DetailedToDoItem(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category) {
         this.title = title;
         this.priority = priority;
         this.detailDescription = detailDescription;
@@ -82,7 +82,7 @@ public class ToDoItem implements Parcelable {
         this.price = 0;
     }
 
-    public ToDoItem(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category, int statusCode) {
+    public DetailedToDoItem(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category, int statusCode) {
         this.title = title;
         this.priority = priority;
         this.detailDescription = detailDescription;
@@ -100,7 +100,7 @@ public class ToDoItem implements Parcelable {
         this.price = 0;
     }
 
-    public ToDoItem(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category, CompletionStatus completionStatus) {
+    public DetailedToDoItem(String title, int priority, String detailDescription, Long itemCreatedDateAndTime, Long toDoItemDeadline, int category, CompletionStatus completionStatus) {
         this.title = title;
         this.priority = priority;
         this.detailDescription = detailDescription;
@@ -167,33 +167,33 @@ public class ToDoItem implements Parcelable {
         dest.writeString(detailDescription);
         dest.writeInt(category);
         dest.writeLong(itemCreatedDateAndTime);
-        Log.v(LOG_TAG, "itemCreatedDateAndTime, writeToParcel(Parcel dest, int flags), ToDoItem: " + GeneralHelper.formatToString(itemCreatedDateAndTime));
+        Log.v(LOG_TAG, "itemCreatedDateAndTime, writeToParcel(Parcel dest, int flags), DetailedToDoItem: " + GeneralHelper.formatToString(itemCreatedDateAndTime));
         dest.writeLong(toDoItemDeadline);
         dest.writeValue(completionStatus);
         dest.writeDouble(price);
     }
 
-    protected ToDoItem(Parcel in) {
+    protected DetailedToDoItem(Parcel in) {
         title = in.readString();
         priority = in.readInt();
         detailDescription = in.readString();
         category = in.readInt();
         itemCreatedDateAndTime = in.readLong();
-        Log.v(LOG_TAG, "itemCreatedDateAndTime, in.readLong(), ToDoItem(Parcel in): " + GeneralHelper.formatToString(itemCreatedDateAndTime));
+        Log.v(LOG_TAG, "itemCreatedDateAndTime, in.readLong(), DetailedToDoItem(Parcel in): " + GeneralHelper.formatToString(itemCreatedDateAndTime));
         toDoItemDeadline = in.readLong();
         completionStatus = (CompletionStatus) in.readValue(CompletionStatus.class.getClassLoader());
         price = in.readDouble();
     }
 
-    public static final Creator<ToDoItem> CREATOR = new Creator<ToDoItem>() {
+    public static final Creator<DetailedToDoItem> CREATOR = new Creator<DetailedToDoItem>() {
         @Override
-        public ToDoItem createFromParcel(Parcel in) {
-            return new ToDoItem(in);
+        public DetailedToDoItem createFromParcel(Parcel in) {
+            return new DetailedToDoItem(in);
         }
 
         @Override
-        public ToDoItem[] newArray(int size) {
-            return new ToDoItem[size];
+        public DetailedToDoItem[] newArray(int size) {
+            return new DetailedToDoItem[size];
         }
     };
 }

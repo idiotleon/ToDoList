@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,8 +26,8 @@ import com.leontheprofessional.todolist.R;
 import com.leontheprofessional.todolist.helper.GeneralConstants;
 import com.leontheprofessional.todolist.helper.GeneralHelper;
 import com.leontheprofessional.todolist.model.Date;
+import com.leontheprofessional.todolist.model.DetailedToDoItem;
 import com.leontheprofessional.todolist.model.Time;
-import com.leontheprofessional.todolist.model.ToDoItem;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -59,7 +58,7 @@ public class DetailedNewToDoItemDialogFragment extends DialogFragment {
     private OnNewItemAddedListener onNewItemAddedListener;
 
     public interface OnNewItemAddedListener {
-        void onNewItemAdded(ToDoItem todoItem);
+        void onNewItemAdded(DetailedToDoItem todoItem);
     }
 
     @Override
@@ -208,7 +207,7 @@ public class DetailedNewToDoItemDialogFragment extends DialogFragment {
                     category = 0;
                     toDoItemDeadline = GeneralHelper.parseDateAndTimeModelToLong(dateSet, timeSet);
 
-                    ToDoItem toDoListItem = new ToDoItem(title, priority, descriptionText, currentTimeStamp, toDoItemDeadline, category, completionStatus);
+                    DetailedToDoItem toDoListItem = new DetailedToDoItem(title, priority, descriptionText, currentTimeStamp, toDoItemDeadline, category, completionStatus);
                     onNewItemAddedListener.onNewItemAdded(toDoListItem);
                     GeneralHelper.hideSoftKeyBoard(getActivity(), v);
                     dismiss();

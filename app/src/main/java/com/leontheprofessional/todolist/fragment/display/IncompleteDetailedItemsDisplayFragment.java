@@ -19,7 +19,7 @@ import com.leontheprofessional.todolist.activity.ToDoItemDetailsActivity;
 import com.leontheprofessional.todolist.helper.DatabaseHelper;
 import com.leontheprofessional.todolist.helper.GeneralConstants;
 import com.leontheprofessional.todolist.helper.GeneralHelper;
-import com.leontheprofessional.todolist.model.ToDoItem;
+import com.leontheprofessional.todolist.model.DetailedToDoItem;
 import com.leontheprofessional.todolist.helper.GeneralHelper.ToDoItemStatusChangeListener;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
     private static final String LOG_TAG = IncompleteDetailedItemsDisplayFragment.class.getSimpleName();
 
     private DatabaseHelper dbHelper;
-    private ArrayList<ToDoItem> toDoItemsArrayList;
+    private ArrayList<DetailedToDoItem> toDoItemsArrayList;
 
     private ToDoItemStatusChangeListener toDoItemStatusChangeListener;
 
@@ -74,12 +74,12 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
                         .setItems(R.array.incomplete_todoitem_operation, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                final ToDoItem toDoItem = toDoItemsArrayList.get(position);
+                                final DetailedToDoItem toDoItem = toDoItemsArrayList.get(position);
                                 switch (which) {
                                     case 0:
                                         toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
                                         dbHelper.updateToDoListItem(toDoItem);
-                                        Toast.makeText(getActivity(), "ToDoItem: " + toDoItem.getTitle() + " is marked as complete.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), "DetailedToDoItem: " + toDoItem.getTitle() + " is marked as complete.", Toast.LENGTH_SHORT).show();
                                         toDoItemStatusChangeListener.onStatusChanged();
                                         break;
                                     case 1:
@@ -97,7 +97,7 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
                                             }
                                         });
                                         (builder.create()).show();
-                                        Toast.makeText(getActivity(), "ToDoItem: " + toDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), "DetailedToDoItem: " + toDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
                                         break;
                                 }
                             }

@@ -27,8 +27,8 @@ import com.leontheprofessional.todolist.helper.DatabaseHelper;
 import com.leontheprofessional.todolist.helper.GeneralConstants;
 import com.leontheprofessional.todolist.helper.GeneralHelper;
 import com.leontheprofessional.todolist.model.Date;
+import com.leontheprofessional.todolist.model.DetailedToDoItem;
 import com.leontheprofessional.todolist.model.SimpleToDoItem;
-import com.leontheprofessional.todolist.model.ToDoItem;
 
 public class ToDoItemDetailsActivity extends AppCompatActivity
         implements DetailedNewToDoItemDialogFragment.OnNewItemAddedListener,
@@ -50,9 +50,9 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
     private long deadline;
     private long dateAndTimeCreated;
 
-    private ToDoItem toDoItem;
+    private DetailedToDoItem toDoItem;
 
-    private SimpleToDoItem simpleToDoItem;
+    private SimpleToDoItem simpleToDoItemModel;
 
     private DatabaseHelper dbHelper;
 
@@ -76,13 +76,13 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
         }
 
         if (intent != null) {
-            simpleToDoItem = intent.getExtras().getParcelable(GeneralConstants.SIMPLE_TO_DO_ITEM_IDENTIFIER);
+            simpleToDoItemModel = intent.getExtras().getParcelable(GeneralConstants.SIMPLE_TO_DO_ITEM_IDENTIFIER);
         } else {
-            simpleToDoItem = savedInstanceState.getParcelable(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER);
+            simpleToDoItemModel = savedInstanceState.getParcelable(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER);
         }
-        if (simpleToDoItem != null) {
-            title = simpleToDoItem.getTitle();
-            dateAndTimeCreated = simpleToDoItem.getItemCreatedDateAndTime();
+        if (simpleToDoItemModel != null) {
+            title = simpleToDoItemModel.getTitle();
+            dateAndTimeCreated = simpleToDoItemModel.getItemCreatedDateAndTime();
         }
 
         dbHelper = new DatabaseHelper(ToDoItemDetailsActivity.this);
@@ -103,8 +103,8 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
                                 description = editText.getText().toString();
                                 toDoItem.setDetailDescription(description);
                                 dbHelper.updateToDoListItem(toDoItem);
-                                Toast.makeText(ToDoItemDetailsActivity.this, "Description of ToDoItem: " + title + " updated", Toast.LENGTH_SHORT).show();
-                                Log.v(LOG_TAG, "Description of ToDoItem updated");
+                                Toast.makeText(ToDoItemDetailsActivity.this, "Description of DetailedToDoItem: " + title + " updated", Toast.LENGTH_SHORT).show();
+                                Log.v(LOG_TAG, "Description of DetailedToDoItem updated");
                                 refreshToDoItemDetailsPage(toDoItem);
                             }
                         }).setNegativeButton(R.string.todolist_cancel_text, new DialogInterface.OnClickListener() {
@@ -125,8 +125,8 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
         if (toDoItem != null)
             refreshToDoItemDetailsPage(toDoItem);
 
-        if (simpleToDoItem != null)
-            refreshSimpleToDoItemPage(simpleToDoItem);
+        if (simpleToDoItemModel != null)
+            refreshSimpleToDoItemPage(simpleToDoItemModel);
 
         /**
          * Styling the ActionBar
@@ -151,12 +151,12 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
                 if (toDoItem != null) {
                     toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
                     dbHelper.updateToDoListItem(toDoItem);
-                    Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as complete");
+                    Log.v(LOG_TAG, "DetailedToDoItem: " + toDoItem.getTitle() + " is marked as complete");
                 }
-                if (simpleToDoItem != null) {
-                    simpleToDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
-                    dbHelper.updateToDoListItem(simpleToDoItem);
-                    Log.v(LOG_TAG, "SimpleToDoItem: " + simpleToDoItem.getTitle() + " is marked as complete");
+                if (simpleToDoItemModel != null) {
+                    simpleToDoItemModel.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
+                    dbHelper.updateToDoListItem(simpleToDoItemModel);
+                    Log.v(LOG_TAG, "SimpleToDoItem: " + simpleToDoItemModel.getTitle() + " is marked as complete");
                 }
                 Intent intent = new Intent(ToDoItemDetailsActivity.this, ToDoListDisplayActivity.class);
                 startActivity(intent);
@@ -175,12 +175,12 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
                                     case 1:
 //                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_COMPLETION_STATUS_INCOMPLETE);
                                         toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.INCOMPLETE);
-                                        Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as incomplete");
+                                        Log.v(LOG_TAG, "DetailedToDoItem: " + toDoItem.getTitle() + " is marked as incomplete");
                                         break;
                                     case 2:
 //                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_COMPLETION_STATUS_COMPLETE);
                                         toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
-                                        Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as complete");
+                                        Log.v(LOG_TAG, "DetailedToDoItem: " + toDoItem.getTitle() + " is marked as complete");
                                         break;
                                 }
                                 dbHelper.updateToDoListItem(toDoItem);
@@ -201,11 +201,11 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
                     public void onClick(DialogInterface dialog, int which) {
                         if (toDoItem != null) {
                             dbHelper.deleteToDoItem(toDoItem);
-                            Toast.makeText(ToDoItemDetailsActivity.this, "ToDoItem: " + toDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ToDoItemDetailsActivity.this, "DetailedToDoItem: " + toDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
                         }
-                        if (simpleToDoItem != null) {
-                            dbHelper.deleteToDoItem(simpleToDoItem);
-                            Toast.makeText(ToDoItemDetailsActivity.this, "SimpleToDoItem: " + simpleToDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
+                        if (simpleToDoItemModel != null) {
+                            dbHelper.deleteToDoItem(simpleToDoItemModel);
+                            Toast.makeText(ToDoItemDetailsActivity.this, "SimpleToDoItem: " + simpleToDoItemModel.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
                         }
                         Intent intent = new Intent(ToDoItemDetailsActivity.this, ToDoListDisplayActivity.class);
                         startActivity(intent);
@@ -250,7 +250,7 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
         }
     }
 
-    private void refreshToDoItemDetailsPage(ToDoItem toDoItem) {
+    private void refreshToDoItemDetailsPage(DetailedToDoItem toDoItem) {
         // todo: check completionStatus of toDoItem, depending on which to improve UI of details activity
         titleTextView.setText(toDoItem.getTitle());
         Long toDoItemDeadline = toDoItem.getToDoItemDeadline();
@@ -269,7 +269,7 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
         dateAndTimeCreatedTextView.setText("Time created: " + timeAdded);
     }
 
-    private void refreshSimpleToDoItemPage(SimpleToDoItem simpleToDoItem) {
+    private void refreshSimpleToDoItemPage(SimpleToDoItem simpleToDoItemModel) {
         titleTextView.setText(toDoItem.getTitle());
         String timeAdded = GeneralHelper.parseDateAndTimeToString(toDoItem.getItemCreatedDateAndTime());
         Log.v(LOG_TAG, "timeAdded, refreshToDoItemDetailsPage(), ToDoItemDetailsActivity: " + timeAdded);
@@ -279,7 +279,7 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER, simpleToDoItem);
+        outState.putParcelable(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER, simpleToDoItemModel);
         outState.putParcelable(GeneralConstants.SAVEINSTANCESTATE_TODOITEM_IDENTIFIER, toDoItem);
     }
 
@@ -289,7 +289,7 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
     }
 
     @Override
-    public void onNewItemAdded(ToDoItem todoItem) {
+    public void onNewItemAdded(DetailedToDoItem todoItem) {
 
     }
 

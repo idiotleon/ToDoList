@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.leontheprofessional.todolist.R;
@@ -30,7 +29,7 @@ import com.leontheprofessional.todolist.model.Date;
 import com.leontheprofessional.todolist.model.SimpleToDoItem;
 import com.leontheprofessional.todolist.model.Time;
 
-import com.leontheprofessional.todolist.model.ToDoItem;
+import com.leontheprofessional.todolist.model.DetailedToDoItem;
 
 import java.util.ArrayList;
 
@@ -46,9 +45,9 @@ public class ToDoListDisplayActivity extends AppCompatActivity
 
     private DatabaseHelper dbHelper;
 
-    private ArrayList<ToDoItem> incompleteToDoItemsArrayList;
-    private ArrayList<ToDoItem> completedToDoItemsArrayList;
-    private ArrayList<SimpleToDoItem> simpleToDoItemsArrayList;
+    private ArrayList<DetailedToDoItem> incompleteToDoItemsArrayList;
+    private ArrayList<DetailedToDoItem> completedToDoItemsArrayList;
+    private ArrayList<SimpleToDoItem> simpleToDoItemsArrayListModel;
 
     private ToDoItemsListViewCustomAdapter incompleteToDoItemsCustomAdapter;
     private CompletedToDoItemsListViewCustomAdatper completedToDoItemsCustomAdapter;
@@ -71,12 +70,12 @@ public class ToDoListDisplayActivity extends AppCompatActivity
 
         incompleteToDoItemsArrayList = new ArrayList<>();
         completedToDoItemsArrayList = new ArrayList<>();
-        simpleToDoItemsArrayList = new ArrayList<>();
+        simpleToDoItemsArrayListModel = new ArrayList<>();
 
         if (savedInstanceState != null) {
             incompleteToDoItemsArrayList = savedInstanceState.getParcelableArrayList(GeneralConstants.SAVEINSTANCESTATE_INCOMPLETE_TODOITEMS_ARRAYLIST_IDENTIFIER);
             completedToDoItemsArrayList = savedInstanceState.getParcelableArrayList(GeneralConstants.SAVEINSTANCESTATE_COMPLETED_TODOITEMS_ARRAYLIST_IDENTIFIER);
-            simpleToDoItemsArrayList = savedInstanceState.getParcelableArrayList(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER);
+            simpleToDoItemsArrayListModel = savedInstanceState.getParcelableArrayList(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER);
         } else {
             dbHelper = new DatabaseHelper(ToDoListDisplayActivity.this);
         }
@@ -262,7 +261,7 @@ public class ToDoListDisplayActivity extends AppCompatActivity
         SharedPreferences sharedPreferences = PreferenceManager
                 .getDefaultSharedPreferences(ToDoListDisplayActivity.this);
 
-        sharedPreferences.edit().putString(GeneralConstants.TODOITEMS_SORTING_WAY_SHAREDPREFERENCE_IDENTIFIER, sortingPreference).commit();
+        sharedPreferences.edit().putString(GeneralConstants.TODOITEMS_SORTING_STANDARD_SHAREDPREFERENCE_IDENTIFIER, sortingPreference).commit();
 
         if (counter % 2 == 0) {
             sharedPreferences.edit().putInt(GeneralConstants.TODOITEMS_SORTING_ASC_OR_DESC_SHAREDPREFERNECE_IDENTIFIER, DatabaseHelper.SORTING_STANDARD_DESC).commit();
@@ -281,12 +280,12 @@ public class ToDoListDisplayActivity extends AppCompatActivity
         outState.putParcelableArrayList(
                 GeneralConstants.SAVEINSTANCESTATE_COMPLETED_TODOITEMS_ARRAYLIST_IDENTIFIER, completedToDoItemsArrayList);
         outState.putParcelableArrayList(
-                GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER, simpleToDoItemsArrayList);
+                GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER, simpleToDoItemsArrayListModel);
     }
 
     @Override
-    public void onNewItemAdded(ToDoItem toDoItem) {
-        Toast.makeText(ToDoListDisplayActivity.this, "A new ToDoItem added", Toast.LENGTH_SHORT).show();
+    public void onNewItemAdded(DetailedToDoItem toDoItem) {
+        Toast.makeText(ToDoListDisplayActivity.this, "A new DetailedToDoItem added", Toast.LENGTH_SHORT).show();
         dbHelper.insertToDoListItem(toDoItem);
         refreshPage();
     }
@@ -294,9 +293,9 @@ public class ToDoListDisplayActivity extends AppCompatActivity
     @Override
     public void onNewSimpleItemAdded(SimpleToDoItem newSimpleItem) {
         dbHelper.insertSimpleToDoItem(newSimpleItem);
-        Log.v(LOG_TAG, "A new simple ToDoItem added.");
-        Toast.makeText(ToDoListDisplayActivity.this, "A new simple ToDoItem added", Toast.LENGTH_SHORT).show();
-        simpleToDoItemsArrayList.add(0, newSimpleItem);
+        Log.v(LOG_TAG, "A new simple DetailedToDoItem added.");
+        Toast.makeText(ToDoListDisplayActivity.this, "A new simple DetailedToDoItem added", Toast.LENGTH_SHORT).show();
+        simpleToDoItemsArrayListModel.add(0, newSimpleItem);
         refreshPage();
     }
 
@@ -323,9 +322,9 @@ public class ToDoListDisplayActivity extends AppCompatActivity
             completedToDoItemDisplayListFragment.setListAdapter(null);
         }
 
-        simpleToDoItemsArrayList = dbHelper.getSortedSimpleToDoItemsAsArrayList();
-        simpleToDoItemsListViewCustomAdapter = new SimpleToDoItemsListViewCustomAdapter(ToDoListDisplayActivity.this, simpleToDoItemsArrayList);
-        if (!simpleToDoItemsArrayList.isEmpty()) {
+        simpleToDoItemsArrayListModel = dbHelper.getSortedSimpleToDoItemsAsArrayList();
+        simpleToDoItemsListViewCustomAdapter = new SimpleToDoItemsListViewCustomAdapter(ToDoListDisplayActivity.this, simpleToDoItemsArrayListModel);
+        if (!simpleToDoItemsArrayListModel.isEmpty()) {
             simpleToDoItemsDisplayFragment.setListAdapter(simpleToDoItemsListViewCustomAdapter);
         } else {
             simpleToDoItemsDisplayFragment.setListAdapter(null);
