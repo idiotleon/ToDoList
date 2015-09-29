@@ -303,6 +303,8 @@ public class GeneralHelper {
     }
 
     public static int updateToDoListItem(Context context, DetailedToDoItem detailedToDoItem) {
+        Log.v(LOG_TAG, "updateToDoListItem(Context context, DetailedToDoItem detailedToDoItem) executed. ");
+
         ContentResolver contentResolver = context.getContentResolver();
 
         ContentValues contentValues = new ContentValues();
@@ -319,6 +321,7 @@ public class GeneralHelper {
         Log.v(LOG_TAG, "deadline, updated by DatabaseHelper: " + deadline);
         contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_CATEGORY, detailedToDoItem.getCategory());
         contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_COMPLETION_STATUS_CODE, detailedToDoItem.getCompletionStatus().getStatusCode());
+        Log.v(LOG_TAG, "completionStatusCode, updated by DatabaseHelper: " + detailedToDoItem.getCompletionStatus().getStatusCode());
 
         String selection = ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE + " = ?";
         String[] selectionArgs = new String[]{Long.toString(detailedToDoItem.getItemCreatedDateAndTime())};
@@ -330,6 +333,8 @@ public class GeneralHelper {
     }
 
     public static int updateToDoListItem(Context context, SimpleToDoItem simpleToDoItemModel) {
+        Log.v(LOG_TAG, "updateToDoListItem(Context context, SimpleToDoItem simpleToDoItemModel) executed. ");
+
         ContentResolver contentResolver = context.getContentResolver();
 
         ContentValues contentValues = new ContentValues();

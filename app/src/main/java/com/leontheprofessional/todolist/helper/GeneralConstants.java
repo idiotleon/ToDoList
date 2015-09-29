@@ -1,5 +1,7 @@
 package com.leontheprofessional.todolist.helper;
 
+import android.os.Bundle;
+
 import com.leontheprofessional.todolist.R;
 
 public abstract class GeneralConstants {
@@ -19,6 +21,8 @@ public abstract class GeneralConstants {
     public static final String SAVEINSTANCESTATE_COMPLETED_TODOITEMS_ARRAYLIST_IDENTIFIER = "completeToDoItemIdentifier";
     public static final String SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER = "simpleToDoItemIdentifier";
     public static final String SAVEINSTANCESTATE_TODOITEM_IDENTIFIER = "toDoItemIdentifier";
+
+    public static final Bundle NULL_SAVED_INSTANCE_STATE = null;
 
     public static final int PRIORITY_LEVEL_OPTIONS = 10;
 
