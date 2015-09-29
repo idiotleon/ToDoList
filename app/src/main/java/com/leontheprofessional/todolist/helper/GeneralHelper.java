@@ -262,23 +262,23 @@ public class GeneralHelper {
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
-    public static Uri insertToDoListItem(Context context, DetailedToDoItem toDoListItem) {
+    public static Uri insertToDoListItem(Context context, DetailedToDoItem detailedToDoListItem) {
         ContentResolver contentResolver = context.getContentResolver();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_TITLE, toDoListItem.getTitle());
-        contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_DESCRIPTION, toDoListItem.getDetailDescription());
-        contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_PRIORITY, toDoListItem.getPriority());
-        Long toDoItemDateAndTimeCreatedLongType = toDoListItem.getItemCreatedDateAndTime();
+        contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_TITLE, detailedToDoListItem.getTitle());
+        contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_DESCRIPTION, detailedToDoListItem.getDetailDescription());
+        contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_PRIORITY, detailedToDoListItem.getPriority());
+        Long toDoItemDateAndTimeCreatedLongType = detailedToDoListItem.getItemCreatedDateAndTime();
         Log.v(LOG_TAG, "itemCreatedDateAndTimeLongType, inserted by DatabaseHelper: " + toDoItemDateAndTimeCreatedLongType);
         String toDoItemDateAndTimeCreated = Long.toString(toDoItemDateAndTimeCreatedLongType);
         contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE, toDoItemDateAndTimeCreated);
         Log.v(LOG_TAG, "itemCreatedDateAndTime, inserted by DatabaseHelper: " + toDoItemDateAndTimeCreated);
-        String deadline = Long.toString(toDoListItem.getToDoItemDeadline());
+        String deadline = Long.toString(detailedToDoListItem.getToDoItemDeadline());
         contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_DEADLINE, deadline);
         Log.v(LOG_TAG, "deadline, inserted by DatabaseHelper: " + deadline);
-        contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_CATEGORY, toDoListItem.getCategory());
-        contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_COMPLETION_STATUS_CODE, toDoListItem.getCompletionStatus().getStatusCode());
+        contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_CATEGORY, detailedToDoListItem.getCategory());
+        contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_COMPLETION_STATUS_CODE, detailedToDoListItem.getCompletionStatus().getStatusCode());
 
         Uri insertedId = contentResolver.insert(ToDoListProviderContract.DetailedToDoItemEntry.CONTENT_URI, contentValues);
 
@@ -298,6 +298,7 @@ public class GeneralHelper {
         contentValues.put(ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE, simpleToDoItemModel.getCompletionStatus().getStatusCode());
 
         Uri insertedId = contentResolver.insert(ToDoListProviderContract.SimpleToDoItemEntry.CONTENT_URI, contentValues);
+        Log.v(LOG_TAG, "insertToDoListItem(Context context, SimpleToDoItem simpleToDoItemModel), GeneralHelper: " + insertedId.toString());
         return insertedId;
     }
 
@@ -607,6 +608,7 @@ public class GeneralHelper {
     }
 
     public static ArrayList<SimpleToDoItem> getSortedIncompleteSimpleToDoItemsAsArrayList(Context context) {
+        Log.v(LOG_TAG, "getSortedIncompleteSimpleToDoItemsAsArrayList(Context context) executed");
 
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -618,22 +620,18 @@ public class GeneralHelper {
                 = sharedPreferences.getInt(GeneralConstants.TODOITEMS_SORTING_ASC_OR_DESC_SHAREDPREFERNECE_IDENTIFIER,
                 DatabaseHelper.SORTING_STANDARD_DESC);
 
-        ArrayList<SimpleToDoItem> simpleToDoItemsArrayListModel = new ArrayList<>();
+        ArrayList<SimpleToDoItem> incompleteSimpleToDoItemsArrayListModel = new ArrayList<>();
 
         String selection = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE + " = ?";
         String[] selectionArgs = new String[]{"1"};
 
         String[] projection = {
                 ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE,
-                ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_TITLE,
-                ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_PRIORITY,
+                ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_TITLE
         };
 
         String orderBy;
         switch (sortingWay) {
-            case DatabaseHelper.SORT_BY_PRIORITY:
-                orderBy = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_PRIORITY;
-                break;
             case DatabaseHelper.SORT_BY_TITLE:
                 orderBy = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE;
                 break;
@@ -657,10 +655,11 @@ public class GeneralHelper {
                 cursor.moveToFirst();
                 while (!cursor.isAfterLast()) {
                     String title = cursor.getString(cursor.getColumnIndex(ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_TITLE));
+                    Log.v(LOG_TAG, "title, getSortedIncompleteSimpleToDoItemsAsArrayList(Context context): " + title);
                     long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE));
                     int completionStatusCode = cursor.getInt(cursor.getColumnIndex(ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE));
                     SimpleToDoItem simpleToDoListItem = new SimpleToDoItem(title, itemDateAndTimeCreated, completionStatusCode);
-                    simpleToDoItemsArrayListModel.add(simpleToDoListItem);
+                    incompleteSimpleToDoItemsArrayListModel.add(simpleToDoListItem);
                     cursor.moveToNext();
                 }
             }
@@ -668,7 +667,7 @@ public class GeneralHelper {
             cursor.close();
         }
 
-        return simpleToDoItemsArrayListModel;
+        return incompleteSimpleToDoItemsArrayListModel;
     }
 
     /*public static ArrayList<SimpleToDoItem> getIncompleteSortedSimpleToDoItemsAsArrayList(Context context) {

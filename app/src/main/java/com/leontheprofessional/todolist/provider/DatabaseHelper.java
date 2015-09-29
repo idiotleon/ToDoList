@@ -49,8 +49,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         String createSimpleToDoItemListTableQuery = "CREATE TABLE " + ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME + " (" +
                 ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_TITLE + " TEXT NOT NULL, " +
+                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_PRIORITY + " INTEGER DEFAULT 1, " +
                 ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE + " TEXT NOT NULL, " +
-                ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_DEADLINE + " INTEGER DEFAULT 1, " +
                 ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE + " INTEGER DEFAULT 1)";
         Log.v(LOG_TAG, "createSimpleToDoItemListTableQuery: " + createSimpleToDoItemListTableQuery);
         db.execSQL(createSimpleToDoItemListTableQuery);

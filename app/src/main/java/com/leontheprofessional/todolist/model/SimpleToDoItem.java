@@ -10,27 +10,24 @@ public class SimpleToDoItem implements Parcelable {
     private static final String LOG_TAG = SimpleToDoItem.class.getSimpleName();
 
     private String title;
-    private int priority;
+    private int priority = 1;
     private Long itemCreatedDateAndTime;
     private GeneralHelper.CompletionStatus completionStatus;
 
     public SimpleToDoItem(String title, Long itemCreatedDateAndTime) {
         this.title = title;
-        priority = 1;
         this.itemCreatedDateAndTime = itemCreatedDateAndTime;
         completionStatus = GeneralHelper.CompletionStatus.INCOMPLETE;
     }
 
     public SimpleToDoItem(String title, Long itemCreatedDateAndTime, GeneralHelper.CompletionStatus completionStatus) {
         this.title = title;
-        priority = 1;
         this.itemCreatedDateAndTime = itemCreatedDateAndTime;
         this.completionStatus = completionStatus;
     }
 
     public SimpleToDoItem(String title, Long itemCreatedDateAndTime, int completionStatusCode) {
         this.title = title;
-        priority = 1;
         this.itemCreatedDateAndTime = itemCreatedDateAndTime;
         switch (completionStatusCode) {
             case 2:

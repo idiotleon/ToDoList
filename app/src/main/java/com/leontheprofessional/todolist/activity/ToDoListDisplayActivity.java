@@ -1,7 +1,6 @@
 package com.leontheprofessional.todolist.activity;
 
 import android.app.AlertDialog;
-import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -62,14 +61,11 @@ public class ToDoListDisplayActivity extends AppCompatActivity
     private static int counterOfSortByTimeAddedSelectedTimes = 0;
     private static int counterOfSortByTitleSelectedTimes = 0;
 
-    private ContentResolver contentResolver;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.todolist_main_activity);
-
-        contentResolver = getContentResolver();
 
         incompleteDetailedToDoItemsArrayList = new ArrayList<>();
         completedToDoItemsArrayList = new ArrayList<>();

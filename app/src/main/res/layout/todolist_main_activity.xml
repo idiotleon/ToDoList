@@ -5,28 +5,28 @@
 
     <fragment
         android:id="@+id/todolist_newitem"
-        android:name="com.example.tek.first.servant.todolist.fragment.NewItemAddedFragment"
+        android:name="com.leontheprofessional.todolist.fragment.NewItemAddedFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
     <fragment
         android:id="@+id/todolist_displayfragment_incomplete_items"
-        android:name="com.example.tek.first.servant.todolist.fragment.display.IncompleteDetailedItemsDisplayFragment"
+        android:name="com.leontheprofessional.todolist.fragment.display.IncompleteDetailedItemsDisplayFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/todolist_newitem" />
 
     <fragment
         android:id="@+id/todolist_displayfragment_simple_todoitems"
-        android:name="com.example.tek.first.servant.todolist.fragment.display.SimpleToDoItemsDisplayFragment"
+        android:name="com.leontheprofessional.todolist.fragment.display.IncompleteSimpleToDoItemsDisplayFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/todolist_displayfragment_incomplete_items" />
 
     <fragment
         android:id="@+id/todolist_displayfragment_completed_items"
-        android:name="com.example.tek.first.servant.todolist.fragment.display.CompletedDetailedItemsDisplayFragment"
+        android:name="com.leontheprofessional.todolist.fragment.display.CompletedDetailedItemsDisplayFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/todolist_displayfragment_simple_todoitems" />

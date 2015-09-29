@@ -64,9 +64,9 @@ public class NewItemAddedFragment extends Fragment {
                             (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         String newSimpleItemTitle = editTextInput.getText().toString();
                         if (newSimpleItemTitle != null && newSimpleItemTitle.length() > 0) {
-                            Long currentTime = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmm").format(Calendar.getInstance().getTime()));
-                            SimpleToDoItem newSimpleToDoItemModel = new SimpleToDoItem(newSimpleItemTitle, currentTime);
-                            onNewSimpleItemAddedListener.onNewSimpleItemAdded(newSimpleToDoItemModel);
+                            Long currentTime = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime()));
+                            SimpleToDoItem newSimpleToDoItem = new SimpleToDoItem(newSimpleItemTitle, currentTime);
+                            onNewSimpleItemAddedListener.onNewSimpleItemAdded(newSimpleToDoItem);
                             editTextInput.setText("");
                             GeneralHelper.hideSoftKeyBoard(getActivity(), v);
                         } else {

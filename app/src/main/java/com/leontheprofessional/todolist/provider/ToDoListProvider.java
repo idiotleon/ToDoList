@@ -7,13 +7,10 @@ import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.database.sqlite.SQLiteQuery;
 import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
-
-import org.w3c.dom.Text;
 
 
 public class ToDoListProvider extends ContentProvider {
@@ -32,10 +29,14 @@ public class ToDoListProvider extends ContentProvider {
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(ToDoListProviderContract.CONTENT_AUTHORITY, ToDoListProviderContract.PATH_SIMPLE_TODOITEM, SIMPLE_TODO_LIST);
-        uriMatcher.addURI(ToDoListProviderContract.CONTENT_AUTHORITY, ToDoListProviderContract.PATH_SIMPLE_TODOITEM + "/#", SIMPLE_TODO_ITEM);
-        uriMatcher.addURI(ToDoListProviderContract.CONTENT_AUTHORITY, ToDoListProviderContract.PATH_DETAILED_TODOITEM, DETAILED_TODO_LIST);
-        uriMatcher.addURI(ToDoListProviderContract.CONTENT_AUTHORITY, ToDoListProviderContract.PATH_DETAILED_TODOITEM + "/#", DETAILED_TODO_ITEM);
+        uriMatcher.addURI(ToDoListProviderContract.CONTENT_AUTHORITY,
+                ToDoListProviderContract.PATH_SIMPLE_TODOITEM, SIMPLE_TODO_LIST);
+        uriMatcher.addURI(ToDoListProviderContract.CONTENT_AUTHORITY,
+                ToDoListProviderContract.PATH_SIMPLE_TODOITEM + "/#", SIMPLE_TODO_ITEM);
+        uriMatcher.addURI(ToDoListProviderContract.CONTENT_AUTHORITY,
+                ToDoListProviderContract.PATH_DETAILED_TODOITEM, DETAILED_TODO_LIST);
+        uriMatcher.addURI(ToDoListProviderContract.CONTENT_AUTHORITY,
+                ToDoListProviderContract.PATH_DETAILED_TODOITEM + "/#", DETAILED_TODO_ITEM);
     }
 
     @Override
@@ -113,21 +114,25 @@ public class ToDoListProvider extends ContentProvider {
         long id;
         Uri insertedId;
         switch (uriMatcher.match(uri)) {
-            case SIMPLE_TODO_ITEM:
+            case SIMPLE_TODO_LIST:
                 id = database.insert(ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME, nullColumnHack, values);
                 if (id > -1) {
                     insertedId = ContentUris.withAppendedId(ToDoListProviderContract.SimpleToDoItemEntry.CONTENT_URI, id);
+                    Log.v(LOG_TAG, "A new simple ToDoItem, insert(Uri uri, ContentValues values), ToDoListProvider: " + insertedId.toString());
                     getContext().getContentResolver().notifyChange(insertedId, null);
                     return insertedId;
                 }
-            case DETAILED_TODO_ITEM:
+            case DETAILED_TODO_LIST:
                 id = database.insert(ToDoListProviderContract.DetailedToDoItemEntry.TABLE_NAME, nullColumnHack, values);
                 if (id > -1) {
                     insertedId = ContentUris.withAppendedId(ToDoListProviderContract.DetailedToDoItemEntry.CONTENT_URI, id);
+                    Log.v(LOG_TAG, "A new detailed ToDoItem, insert(Uri uri, ContentValues values), ToDoListProvider: " + insertedId.toString());
                     getContext().getContentResolver().notifyChange(insertedId, null);
                     return insertedId;
                 }
         }
+
+        Log.v(LOG_TAG, "Returns null, insert(Uri uri, ContentValues values), ToDoListProvider.");
         return null;
     }
 

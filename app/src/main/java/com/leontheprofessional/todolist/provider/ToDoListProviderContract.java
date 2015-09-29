@@ -13,8 +13,8 @@ public class ToDoListProviderContract {
 
     public static final Uri BASE_CONTENT_URI = Uri.parse("content://" + CONTENT_AUTHORITY);
 
-    public static final String PATH_SIMPLE_TODOITEM = "simple_todo_item";
-    public static final String PATH_DETAILED_TODOITEM = "detail_todo_item";
+    public static final String PATH_SIMPLE_TODOITEM = "simple_todolist_table";
+    public static final String PATH_DETAILED_TODOITEM = "detailed_todolist_table";
 
     public static final class SimpleToDoItemEntry implements BaseColumns {
         public static String TABLE_NAME = "simple_todolist_table";
@@ -22,8 +22,6 @@ public class ToDoListProviderContract {
         public static String SIMPLE_TODO_ITEM_COLUMN_TITLE = "simple_todolist_title";
         public static String SIMPLE_TODO_ITEM_COLUMN_PRIORITY = "simple_todo_item_priority";
         public static String SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE = "simple_todo_item_created_time_and_date";
-        // identifier column to tell SimpleToDoItem and DetailedToDoItem
-        public static String SIMPLE_TODO_ITEM_COLUMN_DEADLINE = "simple_todo_item_deadline";
         public static String SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE = "simple_todo_item_completion_status_code";
 
         public static final Uri CONTENT_URI = BASE_CONTENT_URI.buildUpon().appendPath(PATH_SIMPLE_TODOITEM).build();
