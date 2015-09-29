@@ -6,6 +6,9 @@
     <string name="todolist_menu_display">Display</string>
     <string name="todolist_menu_preference">Settings</string>
 
+    <string name="speech_prompt">What can I do for you?</string>
+    <string name="speech_not_supported">Sorry, speech recognition is not supported.</string>
+
     <string name="todolist_ben_selecttime_text">Pick Time</string>
     <string name="todolist_ben_selectdate_text">Pick Date</string>
     <string name="todolistitem_title">Title</string>
