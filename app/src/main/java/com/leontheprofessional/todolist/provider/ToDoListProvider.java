@@ -53,24 +53,24 @@ public class ToDoListProvider extends ContentProvider {
         String having = null;
 
         SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
-        String rowId = "0";
+        String todoItemCreatedDateAndTime = "0";
 
         switch (uriMatcher.match(uri)) {
             case SIMPLE_TODO_LIST:
                 queryBuilder.setTables(ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME);
                 break;
             case SIMPLE_TODO_ITEM:
-                rowId = uri.getPathSegments().get(1);
+                todoItemCreatedDateAndTime = uri.getPathSegments().get(1);
                 queryBuilder.setTables(ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME);
-                queryBuilder.appendWhere(ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_ID + " = " + rowId);
+                queryBuilder.appendWhere(ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_ID + " = " + todoItemCreatedDateAndTime);
                 break;
             case DETAILED_TODO_LIST:
                 queryBuilder.setTables(ToDoListProviderContract.DetailedToDoItemEntry.TABLE_NAME);
                 break;
             case DETAILED_TODO_ITEM:
-                rowId = uri.getPathSegments().get(1);
+                todoItemCreatedDateAndTime = uri.getPathSegments().get(1);
                 queryBuilder.setTables(ToDoListProviderContract.DetailedToDoItemEntry.TABLE_NAME);
-                queryBuilder.appendWhere(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_ID + " = " + rowId);
+                queryBuilder.appendWhere(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_ID + " = " + todoItemCreatedDateAndTime);
                 break;
         }
 
@@ -140,24 +140,34 @@ public class ToDoListProvider extends ContentProvider {
     public int delete(Uri uri, String selection, String[] selectionArgs) {
         openDatabase();
 
-        String rowId;
+        String todoItemCreatedDateAndTime;
         int deleteCount = 0;
         switch (uriMatcher.match(uri)) {
 
             case SIMPLE_TODO_ITEM:
-                rowId = uri.getPathSegments().get(1);
-                selection = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_ID = " = " + rowId +
-                        (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : "");
-                if (selection == null) selection = "1";
+                todoItemCreatedDateAndTime = uri.getPathSegments().get(1);
+                selection = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE
+                        + " = " + todoItemCreatedDateAndTime;
+                selectionArgs = new String[]{todoItemCreatedDateAndTime};
                 deleteCount = database.delete(ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME, selection, selectionArgs);
                 getContext().getContentResolver().notifyChange(uri, null);
                 break;
+            case SIMPLE_TODO_LIST:
+                deleteCount = database.delete(ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME, selection, selectionArgs);
+                Log.v(LOG_TAG, "deleteCount, SIMPLE_TODO_LIST: " + deleteCount);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
             case DETAILED_TODO_ITEM:
-                rowId = uri.getPathSegments().get(1);
-                selection = ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_ID = " = " + rowId +
-                        (!TextUtils.isEmpty(selection) ? " AND (" + selection + ')' : "");
-                if (selection == null) selection = "1";
+                todoItemCreatedDateAndTime = uri.getPathSegments().get(1);
+                selection = ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE
+                        + " = " + todoItemCreatedDateAndTime;
+                selectionArgs = new String[]{todoItemCreatedDateAndTime};
                 deleteCount = database.delete(ToDoListProviderContract.DetailedToDoItemEntry.TABLE_NAME, selection, selectionArgs);
+                getContext().getContentResolver().notifyChange(uri, null);
+                break;
+            case DETAILED_TODO_LIST:
+                deleteCount = database.delete(ToDoListProviderContract.DetailedToDoItemEntry.TABLE_NAME, selection, selectionArgs);
+                Log.v(LOG_TAG, "deleteCount, DETAILED_TODO_LIST: " + deleteCount);
                 getContext().getContentResolver().notifyChange(uri, null);
                 break;
         }
@@ -168,19 +178,27 @@ public class ToDoListProvider extends ContentProvider {
     public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
         openDatabase();
 
-        String rowId;
+        String todoItemCreatedDateAndTime;
         int updateRowsCount = 0;
         switch (uriMatcher.match(uri)) {
             case SIMPLE_TODO_ITEM:
-                rowId = uri.getPathSegments().get(1);
+                todoItemCreatedDateAndTime = uri.getPathSegments().get(1);
                 selection = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_ID +
-                        " = " + rowId + (!TextUtils.isEmpty(selection) ? " AND (" + ')' : "");
+                        " = " + todoItemCreatedDateAndTime;
+                selectionArgs = new String[]{todoItemCreatedDateAndTime};
+                updateRowsCount = database.update(ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case SIMPLE_TODO_LIST:
                 updateRowsCount = database.update(ToDoListProviderContract.SimpleToDoItemEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
             case DETAILED_TODO_ITEM:
-                rowId = uri.getPathSegments().get(1);
+                todoItemCreatedDateAndTime = uri.getPathSegments().get(1);
                 selection = ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_ID +
-                        " = " + rowId + (!TextUtils.isEmpty(selection) ? " AND (" + ')' : "");
+                        " = " + todoItemCreatedDateAndTime;
+                selectionArgs = new String[]{todoItemCreatedDateAndTime};
+                updateRowsCount = database.update(ToDoListProviderContract.DetailedToDoItemEntry.TABLE_NAME, values, selection, selectionArgs);
+                break;
+            case DETAILED_TODO_LIST:
                 updateRowsCount = database.update(ToDoListProviderContract.DetailedToDoItemEntry.TABLE_NAME, values, selection, selectionArgs);
                 break;
         }

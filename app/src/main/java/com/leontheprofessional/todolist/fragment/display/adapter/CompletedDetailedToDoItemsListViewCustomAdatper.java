@@ -14,14 +14,14 @@ import com.leontheprofessional.todolist.model.DetailedToDoItem;
 
 import java.util.ArrayList;
 
-public class CompletedToDoItemsListViewCustomAdatper extends BaseAdapter {
+public class CompletedDetailedToDoItemsListViewCustomAdatper extends BaseAdapter {
 
-    private static String LOG_TAG = CompletedToDoItemsListViewCustomAdatper.class.getSimpleName();
+    private static String LOG_TAG = CompletedDetailedToDoItemsListViewCustomAdatper.class.getSimpleName();
 
     private Context context;
     private ArrayList<DetailedToDoItem> completedToDoListItemsArrayList;
 
-    public CompletedToDoItemsListViewCustomAdatper(Context context, ArrayList<DetailedToDoItem> completedToDoListItemsArrayList) {
+    public CompletedDetailedToDoItemsListViewCustomAdatper(Context context, ArrayList<DetailedToDoItem> completedToDoListItemsArrayList) {
         this.context = context;
         this.completedToDoListItemsArrayList = completedToDoListItemsArrayList;
     }
@@ -59,11 +59,14 @@ public class CompletedToDoItemsListViewCustomAdatper extends BaseAdapter {
         TextView textViewTitle = (TextView) rootView.findViewById(R.id.todolist_row_title);
 
         textViewPriority.setBackground(context.getResources().getDrawable(R.drawable.completed_todoitem_textview));
-        textViewDeadline.setBackground(context.getResources().getDrawable(R.drawable.completed_todoitem_textview));
+        textViewPriority.setText(Integer.toString(getItem(position).getPriority()));
+
+        textViewTitle.setBackgroundColor(context.getResources().getColor(R.color.todolist_mark_as_complete));
         textViewTitle.setBackground(context.getResources().getDrawable(R.drawable.completed_todoitem_textview));
-        textViewDeadline.setText("Completed");
         textViewTitle.setText(completedToDoListItemsArrayList.get(position).getTitle());
-        textViewPriority.setText(Integer.toString(position + 1));
+
+        textViewDeadline.setText(context.getResources().getString(R.string.completed));
+        textViewDeadline.setBackground(context.getResources().getDrawable(R.drawable.completed_todoitem_textview));
 
         return rootView;
     }

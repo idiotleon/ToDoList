@@ -16,6 +16,13 @@
         android:id="@+id/imagebutton_create_detailed_todoitem"
         android:layout_width="60sp"
         android:layout_height="60sp"
-        android:layout_alignParentEnd="true"
+        android:layout_toLeftOf="@+id/imagebutton_create_simple_todoitem_by_speech"
         android:src="@mipmap/todoitem_confirm_btn_image" />
+
+    <ImageButton
+        android:id="@+id/imagebutton_create_simple_todoitem_by_speech"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
+        android:layout_alignParentEnd="true"
+        android:src="@mipmap/mic_icon" />
 </RelativeLayout>

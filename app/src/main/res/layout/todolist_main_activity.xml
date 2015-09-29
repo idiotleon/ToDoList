@@ -31,4 +31,11 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/todolist_displayfragment_simple_todoitems" />
 
+    <fragment
+        android:id="@+id/todolist_displayfragment_completed_simple_items"
+        android:name="com.leontheprofessional.todolist.fragment.display.CompletedSimpleToDoItemsDisplayFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/todolist_displayfragment_completed_items" />
+
 </RelativeLayout>
