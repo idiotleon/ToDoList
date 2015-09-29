@@ -24,6 +24,10 @@
     <string name="display_completed_todoitems">Display Completed ToDoItems</string>
     <string name="display_incompleted_todoitems">Display Incompleted ToDoItems</string>
     <string name="display_notstarted_todoitems">Display Not Started ToDoItems</string>
+    <string name="do_you_want_to">Do you want to: </string>
+    <string name="please_select_what_to_be_displayed">"Please select what to be displayed: " </string>
+    <string name="please_select_a_sorting_standard">"Please select a sorting standard: " </string>
+    <string name="completed">"Completed" </string>
 
     <!-- Menu dialog box radio button text-->
     <string name="sort_menu_radiobutton_sortbydeadline">Sort by Deadline</string>

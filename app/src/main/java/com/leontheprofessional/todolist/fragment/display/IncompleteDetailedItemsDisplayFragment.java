@@ -66,9 +66,8 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 toDoItemsArrayList
                         = GeneralHelper.getSortedIncompleteDetailedToDoItemsAsArrayList(getActivity());
-                Log.v(LOG_TAG, "onItemLongClick(), IncompleteDetailedItemsDisplayFragment, executed");
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Do you want to: ")
+                builder.setTitle(getResources().getString(R.string.do_you_want_to))
                         .setItems(R.array.incomplete_todoitem_operation, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -110,7 +109,7 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         toDoItemsArrayList = GeneralHelper.getSortedIncompleteDetailedToDoItemsAsArrayList(getActivity());
-        Log.v(LOG_TAG, "Position, onListItemClick(), IncompleteDetailedToDoItemsDisplayFragment: " + position);
+        Log.v(LOG_TAG, "Position, onListItemClick(): " + position);
         Intent intent = new Intent(getActivity(), ToDoItemDetailsActivity.class);
         intent.putExtra(GeneralConstants.DETAILED_TO_DO_ITEM_IDENTIFIER, toDoItemsArrayList.get(position));
         startActivity(intent);
