@@ -2,10 +2,12 @@ package com.leontheprofessional.todolist.fragment;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,16 +22,23 @@ import com.leontheprofessional.todolist.helper.GeneralHelper;
 import com.leontheprofessional.todolist.model.SimpleToDoItem;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class NewItemAddedFragment extends Fragment {
 
+    private static final String LOG_TAG = NewItemAddedFragment.class.getSimpleName();
+
     private ImageButton btnAddDetailedToDoItem;
+    private ImageButton btnAddSimpleToDoItemBySpeech;
     private EditText editTextInput;
     private OnNewSimpleItemAddedListener onNewSimpleItemAddedListener;
 
+    private final int REQUEST_CODE_SPEECH_INPUT = 777;
+
     public interface OnNewSimpleItemAddedListener {
-        void onNewSimpleItemAdded(SimpleToDoItem newSimpleToDoItem);
+        void onNewSimpleItemAdded(SimpleToDoItem newSimpleToDoItemModel);
     }
 
     @Override
@@ -66,7 +75,7 @@ public class NewItemAddedFragment extends Fragment {
                             (keyCode == KeyEvent.KEYCODE_ENTER)) {
                         String newSimpleItemTitle = editTextInput.getText().toString();
                         if (newSimpleItemTitle != null && newSimpleItemTitle.length() > 0) {
-                            Long currentTime = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmm").format(Calendar.getInstance().getTime()));
+                            Long currentTime = Long.parseLong(new SimpleDateFormat("yyyyMMddHHmmss").format(Calendar.getInstance().getTime()));
                             SimpleToDoItem newSimpleToDoItem = new SimpleToDoItem(newSimpleItemTitle, currentTime);
                             onNewSimpleItemAddedListener.onNewSimpleItemAdded(newSimpleToDoItem);
                             editTextInput.setText("");
@@ -97,6 +106,46 @@ public class NewItemAddedFragment extends Fragment {
             }
         });*/
 
+        btnAddSimpleToDoItemBySpeech = (ImageButton) rootView.findViewById(R.id.imagebutton_create_simple_todoitem_by_speech);
+        btnAddSimpleToDoItemBySpeech.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                promptSpeechInput();
+            }
+        });
+
         return rootView;
+    }
+
+    private void promptSpeechInput() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, getString(R.string.speech_prompt));
+
+        try {
+            startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
+        } catch (ActivityNotFoundException ex) {
+            Toast.makeText(getActivity(), getString(R.string.speech_not_supported), Toast.LENGTH_SHORT).show();
+            ex.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        Log.v(LOG_TAG, "onActivityResult() executed.");
+
+        switch (requestCode) {
+            case REQUEST_CODE_SPEECH_INPUT: {
+                if (resultCode == Activity.RESULT_OK || null != data) {
+                    ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                    Log.v(LOG_TAG, "result.get(0): " + result.get(0));
+                    editTextInput.setText(result.get(0));
+                }
+                break;
+            }
+        }
     }
 }

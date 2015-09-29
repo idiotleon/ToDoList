@@ -1,7 +1,6 @@
 package com.leontheprofessional.todolist.activity;
 
 import android.app.AlertDialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -17,23 +16,17 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.leontheprofessional.todolist.R;
-import com.leontheprofessional.todolist.fragment.dialog.DatePickerDialogFragment;
 import com.leontheprofessional.todolist.fragment.dialog.DetailedNewToDoItemDialogFragment;
-import com.leontheprofessional.todolist.helper.DatabaseHelper;
 import com.leontheprofessional.todolist.helper.GeneralConstants;
 import com.leontheprofessional.todolist.helper.GeneralHelper;
-import com.leontheprofessional.todolist.model.Date;
+import com.leontheprofessional.todolist.model.DetailedToDoItem;
 import com.leontheprofessional.todolist.model.SimpleToDoItem;
-import com.leontheprofessional.todolist.model.ToDoItem;
 
 public class ToDoItemDetailsActivity extends AppCompatActivity
-        implements DetailedNewToDoItemDialogFragment.OnNewItemAddedListener,
-        TimePickerDialog.OnTimeSetListener,
-        DatePickerDialogFragment.DatePickerDialogListener {
+        implements DetailedNewToDoItemDialogFragment.OnNewItemAddedListener {
 
     private static String LOG_TAG = ToDoItemDetailsActivity.class.getSimpleName();
 
@@ -50,11 +43,9 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
     private long deadline;
     private long dateAndTimeCreated;
 
-    private ToDoItem toDoItem;
-
+    private DetailedToDoItem detailedToDoItem;
     private SimpleToDoItem simpleToDoItem;
 
-    private DatabaseHelper dbHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,29 +54,24 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
 
         Intent intent = getIntent();
         if (intent != null) {
-            toDoItem = intent.getExtras().getParcelable(GeneralConstants.TO_DO_ITEM_IDENTIFIER);
-        } else {
-            toDoItem = savedInstanceState.getParcelable(GeneralConstants.SAVEINSTANCESTATE_TODOITEM_IDENTIFIER);
-        }
-//        Log.v(LOG_TAG, "onCreate(), intent received, ToDoItemDetailsActivity: " + GeneralHelper.formatToString(toDoItem.getToDoItemDeadline()));
-        if (toDoItem != null) {
-            priority = toDoItem.getPriority();
-            title = toDoItem.getTitle();
-            deadline = toDoItem.getToDoItemDeadline();
-            dateAndTimeCreated = toDoItem.getItemCreatedDateAndTime();
-        }
-
-        if (intent != null) {
+            detailedToDoItem = intent.getExtras().getParcelable(GeneralConstants.DETAILED_TO_DO_ITEM_IDENTIFIER);
             simpleToDoItem = intent.getExtras().getParcelable(GeneralConstants.SIMPLE_TO_DO_ITEM_IDENTIFIER);
         } else {
-            simpleToDoItem = savedInstanceState.getParcelable(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER);
+            detailedToDoItem = savedInstanceState.getParcelable(GeneralConstants.SAVEINSTANCESTATE_TODOITEM_IDENTIFIER);
+            simpleToDoItem = savedInstanceState.getParcelable(GeneralConstants.SAVEINSTANCESTATE_INCOMPLETE_SIMPLE_TODOITEM_IDENTIFIER);
         }
+//        Log.v(LOG_TAG, "onCreate(), intent received, ToDoItemDetailsActivity: " + GeneralHelper.formatToString(detailedToDoItem.getToDoItemDeadline()));
+        if (detailedToDoItem != null) {
+            priority = detailedToDoItem.getPriority();
+            title = detailedToDoItem.getTitle();
+            deadline = detailedToDoItem.getToDoItemDeadline();
+            dateAndTimeCreated = detailedToDoItem.getItemCreatedDateAndTime();
+        }
+
         if (simpleToDoItem != null) {
             title = simpleToDoItem.getTitle();
             dateAndTimeCreated = simpleToDoItem.getItemCreatedDateAndTime();
         }
-
-        dbHelper = new DatabaseHelper(ToDoItemDetailsActivity.this);
 
         titleTextView = (TextView) findViewById(R.id.textview_title_todoitem_detailactivity);
         descriptionTextView = (TextView) findViewById(R.id.textview_description_todoitem_detailactivity);
@@ -101,15 +87,16 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int which) {
                                 EditText editText = (EditText) view.findViewById(R.id.edittext_revise_description_todolistitem);
                                 description = editText.getText().toString();
-                                toDoItem.setDetailDescription(description);
-                                dbHelper.updateToDoListItem(toDoItem);
-                                Toast.makeText(ToDoItemDetailsActivity.this, "Description of ToDoItem: " + title + " updated", Toast.LENGTH_SHORT).show();
-                                Log.v(LOG_TAG, "Description of ToDoItem updated");
-                                refreshToDoItemDetailsPage(toDoItem);
+                                detailedToDoItem.setDetailDescription(description);
+                                GeneralHelper.updateToDoListItem(ToDoItemDetailsActivity.this, detailedToDoItem);
+                                Toast.makeText(ToDoItemDetailsActivity.this, "Description of DetailedToDoItem: " + title + " updated", Toast.LENGTH_SHORT).show();
+                                Log.v(LOG_TAG, "Description of DetailedToDoItem updated");
+                                refreshToDoItemsDetailsPage(detailedToDoItem);
                             }
                         }).setNegativeButton(R.string.todolist_cancel_text, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        // Do nothing
                     }
                 });
                 (builder.create()).show();
@@ -122,8 +109,8 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
         btnMarkAsComplete = (Button) findViewById(R.id.btn_markascomplete_detailactivity);
         btnDelete = (Button) findViewById(R.id.btn_delete_detailactivity);
 
-        if (toDoItem != null)
-            refreshToDoItemDetailsPage(toDoItem);
+        if (detailedToDoItem != null)
+            refreshToDoItemsDetailsPage(detailedToDoItem);
 
         if (simpleToDoItem != null)
             refreshSimpleToDoItemPage(simpleToDoItem);
@@ -132,7 +119,7 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
          * Styling the ActionBar
          */
         ActionBar actionBar = getSupportActionBar();
-        if (deadline > 0) {
+        if (deadline > 1) {
             actionBar.setTitle("Deadline: " + GeneralHelper.parseDateAndTimeToString(deadline));
         } else {
             actionBar.setTitle("Added on: " + GeneralHelper.parseDateAndTimeToString(dateAndTimeCreated));
@@ -148,14 +135,14 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
         btnMarkAsComplete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (toDoItem != null) {
-                    toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
-                    dbHelper.updateToDoListItem(toDoItem);
-                    Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as complete");
+                if (detailedToDoItem != null) {
+                    detailedToDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
+                    GeneralHelper.updateToDoListItem(ToDoItemDetailsActivity.this, detailedToDoItem);
+                    Log.v(LOG_TAG, "DetailedToDoItem: " + detailedToDoItem.getTitle() + " is marked as complete");
                 }
                 if (simpleToDoItem != null) {
                     simpleToDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
-                    dbHelper.updateToDoListItem(simpleToDoItem);
+                    GeneralHelper.updateToDoListItem(ToDoItemDetailsActivity.this, simpleToDoItem);
                     Log.v(LOG_TAG, "SimpleToDoItem: " + simpleToDoItem.getTitle() + " is marked as complete");
                 }
                 Intent intent = new Intent(ToDoItemDetailsActivity.this, ToDoListDisplayActivity.class);
@@ -173,17 +160,17 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
                             public void onClick(DialogInterface dialog, int which) {
                                 switch (which) {
                                     case 1:
-//                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_COMPLETION_STATUS_INCOMPLETE);
-                                        toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.INCOMPLETE);
-                                        Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as incomplete");
+//                                        detailedToDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_COMPLETION_STATUS_INCOMPLETE);
+                                        detailedToDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.INCOMPLETE);
+                                        Log.v(LOG_TAG, "DetailedToDoItem: " + detailedToDoItem.getTitle() + " is marked as incomplete");
                                         break;
                                     case 2:
-//                                        toDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_COMPLETION_STATUS_COMPLETE);
-                                        toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
-                                        Log.v(LOG_TAG, "ToDoItem: " + toDoItem.getTitle() + " is marked as complete");
+//                                        detailedToDoItem.setCompleteStatusCode(GeneralConstants.TODOLISTITEM_COMPLETION_STATUS_COMPLETE);
+                                        detailedToDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
+                                        Log.v(LOG_TAG, "DetailedToDoItem: " + detailedToDoItem.getTitle() + " is marked as complete");
                                         break;
                                 }
-                                dbHelper.updateToDoListItem(toDoItem);
+                                GeneralHelper.updateToDoListItem(ToDoItemDetailsActivity.this, detailedToDoItem);
                             }
                         });
                 (markAsStatus.create()).show();
@@ -195,16 +182,16 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(ToDoItemDetailsActivity.this);
-                alertDialogBuilder.setMessage(R.string.delete_confirmation + toDoItem.getTitle());
+                alertDialogBuilder.setMessage(R.string.delete_confirmation + detailedToDoItem.getTitle());
                 alertDialogBuilder.setPositiveButton(R.string.todolist_confirm_text, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (toDoItem != null) {
-                            dbHelper.deleteToDoItem(toDoItem);
-                            Toast.makeText(ToDoItemDetailsActivity.this, "ToDoItem: " + toDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
+                        if (detailedToDoItem != null) {
+                            GeneralHelper.deleteToDoItem(ToDoItemDetailsActivity.this, detailedToDoItem);
+                            Toast.makeText(ToDoItemDetailsActivity.this, "DetailedToDoItem: " + detailedToDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
                         }
                         if (simpleToDoItem != null) {
-                            dbHelper.deleteToDoItem(simpleToDoItem);
+                            GeneralHelper.deleteToDoItem(ToDoItemDetailsActivity.this, detailedToDoItem);
                             Toast.makeText(ToDoItemDetailsActivity.this, "SimpleToDoItem: " + simpleToDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
                         }
                         Intent intent = new Intent(ToDoItemDetailsActivity.this, ToDoListDisplayActivity.class);
@@ -213,22 +200,13 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
                 }).setNegativeButton(R.string.todolist_cancel_text, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-
+                        // do nothing
                     }
                 });
                 AlertDialog alertDialog = alertDialogBuilder.create();
                 alertDialog.show();
             }
         });
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-
-        MenuItem menuItem = menu.findItem(R.menu.menu_todolist_detail_activity);
-
-        return true;
     }
 
     @Override
@@ -250,13 +228,13 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
         }
     }
 
-    private void refreshToDoItemDetailsPage(ToDoItem toDoItem) {
-        // todo: check completionStatus of toDoItem, depending on which to improve UI of details activity
+    private void refreshToDoItemsDetailsPage(DetailedToDoItem toDoItem) {
+        // todo: check completionStatus of detailedToDoItem, depending on which to improve UI of details activity
         titleTextView.setText(toDoItem.getTitle());
         Long toDoItemDeadline = toDoItem.getToDoItemDeadline();
         if (toDoItemDeadline > 0) {
             String deadline = GeneralHelper.parseDateAndTimeToString(toDoItemDeadline);
-            Log.v(LOG_TAG, "deadline, refreshToDoItemDetailsPage(), ToDoItemDetailsActivity: " + deadline);
+            Log.v(LOG_TAG, "deadline, refreshToDoItemsDetailsPage(), ToDoItemDetailsActivity: " + deadline);
         } else {
         }
         descriptionTextView.setText(GeneralHelper.formatToString(toDoItem.getDetailDescription()));
@@ -265,37 +243,25 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
         Log.v(LOG_TAG, "colorId, ToDoItemDetailsActivity: " + colorId);
 
         String timeAdded = GeneralHelper.parseDateAndTimeToString(toDoItem.getItemCreatedDateAndTime());
-        Log.v(LOG_TAG, "timeAdded, refreshToDoItemDetailsPage(), ToDoItemDetailsActivity: " + timeAdded);
+        Log.v(LOG_TAG, "timeAdded, refreshToDoItemsDetailsPage(), ToDoItemDetailsActivity: " + timeAdded);
         dateAndTimeCreatedTextView.setText("Time created: " + timeAdded);
     }
 
-    private void refreshSimpleToDoItemPage(SimpleToDoItem simpleToDoItem) {
-        titleTextView.setText(toDoItem.getTitle());
-        String timeAdded = GeneralHelper.parseDateAndTimeToString(toDoItem.getItemCreatedDateAndTime());
-        Log.v(LOG_TAG, "timeAdded, refreshToDoItemDetailsPage(), ToDoItemDetailsActivity: " + timeAdded);
+    private void refreshSimpleToDoItemPage(SimpleToDoItem simpleToDoItemModel) {
+        titleTextView.setText(detailedToDoItem.getTitle());
+        String timeAdded = GeneralHelper.parseDateAndTimeToString(detailedToDoItem.getItemCreatedDateAndTime());
+        Log.v(LOG_TAG, "timeAdded, refreshToDoItemsDetailsPage(), ToDoItemDetailsActivity: " + timeAdded);
         dateAndTimeCreatedTextView.setText("Time added: " + timeAdded);
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER, simpleToDoItem);
-        outState.putParcelable(GeneralConstants.SAVEINSTANCESTATE_TODOITEM_IDENTIFIER, toDoItem);
+        outState.putParcelable(GeneralConstants.SAVEINSTANCESTATE_INCOMPLETE_SIMPLE_TODOITEM_IDENTIFIER, simpleToDoItem);
+        outState.putParcelable(GeneralConstants.SAVEINSTANCESTATE_TODOITEM_IDENTIFIER, detailedToDoItem);
     }
 
     @Override
-    public void onDateSelected(Date dateSelected) {
-
+    public void onNewItemAdded(DetailedToDoItem todoItem) {
     }
-
-    @Override
-    public void onNewItemAdded(ToDoItem todoItem) {
-
-    }
-
-    @Override
-    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-
-    }
-
 }

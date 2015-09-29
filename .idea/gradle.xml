@@ -6,7 +6,10 @@
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
 <<<<<<< HEAD
+<<<<<<< HEAD
         <option name="gradleHome" value="E:\Software\Matrix\Android\Android Studio\gradle\gradle-2.4" />
+=======
+>>>>>>> 3.04-ContentProvider_debug
         <option name="gradleJvm" value="1.8" />
 =======
         <option name="gradleJvm" value="1.7" />

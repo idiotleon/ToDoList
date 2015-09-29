@@ -16,10 +16,9 @@ import android.widget.Toast;
 
 import com.leontheprofessional.todolist.R;
 import com.leontheprofessional.todolist.activity.ToDoItemDetailsActivity;
-import com.leontheprofessional.todolist.helper.DatabaseHelper;
 import com.leontheprofessional.todolist.helper.GeneralConstants;
 import com.leontheprofessional.todolist.helper.GeneralHelper;
-import com.leontheprofessional.todolist.model.ToDoItem;
+import com.leontheprofessional.todolist.model.DetailedToDoItem;
 import com.leontheprofessional.todolist.helper.GeneralHelper.ToDoItemStatusChangeListener;
 
 import java.util.ArrayList;
@@ -28,8 +27,7 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
 
     private static final String LOG_TAG = IncompleteDetailedItemsDisplayFragment.class.getSimpleName();
 
-    private DatabaseHelper dbHelper;
-    private ArrayList<ToDoItem> toDoItemsArrayList;
+    private ArrayList<DetailedToDoItem> toDoItemsArrayList;
 
     private ToDoItemStatusChangeListener toDoItemStatusChangeListener;
 
@@ -49,7 +47,7 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        dbHelper = new DatabaseHelper(getActivity());
+
         toDoItemsArrayList = new ArrayList<>();
     }
 
@@ -67,19 +65,18 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
                 toDoItemsArrayList
-                        = dbHelper.getSortedIncompleteToDoItemsAsArrayList();
-                Log.v(LOG_TAG, "onItemLongClick(), IncompleteDetailedItemsDisplayFragment executed");
+                        = GeneralHelper.getSortedIncompleteDetailedToDoItemsAsArrayList(getActivity());
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Do you want to: ")
+                builder.setTitle(getResources().getString(R.string.do_you_want_to))
                         .setItems(R.array.incomplete_todoitem_operation, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                final ToDoItem toDoItem = toDoItemsArrayList.get(position);
+                                final DetailedToDoItem toDoItem = toDoItemsArrayList.get(position);
                                 switch (which) {
                                     case 0:
                                         toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.COMPLETED);
-                                        dbHelper.updateToDoListItem(toDoItem);
-                                        Toast.makeText(getActivity(), "ToDoItem: " + toDoItem.getTitle() + " is marked as complete.", Toast.LENGTH_SHORT).show();
+                                        GeneralHelper.updateToDoListItem(getActivity(), toDoItem);
+                                        Toast.makeText(getActivity(), "DetailedToDoItem: " + toDoItem.getTitle() + " is marked as complete.", Toast.LENGTH_SHORT).show();
                                         toDoItemStatusChangeListener.onStatusChanged();
                                         break;
                                     case 1:
@@ -87,7 +84,7 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
                                         builder.setTitle(R.string.delete_confirmation).setPositiveButton(R.string.todolist_confirm_text, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                dbHelper.deleteToDoItem(toDoItem);
+                                                GeneralHelper.deleteToDoItem(getActivity(), toDoItem);
                                                 toDoItemStatusChangeListener.onStatusChanged();
                                             }
                                         }).setNegativeButton(R.string.todolist_cancel_text, new DialogInterface.OnClickListener() {
@@ -97,7 +94,7 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
                                             }
                                         });
                                         (builder.create()).show();
-                                        Toast.makeText(getActivity(), "ToDoItem: " + toDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(getActivity(), "DetailedToDoItem: " + toDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
                                         break;
                                 }
                             }
@@ -111,11 +108,10 @@ public class IncompleteDetailedItemsDisplayFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        toDoItemsArrayList = dbHelper.getSortedIncompleteToDoItemsAsArrayList();
-        Log.v(LOG_TAG, "Position: " + position);
+        toDoItemsArrayList = GeneralHelper.getSortedIncompleteDetailedToDoItemsAsArrayList(getActivity());
+        Log.v(LOG_TAG, "Position, onListItemClick(): " + position);
         Intent intent = new Intent(getActivity(), ToDoItemDetailsActivity.class);
-        intent.putExtra(GeneralConstants.TO_DO_ITEM_IDENTIFIER, toDoItemsArrayList.get(position));
+        intent.putExtra(GeneralConstants.DETAILED_TO_DO_ITEM_IDENTIFIER, toDoItemsArrayList.get(position));
         startActivity(intent);
     }
-
 }
