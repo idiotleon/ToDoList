@@ -58,7 +58,7 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
             simpleToDoItem = intent.getExtras().getParcelable(GeneralConstants.SIMPLE_TO_DO_ITEM_IDENTIFIER);
         } else {
             detailedToDoItem = savedInstanceState.getParcelable(GeneralConstants.SAVEINSTANCESTATE_TODOITEM_IDENTIFIER);
-            simpleToDoItem = savedInstanceState.getParcelable(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER);
+            simpleToDoItem = savedInstanceState.getParcelable(GeneralConstants.SAVEINSTANCESTATE_INCOMPLETE_SIMPLE_TODOITEM_IDENTIFIER);
         }
 //        Log.v(LOG_TAG, "onCreate(), intent received, ToDoItemDetailsActivity: " + GeneralHelper.formatToString(detailedToDoItem.getToDoItemDeadline()));
         if (detailedToDoItem != null) {
@@ -257,7 +257,7 @@ public class ToDoItemDetailsActivity extends AppCompatActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable(GeneralConstants.SAVEINSTANCESTATE_SIMPLE_TODOITEM_IDENTIFIER, simpleToDoItem);
+        outState.putParcelable(GeneralConstants.SAVEINSTANCESTATE_INCOMPLETE_SIMPLE_TODOITEM_IDENTIFIER, simpleToDoItem);
         outState.putParcelable(GeneralConstants.SAVEINSTANCESTATE_TODOITEM_IDENTIFIER, detailedToDoItem);
     }
 

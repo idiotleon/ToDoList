@@ -18,14 +18,15 @@ import com.leontheprofessional.todolist.helper.GeneralConstants;
 import com.leontheprofessional.todolist.helper.GeneralHelper;
 import com.leontheprofessional.todolist.model.DetailedToDoItem;
 import com.leontheprofessional.todolist.helper.GeneralHelper.ToDoItemStatusChangeListener;
+import com.leontheprofessional.todolist.model.SimpleToDoItem;
 
 import java.util.ArrayList;
 
-public class CompletedDetailedItemsDisplayFragment extends ListFragment {
+public class CompletedSimpleToDoItemsDisplayFragment extends ListFragment {
 
-    private static final String LOG_TAG = IncompleteDetailedItemsDisplayFragment.class.getSimpleName();
+    private static final String LOG_TAG = CompletedSimpleToDoItemsDisplayFragment.class.getSimpleName();
 
-    private ArrayList<DetailedToDoItem> completedToDoItemsArrayList;
+    private ArrayList<SimpleToDoItem> completedSimpleToDoItemsArrayList;
     private ToDoItemStatusChangeListener toDoItemStatusChangeListener;
 
     @Override
@@ -45,7 +46,7 @@ public class CompletedDetailedItemsDisplayFragment extends ListFragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
-        completedToDoItemsArrayList = new ArrayList<>();
+        completedSimpleToDoItemsArrayList = new ArrayList<>();
     }
 
     @Override
@@ -55,19 +56,19 @@ public class CompletedDetailedItemsDisplayFragment extends ListFragment {
         getListView().setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
-                completedToDoItemsArrayList
-                        = GeneralHelper.getSortedCompletedDetailedToDoItemsAsArrayList(getActivity());
+                completedSimpleToDoItemsArrayList
+                        = GeneralHelper.getSortedCompletedSimpleToDoItemsAsArrayList(getActivity());
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle(getResources().getString(R.string.do_you_want_to))
-                        .setItems(R.array.complete_todoitem_operation, new DialogInterface.OnClickListener() {
+                builder.setTitle(getResources().getString(R.string.do_you_want_to)).
+                        setItems(R.array.complete_todoitem_operation, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                final DetailedToDoItem toDoItem = completedToDoItemsArrayList.get(position);
+                                final SimpleToDoItem simpleToDoItem = completedSimpleToDoItemsArrayList.get(position);
                                 switch (which) {
                                     case 0:
-                                        toDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.INCOMPLETE);
-                                        GeneralHelper.updateToDoListItem(getActivity(), toDoItem);
-                                        Toast.makeText(getActivity(), "DetailedToDoItem: " + toDoItem.getTitle() + " is marked as complete.", Toast.LENGTH_SHORT).show();
+                                        simpleToDoItem.setCompletionStatus(GeneralHelper.CompletionStatus.INCOMPLETE);
+                                        GeneralHelper.updateToDoListItem(getActivity(), simpleToDoItem);
+                                        Toast.makeText(getActivity(), "DetailedToDoItem: " + simpleToDoItem.getTitle() + " is marked as complete.", Toast.LENGTH_SHORT).show();
                                         toDoItemStatusChangeListener.onStatusChanged();
                                         break;
                                     case 1:
@@ -75,9 +76,9 @@ public class CompletedDetailedItemsDisplayFragment extends ListFragment {
                                         builder.setTitle(R.string.delete_confirmation).setPositiveButton(R.string.todolist_confirm_text, new DialogInterface.OnClickListener() {
                                             @Override
                                             public void onClick(DialogInterface dialog, int which) {
-                                                GeneralHelper.deleteToDoItem(getActivity(), toDoItem);
+                                                GeneralHelper.deleteToDoItem(getActivity(), simpleToDoItem);
                                                 toDoItemStatusChangeListener.onStatusChanged();
-                                                Toast.makeText(getActivity(), "DetailedToDoItem: " + toDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
+                                                Toast.makeText(getActivity(), "DetailedToDoItem: " + simpleToDoItem.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
                                             }
                                         }).setNegativeButton(R.string.todolist_cancel_text, new DialogInterface.OnClickListener() {
                                             @Override
@@ -99,10 +100,10 @@ public class CompletedDetailedItemsDisplayFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
-        completedToDoItemsArrayList = GeneralHelper.getSortedCompletedDetailedToDoItemsAsArrayList(getActivity());
+        completedSimpleToDoItemsArrayList = GeneralHelper.getSortedCompletedSimpleToDoItemsAsArrayList(getActivity());
 
         Intent intent = new Intent(getActivity(), ToDoItemDetailsActivity.class);
-        intent.putExtra(GeneralConstants.DETAILED_TO_DO_ITEM_IDENTIFIER, completedToDoItemsArrayList.get(position));
+        intent.putExtra(GeneralConstants.DETAILED_TO_DO_ITEM_IDENTIFIER, completedSimpleToDoItemsArrayList.get(position));
         startActivity(intent);
     }
 }

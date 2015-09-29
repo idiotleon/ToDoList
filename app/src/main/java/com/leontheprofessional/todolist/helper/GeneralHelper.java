@@ -303,6 +303,8 @@ public class GeneralHelper {
     }
 
     public static int updateToDoListItem(Context context, DetailedToDoItem detailedToDoItem) {
+        Log.v(LOG_TAG, "updateToDoListItem(Context context, DetailedToDoItem detailedToDoItem) executed. ");
+
         ContentResolver contentResolver = context.getContentResolver();
 
         ContentValues contentValues = new ContentValues();
@@ -319,6 +321,7 @@ public class GeneralHelper {
         Log.v(LOG_TAG, "deadline, updated by DatabaseHelper: " + deadline);
         contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_CATEGORY, detailedToDoItem.getCategory());
         contentValues.put(ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_COMPLETION_STATUS_CODE, detailedToDoItem.getCompletionStatus().getStatusCode());
+        Log.v(LOG_TAG, "completionStatusCode, updated by DatabaseHelper: " + detailedToDoItem.getCompletionStatus().getStatusCode());
 
         String selection = ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE + " = ?";
         String[] selectionArgs = new String[]{Long.toString(detailedToDoItem.getItemCreatedDateAndTime())};
@@ -330,6 +333,8 @@ public class GeneralHelper {
     }
 
     public static int updateToDoListItem(Context context, SimpleToDoItem simpleToDoItemModel) {
+        Log.v(LOG_TAG, "updateToDoListItem(Context context, SimpleToDoItem simpleToDoItemModel) executed. ");
+
         ContentResolver contentResolver = context.getContentResolver();
 
         ContentValues contentValues = new ContentValues();
@@ -351,15 +356,16 @@ public class GeneralHelper {
         return updateRowsCount;
     }
 
-    public static boolean deleteToDoItem(Context context, DetailedToDoItem detailedToDoItem) {
+    public static int deleteToDoItem(Context context, DetailedToDoItem detailedToDoItem) {
         Log.v(LOG_TAG, "deleteToDoItem(Context context, DetailedToDoItem detailedToDoItem), GeneralHelper executed.");
         ContentResolver contentResolver = context.getContentResolver();
 
         String selection = ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE + " = ?";
         String[] selectionArgs = new String[]{Long.toString(detailedToDoItem.getItemCreatedDateAndTime())};
         int deleteRowsCount = contentResolver.delete(ToDoListProviderContract.DetailedToDoItemEntry.CONTENT_URI, selection, selectionArgs);
+        Log.v(LOG_TAG, "deleteRowCount, deleteToDoItem(Context context, DetailedToDoItem detailedToDoItem): " + deleteRowsCount);
 
-        return true;
+        return deleteRowsCount;
     }
 
     public static int deleteToDoItem(Context context, SimpleToDoItem simpleToDoItemModel) {
@@ -368,7 +374,9 @@ public class GeneralHelper {
 
         String selection = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE + " = ?";
         String[] selectionArgs = new String[]{Long.toString(simpleToDoItemModel.getItemCreatedDateAndTime())};
-        int deleteRowsCount = contentResolver.delete(ToDoListProviderContract.DetailedToDoItemEntry.CONTENT_URI, selection, selectionArgs);
+        Log.v(LOG_TAG, "selectionArgs: " + Long.toString(simpleToDoItemModel.getItemCreatedDateAndTime()));
+        int deleteRowsCount = contentResolver.delete(ToDoListProviderContract.SimpleToDoItemEntry.CONTENT_URI, selection, selectionArgs);
+        Log.v(LOG_TAG, "deleteRowCount, deleteToDoItem(Context context, SimpleToDoItem simpleToDoItemModel): " + deleteRowsCount);
 
         return deleteRowsCount;
     }
@@ -387,16 +395,7 @@ public class GeneralHelper {
 
         ArrayList<DetailedToDoItem> toDoItemsArrayListSorted = new ArrayList<>();
 
-        String projection[] = new String[]{
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_TITLE,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_PRIORITY,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_DESCRIPTION,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_DEADLINE,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_CATEGORY,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_COMPLETION_STATUS_CODE,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_PRICE
-        };
+        String projection[] = null;
 
         String selection = null;
         String selectionArgs[] = null;
@@ -457,6 +456,7 @@ public class GeneralHelper {
     }
 
     public static ArrayList<DetailedToDoItem> getSortedIncompleteDetailedToDoItemsAsArrayList(Context context) {
+        Log.v(LOG_TAG, "getSortedIncompleteDetailedToDoItemsAsArrayList(Context context) executed.");
 
         ContentResolver contentResolver = context.getContentResolver();
 
@@ -473,17 +473,7 @@ public class GeneralHelper {
         String selection = ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_COMPLETION_STATUS_CODE + " = ?";
         String[] selectionArgs = new String[]{"1"};
         String orderBy;
-        String projection[] = new String[]{
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_TITLE,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_PRIORITY,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_DESCRIPTION,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_DEADLINE,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_CATEGORY,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_COMPLETION_STATUS_CODE,
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_PRICE
-        };
-
+        String projection[] = null;
 
         switch (sortingByColumnNameOption) {
             case DatabaseHelper.SORT_BY_DEADLINE:
@@ -535,8 +525,8 @@ public class GeneralHelper {
         return incompleteDetailedToDoItemsArrayList;
     }
 
-    public static ArrayList<DetailedToDoItem> getSortedCompletedToDoItemsAsArrayList(Context context) {
-
+    public static ArrayList<DetailedToDoItem> getSortedCompletedDetailedToDoItemsAsArrayList(Context context) {
+        Log.v(LOG_TAG, "getSortedCompletedDetailedToDoItemsAsArrayList(Context context) executed.");
         ContentResolver contentResolver = context.getContentResolver();
 
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -553,9 +543,7 @@ public class GeneralHelper {
         String[] selectionArgs = new String[]{"2"};
         String orderBy;
 
-        String projection[] = new String[]{
-                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_TITLE
-        };
+        String projection[] = null;
 
         switch (sortingByColumnNameOption) {
             case DatabaseHelper.SORT_BY_DEADLINE:
@@ -602,9 +590,75 @@ public class GeneralHelper {
         } finally {
             cursor.close();
         }
-        GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(completedDetailedToDoItemsArrayList, "getSortedCompletedToDoItemsAsArrayList(), GeneralHelper");
+        GeneralHelper.displayTitleOfAllToDoItemsInAnArrayList(completedDetailedToDoItemsArrayList, "getSortedCompletedDetailedToDoItemsAsArrayList(), GeneralHelper");
 
         return completedDetailedToDoItemsArrayList;
+    }
+
+    public static ArrayList<SimpleToDoItem> getSortedCompletedSimpleToDoItemsAsArrayList(Context context) {
+        Log.v(LOG_TAG, "getSortedCompletedSimpleToDoItemsAsArrayList(Context context) executed.");
+
+        ContentResolver contentResolver = context.getContentResolver();
+
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
+        String sortingByColumnNameOption
+                = sharedPreferences.getString(GeneralConstants.TODOITEMS_SORTING_STANDARD_SHAREDPREFERENCE_IDENTIFIER,
+                ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_DEADLINE);
+        int sortingAscOrDesc
+                = sharedPreferences.getInt(GeneralConstants.TODOITEMS_SORTING_ASC_OR_DESC_SHAREDPREFERNECE_IDENTIFIER,
+                DatabaseHelper.SORTING_STANDARD_DESC);
+
+        ArrayList<SimpleToDoItem> completedSimpleToDoItemsArrayList = new ArrayList<>();
+
+        String selection = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE + " = ?";
+        String[] selectionArgs = new String[]{"2"};
+        String orderBy;
+
+        String projection[] = null;
+
+        switch (sortingByColumnNameOption) {
+            case DatabaseHelper.SORT_BY_DEADLINE:
+                orderBy = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE;
+                break;
+            case DatabaseHelper.SORT_BY_TIME_ADDED:
+                orderBy = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE;
+                break;
+            case DatabaseHelper.SORT_BY_TITLE:
+                orderBy = ToDoListProviderContract.DetailedToDoItemEntry.DETAILED_TODO_COLUMN_TITLE;
+                break;
+            default:
+                orderBy = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE;
+                break;
+        }
+
+        switch (sortingAscOrDesc) {
+            case DatabaseHelper.SORTING_STANDARD_ASC:
+                orderBy += DatabaseHelper.SORTING_ASC;
+                break;
+            default:
+                orderBy += DatabaseHelper.SORTING_DESC;
+                break;
+        }
+
+        Cursor cursor = contentResolver.query(ToDoListProviderContract.SimpleToDoItemEntry.CONTENT_URI, projection, selection, selectionArgs, orderBy);
+
+        try {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                while (!cursor.isAfterLast()) {
+                    String title = cursor.getString(cursor.getColumnIndex(ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_TITLE));
+                    long itemDateAndTimeCreated = cursor.getLong(cursor.getColumnIndex(ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE));
+                    int completionStatusCode = cursor.getInt(cursor.getColumnIndex(ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE));
+                    SimpleToDoItem simpleToDoItem = new SimpleToDoItem(title, itemDateAndTimeCreated, completionStatusCode);
+                    completedSimpleToDoItemsArrayList.add(simpleToDoItem);
+                    cursor.moveToNext();
+                }
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return completedSimpleToDoItemsArrayList;
     }
 
     public static ArrayList<SimpleToDoItem> getSortedIncompleteSimpleToDoItemsAsArrayList(Context context) {
@@ -625,10 +679,7 @@ public class GeneralHelper {
         String selection = ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_COMPLETION_STATUS_CODE + " = ?";
         String[] selectionArgs = new String[]{"1"};
 
-        String[] projection = {
-                ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_CREATED_TIME_AND_DATE,
-                ToDoListProviderContract.SimpleToDoItemEntry.SIMPLE_TODO_ITEM_COLUMN_TITLE
-        };
+        String[] projection = null;
 
         String orderBy;
         switch (sortingWay) {

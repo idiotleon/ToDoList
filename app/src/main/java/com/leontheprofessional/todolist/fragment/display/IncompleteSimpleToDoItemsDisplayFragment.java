@@ -58,7 +58,7 @@ public class IncompleteSimpleToDoItemsDisplayFragment extends ListFragment {
                         = GeneralHelper.getSortedIncompleteSimpleToDoItemsAsArrayList(getActivity());
                 Log.v(LOG_TAG, "onItemLongClick(), IncompleteDetailedItemsDisplayFragment executed");
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                builder.setTitle("Do you want to: ")
+                builder.setTitle(getResources().getString(R.string.do_you_want_to))
                         .setItems(R.array.simple_todoitem_operation, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -77,6 +77,7 @@ public class IncompleteSimpleToDoItemsDisplayFragment extends ListFragment {
                                             public void onClick(DialogInterface dialog, int which) {
                                                 GeneralHelper.deleteToDoItem(getActivity(), simpleToDoItemModel);
                                                 toDoItemStatusChangeListener.onStatusChanged();
+                                                Toast.makeText(getActivity(), "SimpleToDoItem: " + simpleToDoItemModel.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
                                             }
                                         }).setNegativeButton(R.string.todolist_cancel_text, new DialogInterface.OnClickListener() {
                                             @Override
@@ -85,7 +86,6 @@ public class IncompleteSimpleToDoItemsDisplayFragment extends ListFragment {
                                             }
                                         });
                                         (builder.create()).show();
-                                        Toast.makeText(getActivity(), "DetailedToDoItem: " + simpleToDoItemModel.getTitle() + " deleted.", Toast.LENGTH_SHORT).show();
                                         break;
                                 }
                             }
