@@ -2,6 +2,13 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.leontheprofessional.todolist">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/app_icon"
@@ -18,6 +25,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
         <activity android:name=".activity.ToDoItemDetailsActivity" />
         <activity
             android:name=".activity.ToDoListPreferenceActivity"
@@ -30,6 +38,19 @@
         <provider
             android:name=".provider.ToDoListProvider"
             android:authorities="com.leontheprofessional.todolist.ToDoListProvider" />
+=======
+        <activity
+            android:name=".SignUpActivity"
+            android:label="@string/title_activity_sign_up"></activity>
+        <activity
+            android:name=".SearchResult"
+            android:label="@string/title_activity_search_result" >
+        </activity>
+        <activity
+            android:name=".ShowDetail"
+            android:label="@string/title_activity_show_detail" >
+        </activity>
+>>>>>>> master
     </application>
 
 </manifest>

@@ -1,4 +1,5 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">ToDoList</string>
 
     <!-- string for todolist Activity-->
@@ -75,4 +76,24 @@
         <item>Mark as completed</item>
         <item>Delete</item>
     </string-array>
+=======
+    <string name="app_name">Servant</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+<<<<<<< HEAD
+    <string name="login_button_title">Login</string>
+    <string name="signUP_button_title">Sign up</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+=======
+    <string name="title_activity_search_result">SearchResult</string>
+    <string name="title_activity_show_detail">ShowDetail</string>
+    <string name="CONSUMER_KEY">p4DR2uIX0qDwaqvO5epWPw</string>
+    <string name="CONSUMER_SECRET">-5hi0yTaCWsI8adDLaYCEAi_pSU</string>
+    <string name="TOKEN">gkLpGKh3K5u-Kk-niVj9AomlqEx6Lbtg</string>
+    <string name="TOKEN_SECRET">Qw6_mCKTLr1M5lzJq7r8E1bJBfA</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+>>>>>>> habit
+>>>>>>> master
 </resources>
