@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal">
+
+    <EditText
+        android:id="@+id/todoiteminput_edittext_activitytodolist"
+        android:layout_width="match_parent"
+        android:layout_height="60sp"
+        android:layout_toLeftOf="@+id/imagebutton_create_detailed_todoitem"
+        android:hint="@string/todoiteminput_edittext_activitytodolist_text"
+        android:imeOptions="actionDone"/>
+
+    <ImageButton
+        android:id="@+id/imagebutton_create_detailed_todoitem"
+        android:layout_width="60sp"
+        android:layout_height="60sp"
+        android:layout_alignParentEnd="true"
+        android:src="@mipmap/todoitem_confirm_btn_image" />
+</RelativeLayout>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.tek.first.servant" >
+    package="com.leontheprofessional.todolist">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -11,18 +11,34 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/app_icon"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity"
-            android:label="@string/app_name" >
+            android:name=".activity.ToDoListDisplayActivity"
+            android:label="@string/app_name"
+            android:uiOptions="splitActionBarWhenNarrow"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+<<<<<<< HEAD
+        <activity android:name=".activity.ToDoItemDetailsActivity" />
+        <activity
+            android:name=".activity.ToDoListPreferenceActivity"
+            android:label="ToDoList User Preference">
+            <intent-filter>
+                <action android:name="com.leontheprofessional.todolist.ACTION_USER_PREFERENCE" />
+            </intent-filter>
+        </activity>
+
+        <provider
+            android:name=".provider.ToDoListProvider"
+            android:authorities="com.leontheprofessional.todolist.ToDoListProvider" />
+=======
         <activity
             android:name=".SignUpActivity"
             android:label="@string/title_activity_sign_up"></activity>
@@ -34,6 +50,7 @@
             android:name=".ShowDetail"
             android:label="@string/title_activity_show_detail" >
         </activity>
+>>>>>>> master
     </application>
 
 </manifest>

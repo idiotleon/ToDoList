@@ -5,8 +5,8 @@ android {
     buildToolsVersion "23.0.0"
 
     defaultConfig {
-        applicationId "com.example.tek.first.servant"
-        minSdkVersion 15
+        applicationId "com.leontheprofessional.todolist"
+        minSdkVersion 17
         targetSdkVersion 22
         versionCode 1
         versionName "1.0"

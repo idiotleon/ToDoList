@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="notepad_paper">#EEF8E0A0</color>
+    <color name="simple_todoitem_notepad_paper">#EEF8E090</color>
+    <color name="notepad_lines">#FF0000FF</color>
+    <color name="simple_todoitem_notepad_lines">#FF0000EA</color>
+    <color name="notepad_margin">#90FF0000</color>
+    <color name="notepad_text">#AA0000FF</color>
+
+    <color name="detail_header">#03A9F4</color>
+
+    <array name="priority_level_color_hex_code">
+        <item>@color/priority_level1</item>
+        <item>@color/priority_level2</item>
+        <item>@color/priority_level3</item>
+        <item>@color/priority_level4</item>
+        <item>@color/priority_level5</item>
+        <item>@color/priority_level6</item>
+        <item>@color/priority_level7</item>
+        <item>@color/priority_level8</item>
+        <item>@color/priority_level9</item>
+        <item>@color/priority_level10</item>
+    </array>
+    <color name="priority_level1">#FBE9E7</color>
+    <color name="priority_level2">#FFCCBC</color>
+    <color name="priority_level3">#FFAB91</color>
+    <color name="priority_level4">#FF7043</color>
+    <color name="priority_level5">#FF5722</color>
+    <color name="priority_level6">#F4511E</color>
+    <color name="priority_level7">#E64A19</color>
+    <color name="priority_level8">#D84315</color>
+    <color name="priority_level9">#BF360C</color>
+    <color name="priority_level10">#DD2C00</color>
+
+    <color name="todolist_mark_as_complete">#43A047</color>
+
+</resources>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center">
+
+    <DatePicker
+        android:layout_centerHorizontal="true"
+        android:id="@+id/todolist_datepicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:endYear="2100"
+        android:startYear="2000"></DatePicker>
+
+    <Button
+        android:id="@+id/btn_confirm_datepicker"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/todolist_datepicker"
+        android:text="@string/todolist_confirm_text" />
+
+</RelativeLayout>
